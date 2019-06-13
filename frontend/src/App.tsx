@@ -1,14 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
 import LandingPage from './LandingPage/LandingPage';
-import {
-  HashRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 export default class App extends React.Component<any, any> {
   constructor(props: any) {

@@ -1,5 +1,5 @@
-import React from "react";
-import { withRouter, Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 class LandingPage extends React.Component {
   constructor(props: any) {
@@ -10,7 +10,7 @@ class LandingPage extends React.Component {
     return (
       <div>
         <h1>Welcome to BedForBreakfast</h1>
-        <Link to={"createAccommodation"}>Create an accommodation here</Link>
+        <Link to={'createAccommodation'}>Create an accommodation here</Link>
       </div>
     );
   }

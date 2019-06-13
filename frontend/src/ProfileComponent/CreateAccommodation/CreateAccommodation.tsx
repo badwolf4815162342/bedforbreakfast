@@ -1,5 +1,5 @@
-import React from "react";
-import { withRouter, Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 class CreateAccommodation extends React.Component {
   constructor(props: any) {
@@ -10,9 +10,7 @@ class CreateAccommodation extends React.Component {
     return (
       <div>
         <h1>Create an accommodation here!</h1>
-        <Link to={"/"} className="md-cell">
-          Back to the landing page
-        </Link>
+        <Link to={'/'}>Back to the landing page</Link>
       </div>
     );
   }
