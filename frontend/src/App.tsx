@@ -2,6 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import meaningOfLife from '@bed-for-breakfast/shared';
+
 const App: React.FC = () => {
   return (
     <div className="App">
@@ -18,9 +20,10 @@ const App: React.FC = () => {
         >
           Learn React
         </a>
+        <h3>shared definition hot reload test: {meaningOfLife}</h3>
       </header>
     </div>
   );
-}
+};
 
 export default App;

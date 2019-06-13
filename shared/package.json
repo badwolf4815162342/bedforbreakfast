@@ -1,0 +1,21 @@
+{
+  "name": "@bed-for-breakfast/shared",
+  "version": "0.0.1",
+  "main": "dist/index",
+  "types": "dist/index",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start:dev": "tsc -w -p tsconfig.build.json",
+    "build": "npm run clean && npm run compile",
+    "clean": "rm -rf ./dist",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "npm run build",
+    "prettier": "prettier --write \"./src/**/*.ts?(x)\""
+  },
+  "devDependencies": {
+    "prettier": "^1.18.2",
+    "typescript": "~3.5.1"
+  }
+}
