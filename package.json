@@ -1,6 +1,10 @@
 {
   "name": "bed-for-breakfast",
   "private": true,
+  "scripts": {
+    "start:dev": "lerna run start:dev --parallel",
+    "bootstrap": "lerna bootstrap"
+  },
   "devDependencies": {
     "lerna": "^3.15.0"
   }
