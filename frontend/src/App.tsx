@@ -4,7 +4,7 @@ import './App.css';
 import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
 import LandingPage from './LandingPage/LandingPage';
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Route,
   Switch,
   Redirect,
