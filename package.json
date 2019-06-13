@@ -1,11 +1,29 @@
 {
   "name": "bed-for-breakfast",
   "private": true,
-  "devDependencies": {
-    "lerna": "^3.15.0"
+  "scripts": {
+    "start:dev": "lerna run start:dev --parallel",
+    "bootstrap": "lerna bootstrap",
+    "clean": "lerna run clean",
+    "build": "lerna run build",
+    "pub": "lerna publish",
+    "prettier": "lerna run prettier"
   },
-  "dependencies": {
-    "@types/react-router-dom": "^4.3.3",
-    "react-router-dom": "^5.0.1"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,css,md}": [
+      "npm run prettier",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "lerna": "^3.15.0",
+    "husky": "^2.4.1",
+    "lint-staged": "^8.2.0",
+    "typescript": "~3.5.2"
   }
 }

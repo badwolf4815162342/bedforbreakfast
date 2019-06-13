@@ -1,33 +1,33 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import CreateAccommodation from "./ProfileComponent/CreateAccommodation/CreateAccommodation";
-import LandingPage from "./LandingPage/LandingPage";
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
+import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
+import LandingPage from './LandingPage/LandingPage';
 import {
   HashRouter as Router,
   Route,
   Switch,
-  Redirect
-} from "react-router-dom";
+  Redirect,
+} from 'react-router-dom';
 
 export default class App extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
 
     this.state = {
-      title: "BedForBreakfast",
+      title: 'BedForBreakfast',
       routes: [
         {
           component: CreateAccommodation,
-          path: "/createAccommodation",
-          exact: true
+          path: '/createAccommodation',
+          exact: true,
         },
         {
           component: LandingPage,
-          path: "/",
-          exact: true
-        }
-      ]
+          path: '/',
+          exact: true,
+        },
+      ],
     };
   }
 
@@ -49,4 +49,3 @@ export default class App extends React.Component<any, any> {
     );
   }
 }
-/* routes: [{ Component: CreateAccommodation, path: "/createAccommodation" }] */
