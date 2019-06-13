@@ -1,29 +1,45 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
+import LandingPage from './LandingPage/LandingPage';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import meaningOfLife from '@bed-for-breakfast/shared';
+export default class App extends React.Component<any, any> {
+  constructor(props: any) {
+    super(props);
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <h3>shared definition hot reload test: {meaningOfLife}</h3>
-      </header>
-    </div>
-  );
-};
+    this.state = {
+      title: 'BedForBreakfast',
+      routes: [
+        {
+          component: CreateAccommodation,
+          path: '/createAccommodation',
+          exact: true,
+        },
+        {
+          component: LandingPage,
+          path: '/',
+          exact: true,
+        },
+      ],
+    };
+  }
 
-export default App;
+  componentDidMount() {
+    document.title = this.state.title;
+  }
+
+  render() {
+    return (
+      <div>
+        <Router>
+          <Switch>
+            {this.state.routes.map((route: any, i: any) => (
+              <Route key={i} {...route} />
+            ))}
+          </Switch>
+        </Router>
+      </div>
+    );
+  }
+}
