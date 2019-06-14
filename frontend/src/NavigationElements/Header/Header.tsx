@@ -13,6 +13,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -71,6 +72,10 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  links: {
+    color: 'inherit',
+    textDecoration: 'none',
+  },
 }));
 
 export default function Navbar() {
@@ -110,7 +115,11 @@ export default function Navbar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose} href="/createAccommodation">
+        <Link className={classes.links} to="/createAccommodation">
+          Create an accommodation here
+        </Link>
+      </MenuItem>
     </Menu>
   );
 
@@ -160,7 +169,9 @@ export default function Navbar() {
       <AppBar position="static">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
-            BedForBreakfast
+            <Link className={classes.links} to={'/'}>
+              BedForBreakfast
+            </Link>
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>

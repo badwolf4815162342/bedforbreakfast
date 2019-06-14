@@ -1,5 +1,4 @@
 import React from 'react';
-import { textAlign } from '@material-ui/system';
 
 class Footer extends React.Component {
   /* constructor(props: any) {

@@ -39,12 +39,6 @@ export default class App extends React.Component<any, any> {
       ],
     };
   }
-  styles = {
-    margin: '1%',
-    width: '98%',
-    height: '30px',
-    backgroundColor: 'yellow',
-  };
 
   componentDidMount() {
     document.title = this.state.title;
@@ -54,15 +48,15 @@ export default class App extends React.Component<any, any> {
     return (
       <div>
         <MuiThemeProvider theme={theme}>
-          <Navbar />
           <Router>
+            <Navbar />
             <Switch>
               {this.state.routes.map((route: any, i: any) => (
                 <Route key={i} {...route} />
               ))}
             </Switch>
+            <Footer />
           </Router>
-          <Footer />
         </MuiThemeProvider>
       </div>
     );
