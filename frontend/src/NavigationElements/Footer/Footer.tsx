@@ -5,16 +5,22 @@ class Footer extends React.Component {
     super(props);
   } */
 
-  styles = {
+  styleBox = {
     width: '100%',
-    height: '30px',
-    backgroundColor: '#7986cb',
+    'padding-top': '30px',
+    'padding-bottom': '30px',
+    backgroundColor: 'lightgrey',
+    color: 'darkgrey',
+    'text-align': 'center',
+    'margin-top': '30px',
   };
 
   render() {
     return (
-      <div style={this.styles}>
-        <p>This is our footer</p>
+      <div style={this.styleBox}>
+        <b>
+          <a href="/">Legal details</a> • <a href="/">Contact</a>
+        </b>
       </div>
     );
   }
