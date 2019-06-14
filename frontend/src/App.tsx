@@ -3,7 +3,8 @@ import './App.css';
 import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
 import LandingPage from './LandingPage/LandingPage';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import PrimarySearchAppBar from './NavigationElements/Header/Header';
+import Navbar from './NavigationElements/Header/Header';
+import Footer from './NavigationElements/Footer/Footer';
 import { createMuiTheme } from '@material-ui/core/styles';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 
@@ -13,7 +14,7 @@ const theme = createMuiTheme({
       main: '#fdd835',
     },
     secondary: {
-      main: '#3f51b5',
+      main: '#7986cb',
     },
   },
 });
@@ -53,7 +54,7 @@ export default class App extends React.Component<any, any> {
     return (
       <div>
         <MuiThemeProvider theme={theme}>
-          <PrimarySearchAppBar />
+          <Navbar />
           <Router>
             <Switch>
               {this.state.routes.map((route: any, i: any) => (
@@ -61,7 +62,7 @@ export default class App extends React.Component<any, any> {
               ))}
             </Switch>
           </Router>
-          <footer style={this.styles}>Global footer</footer>
+          <Footer />
         </MuiThemeProvider>
       </div>
     );
