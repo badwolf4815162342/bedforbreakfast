@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 class CreateAccommodation extends React.Component {
-  constructor(props: any) {
+  /* constructor(props: any) {
     super(props);
-  }
+  } */
 
   render() {
     return (
