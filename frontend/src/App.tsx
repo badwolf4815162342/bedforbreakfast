@@ -24,7 +24,7 @@ const theme = createMuiTheme({
 export default class App extends React.Component<any, any> {
   styleContent = {
     color: 'red',
-    'min-height': '95vh',
+    minHeight: '95vh',
   };
 
   constructor(props: any) {

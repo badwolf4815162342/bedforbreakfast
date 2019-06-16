@@ -7,12 +7,12 @@ class Footer extends React.Component {
 
   styleBox = {
     width: '100%',
-    'padding-top': '30px',
-    'padding-bottom': '30px',
+    paddingTop: '30px',
+    paddingBottom: '30px',
     backgroundColor: 'lightgrey',
     color: 'darkgrey',
-    'text-align': 'center',
-    'margin-top': '30px',
+    textAlign: 'center' as 'center',
+    marginTop: '30px',
   };
 
   render() {
