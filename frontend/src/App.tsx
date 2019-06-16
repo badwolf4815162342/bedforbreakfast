@@ -20,6 +20,11 @@ const theme = createMuiTheme({
 });
 
 export default class App extends React.Component<any, any> {
+  styleContent = {
+    color: 'red',
+    'min-height': '95vh',
+  };
+
   constructor(props: any) {
     super(props);
 
@@ -50,11 +55,13 @@ export default class App extends React.Component<any, any> {
         <MuiThemeProvider theme={theme}>
           <Router>
             <Navbar />
-            <Switch>
-              {this.state.routes.map((route: any, i: any) => (
-                <Route key={i} {...route} />
-              ))}
-            </Switch>
+            <div style={this.styleContent}>
+              <Switch>
+                {this.state.routes.map((route: any, i: any) => (
+                  <Route key={i} {...route} />
+                ))}
+              </Switch>
+            </div>
             <Footer />
           </Router>
         </MuiThemeProvider>
