@@ -1,12 +1,14 @@
-import React from 'react';
 import './App.css';
-import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
-import LandingPage from './LandingPage/LandingPage';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Navbar from './NavigationElements/Header/Header';
-import Footer from './NavigationElements/Footer/Footer';
+
 import { createMuiTheme } from '@material-ui/core/styles';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+import LandingPage from './LandingPage/LandingPage';
+import Footer from './NavigationElements/Footer/Footer';
+import Navbar from './NavigationElements/Header/Header';
+import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
 
 const theme = createMuiTheme({
   palette: {
