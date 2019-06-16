@@ -1,8 +1,10 @@
-import React from 'react';
 import './App.css';
-import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
-import LandingPage from './LandingPage/LandingPage';
+
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+import LandingPage from './LandingPage/LandingPage';
+import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
 
 export default class App extends React.Component<any, any> {
   constructor(props: any) {
