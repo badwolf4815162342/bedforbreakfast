@@ -10,6 +10,8 @@ import Footer from './NavigationElements/Footer/Footer';
 import Navbar from './NavigationElements/Header/Header';
 import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
 
+import styled from 'styled-components';
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -22,10 +24,9 @@ const theme = createMuiTheme({
 });
 
 export default class App extends React.Component<any, any> {
-  styleContent = {
-    color: 'red',
-    minHeight: '95vh',
-  };
+  Content = styled.div`
+    min-height: 95vh;
+  `;
 
   constructor(props: any) {
     super(props);
@@ -57,13 +58,13 @@ export default class App extends React.Component<any, any> {
         <MuiThemeProvider theme={theme}>
           <Router>
             <Navbar />
-            <div style={this.styleContent}>
+            <this.Content>
               <Switch>
                 {this.state.routes.map((route: any, i: any) => (
                   <Route key={i} {...route} />
                 ))}
               </Switch>
-            </div>
+            </this.Content>
             <Footer />
           </Router>
         </MuiThemeProvider>
