@@ -1,6 +1,5 @@
 import './App.css';
 
-import { createMuiTheme } from '@material-ui/core/styles';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -12,16 +11,7 @@ import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAc
 
 import styled from 'styled-components';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#fdd835',
-    },
-    secondary: {
-      main: '#7986cb',
-    },
-  },
-});
+import { MainThemeMaterial } from './StyledComponents/Theme';
 
 export default class App extends React.Component<any, any> {
   Content = styled.div`
@@ -55,7 +45,7 @@ export default class App extends React.Component<any, any> {
   render() {
     return (
       <div>
-        <MuiThemeProvider theme={theme}>
+        <MuiThemeProvider theme={MainThemeMaterial}>
           <Router>
             <Navbar />
             <this.Content>
