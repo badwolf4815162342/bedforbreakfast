@@ -1,15 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { StyledTitle } from '../../StyledComponents/StyledBasicItems';
 
 class CreateAccommodation extends React.Component {
-  constructor(props: any) {
+  /* constructor(props: any) {
     super(props);
-  }
+  } */
 
   render() {
     return (
       <div>
-        <h1>Create an accommodation here!</h1>
+        <StyledTitle>Create an accommodation here!</StyledTitle>
         <Link to={'/'}>Back to the landing page</Link>
       </div>
     );
