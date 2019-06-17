@@ -76,12 +76,3 @@ export const SectionMobile = styled.div`
     display: none;
   }
 `;
-/* export const useStyles = makeStyles((theme) => ({
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
-}));
- */
