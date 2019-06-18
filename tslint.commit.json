@@ -1,0 +1,9 @@
+{
+  "extends": ["./tslint.json", "tslint-etc"],
+  "jsRules": {},
+  "rules": {
+    "ordered-imports": true,
+    "no-empty": true,
+    "no-unused-declaration": true
+  }
+}

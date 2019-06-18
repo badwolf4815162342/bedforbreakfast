@@ -1,0 +1,45 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended",
+    "tslint-no-circular-imports",
+    "tslint-config-prettier"
+  ],
+  "jsRules": {},
+  "rules": {
+    "await-promise": [
+      true,
+      "Bluebird",
+      "Thenable",
+      "SchemaBuilder",
+      "RequestPromise"
+    ],
+    // "no-floating-promises": [
+    //   true,
+    //   "Bluebird",
+    //   "Thenable",
+    //   "SchemaBuilder",
+    //   "RequestPromise"
+    // ],
+    "promise-function-async": true,
+    "ordered-imports": false,
+    "no-console": false,
+    "comment-format": false,
+    "no-var-requires": false,
+    "interface-name": false,
+    "no-implicit-dependencies": false,
+    "max-classes-per-file": false,
+    "no-duplicate-imports": false,
+    "no-unused-expression": [true, "allow-fast-null-checks"],
+    "no-empty-interface": false,
+    "no-switch-case-fall-through": true,
+    "object-literal-sort-keys": false,
+    "member-access": false,
+    "member-ordering": false,
+    "no-empty": false,
+    "strict-type-predicates": true,
+    // "no-default-export": true,
+    "no-null-undefined-union": true
+    // "strict-boolean-expressions": true
+  }
+}
