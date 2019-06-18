@@ -34,6 +34,8 @@ export default class App extends React.Component<any, any> {
         },
       ],
     };
+
+    this.componentDidMount();
   }
 
   componentDidMount() {
