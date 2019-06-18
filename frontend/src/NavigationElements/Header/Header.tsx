@@ -9,7 +9,11 @@ import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import SearchIcon from '@material-ui/icons/Search';
+import React from 'react';
 import { Link } from 'react-router-dom';
+
 import { useStyles } from './HeaderStyle';
 
 export default function Navbar() {
