@@ -1,23 +1,28 @@
+import React from 'react';
+
 import AppBar from '@material-ui/core/AppBar';
 import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
-import InputBase from '@material-ui/core/InputBase';
-import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import SearchIcon from '@material-ui/icons/Search';
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-import { useStyles } from './HeaderStyle';
+import {
+  HeaderLink,
+  Grow,
+  Title,
+  Search,
+  ContainerSearchIcon,
+  StyledInputBase,
+  SectionDesktop,
+  SectionMobile,
+} from './HeaderStyle';
 
 export default function Navbar() {
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -54,9 +59,9 @@ export default function Navbar() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose} href="/createAccommodation">
-        <Link className={classes.links} to="/createAccommodation">
+        <HeaderLink to="/createAccommodation">
           Create an accommodation here
-        </Link>
+        </HeaderLink>
       </MenuItem>
     </Menu>
   );
@@ -103,29 +108,23 @@ export default function Navbar() {
   );
 
   return (
-    <div className={classes.grow}>
+    <Grow>
       <AppBar position="static">
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            <Link className={classes.links} to={'/'}>
-              BedForBreakfast
-            </Link>
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
+          <Title>
+            <HeaderLink to={'/'}>BedForBreakfast</HeaderLink>
+          </Title>
+          <Search>
+            <ContainerSearchIcon>
               <SearchIcon />
-            </div>
-            <InputBase
+            </ContainerSearchIcon>
+            <StyledInputBase
               placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
               inputProps={{ 'aria-label': 'Search' }}
             />
-          </div>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
+          </Search>
+          <Grow />
+          <SectionDesktop>
             <IconButton aria-label="Show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <MailIcon />
@@ -146,8 +145,8 @@ export default function Navbar() {
             >
               <AccountCircle />
             </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
+          </SectionDesktop>
+          <SectionMobile>
             <IconButton
               aria-label="Show more"
               aria-controls={mobileMenuId}
@@ -157,11 +156,11 @@ export default function Navbar() {
             >
               <MoreIcon />
             </IconButton>
-          </div>
+          </SectionMobile>
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-    </div>
+    </Grow>
   );
 }

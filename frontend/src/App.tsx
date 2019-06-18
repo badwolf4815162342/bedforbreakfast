@@ -1,5 +1,3 @@
-import './App.css';
-
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -36,6 +34,8 @@ export default class App extends React.Component<any, any> {
         },
       ],
     };
+
+    this.componentDidMount();
   }
 
   componentDidMount() {
