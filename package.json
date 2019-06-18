@@ -18,6 +18,10 @@
     "*.{js,ts,tsx,css,md}": [
       "npm run prettier",
       "git add"
+    ],
+    "**/*.{ts,tsx}": [
+      "tslint --project tsconfig.json -c tslint.commit.json --fix",
+      "git add"
     ]
   },
   "devDependencies": {
@@ -25,6 +29,9 @@
     "lerna": "^3.15.0",
     "lint-staged": "^8.2.0",
     "tslint": "^5.17.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-etc": "^1.5.3",
+    "tslint-no-circular-imports": "^0.7.0",
     "typescript": "^3.5.2"
   }
 }
