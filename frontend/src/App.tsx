@@ -7,15 +7,10 @@ import Footer from './NavigationElements/Footer/Footer';
 import Navbar from './NavigationElements/Header/Header';
 import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
 
-import styled from 'styled-components';
-
+import { Content } from './AppStyle';
 import { MainThemeMaterial } from './StyledComponents/Theme';
 
 export default class App extends React.Component<any, any> {
-  Content = styled.div`
-    min-height: 95vh;
-  `;
-
   constructor(props: any) {
     super(props);
 
@@ -48,13 +43,13 @@ export default class App extends React.Component<any, any> {
         <MuiThemeProvider theme={MainThemeMaterial}>
           <Router>
             <Navbar />
-            <this.Content>
+            <Content>
               <Switch>
                 {this.state.routes.map((route: any, i: any) => (
                   <Route key={i} {...route} />
                 ))}
               </Switch>
-            </this.Content>
+            </Content>
             <Footer />
           </Router>
         </MuiThemeProvider>
