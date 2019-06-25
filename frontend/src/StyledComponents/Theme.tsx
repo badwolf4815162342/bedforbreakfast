@@ -13,6 +13,11 @@ export const MainTheme = {
     dark: '#2a3eb1',
     contrastText: '#ffffff',
   },
+  grey: {
+    light: '#EEEEEE',
+    main: '#BDBDBD',
+    dark: '#616161',
+  },
 };
 
 export const MainThemeMaterial = createMuiTheme({
@@ -45,10 +50,15 @@ export const MainThemeRGB = {
     dark: hexToRgb(MainTheme.secondary.dark),
     contrastText: hexToRgb(MainTheme.secondary.contrastText),
   },
+  grey: {
+    light: hexToRgb(MainTheme.grey.light),
+    main: hexToRgb(MainTheme.grey.main),
+    dark: hexToRgb(MainTheme.grey.dark),
+  },
 };
 
 function hexToRgb(hex: string) {
-  let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
         r: parseInt(result[1], 16),
