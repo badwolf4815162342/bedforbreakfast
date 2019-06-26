@@ -19,7 +19,7 @@
     "prettier": "prettier --write \"./src/**/*.ts?(x)\""
   },
   "dependencies": {
-    "@bed-for-breakfast/shared": "0.0.1",
+    "@bed-for-breakfast/shared": "file:../shared",
     "@nestjs/common": "^6.3.2",
     "@nestjs/core": "^6.3.2",
     "@nestjs/graphql": "^6.2.4",
