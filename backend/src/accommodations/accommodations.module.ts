@@ -1,16 +1,12 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TypegooseModule } from 'nestjs-typegoose';
 
-import { AccommodationSchema } from './accommodation.schema';
 import { AccommodationResolver } from './accommodations.resolver';
 import { AccommodationsService } from './accommodations.service';
+import { Accommodation } from './models/Accommodation';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      { name: 'Accommodation', schema: AccommodationSchema },
-    ]),
-  ],
+  imports: [TypegooseModule.forFeature([Accommodation])],
   providers: [AccommodationsService, AccommodationResolver],
 })
 export class AccommodationsModule {}

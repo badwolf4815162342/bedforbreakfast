@@ -8,6 +8,15 @@ type Accommodation {
   city: String!
 }
 
+input CreateAccommodationDto {
+  name: String!
+  city: String!
+}
+
+type Mutation {
+  createAccommodation(createAccommodationDto: CreateAccommodationDto!): Accommodation!
+}
+
 type Query {
   accommodations: [Accommodation!]!
 }
