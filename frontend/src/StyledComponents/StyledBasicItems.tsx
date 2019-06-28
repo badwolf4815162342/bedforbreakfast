@@ -11,7 +11,7 @@ export const GridContainer = styled(Container)`
   grid-template-columns: auto auto auto;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-  align-items: center;
+  align-items: flex-end;
 `;
 
 export const Section = styled.div`

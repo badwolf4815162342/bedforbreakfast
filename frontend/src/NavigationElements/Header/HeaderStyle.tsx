@@ -1,8 +1,8 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { MainThemeRGB } from '../../StyledComponents/Theme';
 import { InputBase } from '@material-ui/core';
-import { Screensizes } from '../../StyledComponents/Screensizes';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { ScreenSizes } from '../../StyledComponents/Screensizes';
+import { MainThemeRGB } from '../../StyledComponents/Theme';
 
 const MarginLeftSmall = '10px';
 
@@ -65,14 +65,14 @@ export const StyledInputBase = styled(InputBase)`
 
 export const SectionDesktop = styled.div`
   display: none;
-  @media (min-width: ${Screensizes.md}) {
+  @media (min-width: ${ScreenSizes.md}) {
     display: flex;
   }
 `;
 
 export const SectionMobile = styled.div`
   display: flex;
-  @media (min-width: ${Screensizes.md}) {
+  @media (min-width: ${ScreenSizes.md}) {
     display: none;
   }
 `;
