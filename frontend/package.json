@@ -15,7 +15,7 @@
     "prettier": "prettier --write \"./src/**/*.ts?(x)\""
   },
   "dependencies": {
-    "@bed-for-breakfast/shared": "^0.0.1",
+    "@bed-for-breakfast/shared": "file:../shared",
     "@material-ui/core": "^4.1.1",
     "@material-ui/icons": "^4.2.0",
     "@types/jest": "24.0.13",
