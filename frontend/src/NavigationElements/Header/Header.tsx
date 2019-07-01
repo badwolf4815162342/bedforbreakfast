@@ -3,8 +3,8 @@ import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import Toolbar from '@material-ui/core/Toolbar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
@@ -12,14 +12,14 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import SearchIcon from '@material-ui/icons/Search';
 import {
-  HeaderLink,
-  Grow,
-  Title,
-  Search,
   ContainerSearchIcon,
-  StyledInputBase,
+  Grow,
+  HeaderLink,
+  Search,
   SectionDesktop,
   SectionMobile,
+  StyledInputBase,
+  Title,
 } from './HeaderStyle';
 
 export default function Navbar() {
@@ -59,9 +59,7 @@ export default function Navbar() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose} href="/createAccommodation">
-        <HeaderLink to="/createAccommodation">
-          Create an accommodation here
-        </HeaderLink>
+        <HeaderLink to="/createAccommodation">Create an accommodation here</HeaderLink>
       </MenuItem>
     </Menu>
   );
@@ -118,10 +116,7 @@ export default function Navbar() {
             <ContainerSearchIcon>
               <SearchIcon />
             </ContainerSearchIcon>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'Search' }}
-            />
+            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'Search' }} />
           </Search>
           <Grow />
           <SectionDesktop>
