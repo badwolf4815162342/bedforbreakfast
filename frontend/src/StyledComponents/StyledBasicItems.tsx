@@ -1,17 +1,29 @@
 import styled from 'styled-components';
+import { ScreenSizes } from './Screensizes';
 import { MainTheme } from './Theme';
 
-export const Container = styled.div`
-  margin-right: 5%;
-  margin-left: 5%;
-`;
-
-export const GridContainer = styled(Container)`
+export const GridContainer = styled.div`
   display: grid;
   grid-template-columns: auto auto auto;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
   align-items: flex-end;
+`;
+
+export const GridContainerMD = styled(GridContainer)`
+  margin-right: 5%;
+  margin-left: 5%;
+`;
+
+export const GridContainerXS = styled(GridContainer)`
+  @media (max-width: ${ScreenSizes.md}) {
+    margin-right: 5%;
+    margin-left: 5%;
+  }
+  @media (min-width: ${ScreenSizes.md}) {
+    margin-right: 20%;
+    margin-left: 20%;
+  }
 `;
 
 export const Section = styled.div`
