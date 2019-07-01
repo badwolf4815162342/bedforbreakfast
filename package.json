@@ -32,6 +32,7 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-etc": "^1.5.3",
     "tslint-no-circular-imports": "^0.7.0",
+    "tsutils": "^3.14.0",
     "typescript": "^3.5.2"
   }
 }
