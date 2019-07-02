@@ -1,9 +1,6 @@
 import { Divider as divider, Switch, TextField } from '@material-ui/core';
 import styled from 'styled-components';
-import {
-  Subtitle as subTitle,
-  Title,
-} from '../../StyledComponents/StyledBasicItems';
+import { Subtitle as subTitle, Title } from '../../StyledComponents/StyledBasicItems';
 
 export const AccommodationTitle = styled(Title)`
   grid-column: 1/7;

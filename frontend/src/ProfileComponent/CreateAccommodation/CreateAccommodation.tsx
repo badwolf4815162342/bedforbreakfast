@@ -1,10 +1,7 @@
 import Tooltip from '@material-ui/core/Tooltip';
 import React from 'react';
 
-import {
-  GridContainerXS,
-  Section,
-} from '../../StyledComponents/StyledBasicItems';
+import { GridContainerXS, Section } from '../../StyledComponents/StyledBasicItems';
 import { MainTheme } from '../../StyledComponents/Theme';
 import {
   AccommodationTitle,
@@ -35,20 +32,10 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean }> {
     this.state = {
       isEnabled: false,
     };
-    this.accommodation = new Accommodation(
-      'Germany',
-      'Boltzmannstraße',
-      '3',
-      '85748',
-      'Garching',
-      '',
-      2,
-    );
+    this.accommodation = new Accommodation('Germany', 'Boltzmannstraße', '3', '85748', 'Garching', '', 2);
   }
 
-  handleSwitchChange = (name: string) => (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  handleSwitchChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ ...this.state, [name]: event.target.checked });
   };
 
@@ -71,15 +58,8 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean }> {
             value="isEnabled"
             inputProps={{ 'aria-label': 'secondary checkbox' }}
           />
-          <NrBedsText>
-            Specify how many beds are available for guests
-          </NrBedsText>
-          <NrBedsSelector
-            required
-            id="standard-required"
-            label="Nr. beds"
-            value={this.accommodation.numberOfBeds}
-          />
+          <NrBedsText>Specify how many beds are available for guests</NrBedsText>
+          <NrBedsSelector required id="standard-required" label="Nr. beds" value={this.accommodation.numberOfBeds} />
           <NrBedsIcon
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -89,11 +69,7 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean }> {
           >
             <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z" />
           </NrBedsIcon>
-          <Description
-            multiline
-            label="Description of your accommodation"
-            value={this.accommodation.description}
-          />
+          <Description multiline label="Description of your accommodation" value={this.accommodation.description} />
           <DescriptionIcon
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -114,18 +90,8 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean }> {
           >
             <AddressSubtitle>Address </AddressSubtitle>
           </Tooltip>
-          <StreetName
-            required
-            id="standard-required"
-            label="Street name"
-            value={this.accommodation.streetName}
-          />
-          <StreetNumber
-            required
-            id="standard-required"
-            label="Street number"
-            value={this.accommodation.streetNumber}
-          />
+          <StreetName required id="standard-required" label="Street name" value={this.accommodation.streetName} />
+          <StreetNumber required id="standard-required" label="Street number" value={this.accommodation.streetNumber} />
           <StreetNumberIcon
             width="24"
             height="24"
@@ -135,18 +101,8 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean }> {
           >
             <path d="m204.5 458.605469v51.855469l-12.539062-10.128907c-1.9375-1.566406-48.035157-38.992187-94.78125-92.660156-64.484376-74.035156-97.179688-140.492187-97.179688-197.519531v-5.652344c0-112.761719 91.738281-204.5 204.5-204.5s204.5 91.738281 204.5 204.5v5.652344c0 4.789062-.253906 9.652344-.714844 14.574218l-39.992187-36.484374c-8.191407-83.15625-78.519531-148.339844-163.792969-148.339844-90.757812 0-164.597656 73.839844-164.597656 164.597656v5.652344c0 96.367187 124.164062 213.027344 164.597656 248.453125zm122.699219-28.660157h59.851562v-59.851562h-59.851562zm-122.699219-310.238281c46.753906 0 84.792969 38.039063 84.792969 84.792969s-38.039063 84.792969-84.792969 84.792969-84.792969-38.039063-84.792969-84.792969 38.039063-84.792969 84.792969-84.792969zm0 39.902344c-24.753906 0-44.890625 20.136719-44.890625 44.890625 0 24.75 20.136719 44.890625 44.890625 44.890625 24.75 0 44.890625-20.140625 44.890625-44.890625 0-24.753906-20.140625-44.890625-44.890625-44.890625zm280.609375 243.222656-11.21875-10.234375v64.058594c0 29.828125-24.269531 54.09375-54.097656 54.09375h-126.332031c-29.828126 0-54.097657-24.265625-54.097657-54.09375v-64.058594l-11.21875 10.234375-26.890625-29.476562 155.371094-141.746094 155.375 141.746094zm-51.121094-46.636719-77.363281-70.574218-77.359375 70.574218v100.457032c0 7.828125 6.367187 14.195312 14.195313 14.195312h126.332031c7.828125 0 14.195312-6.367187 14.195312-14.195312zm0 0" />
           </StreetNumberIcon>
-          <ZipCode
-            required
-            id="standard-required"
-            label="ZIP-code"
-            value={this.accommodation.zipCode}
-          />
-          <CityName
-            required
-            id="standard-required"
-            label="City"
-            value={this.accommodation.city}
-          />
+          <ZipCode required id="standard-required" label="ZIP-code" value={this.accommodation.zipCode} />
+          <CityName required id="standard-required" label="City" value={this.accommodation.city} />
           <CityNameIcon
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -158,12 +114,7 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean }> {
             <path d="M0 0h24v24H0z" fill="none" />
           </CityNameIcon>
 
-          <Country
-            required
-            id="standard-required"
-            label="Country"
-            value={this.accommodation.country}
-          />
+          <Country required id="standard-required" label="Country" value={this.accommodation.country} />
           <CountryIcon
             xmlns="http://www.w3.org/2000/svg"
             width="24"
