@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { AccommodationList } from '../AccommodationListComponent/AccommodationListComponent';
+// import { Feed } from '../Feed/Feed';
 import { Title } from '../StyledComponents/StyledBasicItems';
 
 class LandingPage extends React.Component {
@@ -14,7 +14,7 @@ class LandingPage extends React.Component {
       <div>
         <Title>Welcome to BedForBreakfast</Title>
         <Link to={'createAccommodation'}>Create an accommodation here</Link>
-        <AccommodationList></AccommodationList>
+        {/* <Feed></Feed> */}
       </div>
     );
   }

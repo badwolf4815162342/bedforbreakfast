@@ -5,6 +5,7 @@ import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { Content } from './AppStyle';
+import { Feed } from './Feed/Feed';
 import LandingPage from './LandingPage/LandingPage';
 import Footer from './NavigationElements/Footer/Footer';
 import Navbar from './NavigationElements/Header/Header';
@@ -21,6 +22,11 @@ export default class App extends React.Component<any, any> {
         {
           component: CreateAccommodation,
           path: '/createAccommodation',
+          exact: true,
+        },
+        {
+          component: Feed,
+          path: '/feed',
           exact: true,
         },
         {
