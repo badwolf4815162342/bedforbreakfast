@@ -34,5 +34,6 @@
     "tslint-no-circular-imports": "^0.7.0",
     "tsutils": "^3.14.0",
     "typescript": "^3.5.2"
-  }
+  },
+  "dependencies": {}
 }

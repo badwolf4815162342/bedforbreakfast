@@ -5,6 +5,7 @@ import { TypegooseModule } from 'nestjs-typegoose';
 import { AccommodationsModule } from './accommodations/accommodations.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { AppService } from './app.service';
     }),
     GraphQLModule.forRoot({ autoSchemaFile: 'schema.gql' }),
     AccommodationsModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
