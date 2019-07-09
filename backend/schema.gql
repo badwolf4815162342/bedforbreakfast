@@ -4,13 +4,23 @@
 # -----------------------------------------------
 
 type Accommodation {
-  name: String!
+  country: String!
+  streetName: String!
+  streetNumber: String!
+  zipCode: String!
   city: String!
+  description: String!
+  numberOfBeds: Float!
 }
 
 input CreateAccommodationDto {
-  name: String!
+  country: String!
+  streetName: String!
+  streetNumber: String!
+  zipCode: String!
   city: String!
+  description: String!
+  numberOfBeds: Float!
 }
 
 type Mutation {

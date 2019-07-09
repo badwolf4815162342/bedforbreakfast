@@ -14,7 +14,7 @@ export class AccommodationsService {
     return await this.accommodationModel.find().exec();
   }
 
-  async create(createAccommodationDto: { name: string }): Promise<Accommodation> {
+  async create(createAccommodationDto: {}): Promise<Accommodation> {
     const createdAccommodation = new this.accommodationModel(createAccommodationDto);
     return await createdAccommodation.save();
   }

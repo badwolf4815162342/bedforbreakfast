@@ -1,8 +1,11 @@
 import Tooltip from '@material-ui/core/Tooltip';
 import React from 'react';
 
-import { GridContainerXS, Section } from '../../StyledComponents/StyledBasicItems';
+import { gql } from 'apollo-boost';
+import { Mutation } from 'react-apollo';
+import { GridContainerXS, Section, SubmitButton } from '../../StyledComponents/StyledBasicItems';
 import { MainTheme } from '../../StyledComponents/Theme';
+import { AccommodationList } from './AccommodationListComponent';
 import {
   AccommodationTitle,
   AddressSubtitle,
@@ -22,9 +25,41 @@ import {
   StreetName,
   StreetNumber,
   StreetNumberIcon,
+  SubmitArea,
   ZipCode,
 } from './CreateAccommodationStyle';
 
+const CREATE_ACCOMMODATION_MUTATION = gql`
+  mutation createAccommodation(
+    $country: String!
+    $city: String!
+    $streetName: String!
+    $streetNumber: String!
+    $zipCode: String!
+    $description: String!
+    $numberOfBeds: Float!
+  ) {
+    createAccommodation(
+      createAccommodationDto: {
+        country: $country
+        city: $city
+        streetName: $streetName
+        streetNumber: $streetNumber
+        zipCode: $zipCode
+        description: $description
+        numberOfBeds: $numberOfBeds
+      }
+    ) {
+      country
+      city
+      streetName
+      streetNumber
+      zipCode
+      description
+      numberOfBeds
+    }
+  }
+`;
 class CreateAccommodation extends React.Component<{}, { isEnabled: boolean; accommodation: Accommodation }> {
   constructor(props: any) {
     super(props);
@@ -169,7 +204,49 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean; acco
             <path fill="none" d="M0 0h24v24H0z"></path>
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"></path>
           </CountryIcon>
+          <SubmitArea>
+            <Mutation mutation={CREATE_ACCOMMODATION_MUTATION}>
+              {(
+                createAccommodation: (arg0: {
+                  variables: {
+                    country: string;
+                    city: string;
+                    streetName: string;
+                    streetNumber: string;
+                    zipCode: string;
+                    description: string;
+                    numberOfBeds: number;
+                  };
+                }) => void,
+                { data }: any,
+              ) => (
+                <div>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      createAccommodation({
+                        variables: {
+                          country: this.state.accommodation.country,
+                          city: this.state.accommodation.city,
+                          streetName: this.state.accommodation.streetName,
+                          streetNumber: this.state.accommodation.streetNumber,
+                          zipCode: this.state.accommodation.zipCode,
+                          description: this.state.accommodation.description,
+                          numberOfBeds: this.state.accommodation.numberOfBeds,
+                        },
+                      });
+                    }}
+                  >
+                    <SubmitButton variant="contained" color="primary" type="submit">
+                      Submit
+                    </SubmitButton>
+                  </form>
+                </div>
+              )}
+            </Mutation>
+          </SubmitArea>
         </GridContainerXS>
+        <AccommodationList />
       </Section>
     );
   }

@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core';
 import styled from 'styled-components';
 import { ScreenSizes } from './Screensizes';
 import { MainTheme } from './Theme';
@@ -41,4 +42,9 @@ export const Subtitle = styled.h3`
 
 export const SubtitleSubtext = styled.p`
   color: ${MainTheme.grey.main};
+`;
+
+export const SubmitButton = styled(Button)`
+  float: right;
+  width: 25%;
 `;
