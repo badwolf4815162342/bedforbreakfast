@@ -1,4 +1,7 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { GqlAuthGuard } from '../authentication/guards/jwt.auth.guard';
+
 import { AccommodationsService } from './accommodations.service';
 import { CreateAccommodationDto } from './dto/create-accommodation.dto';
 import { Accommodation } from './models/Accommodation';
@@ -9,6 +12,7 @@ import { Accommodation } from './models/Accommodation';
 export class AccommodationResolver {
   constructor(private readonly accommodationService: AccommodationsService) {}
 
+  @UseGuards(GqlAuthGuard)
   @Query((returns) => [Accommodation])
   async accommodations(): Promise<Accommodation[]> {
     return this.accommodationService.findAll();

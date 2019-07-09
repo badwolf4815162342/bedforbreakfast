@@ -1,0 +1,24 @@
+import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+
+import { AuthenticationService } from './authentication.service';
+import { GqlAuthGuard } from './guards/jwt.auth.guard';
+import { JwtStrategy } from './jwt.strategy';
+
+// import { UsersModule } from '../users/users.module';
+@Module({
+  imports: [
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.register({
+      secretOrPrivateKey: 'secretKey',
+      signOptions: {
+        expiresIn: 3600,
+      },
+    }),
+    // UsersModule,
+  ],
+  providers: [AuthenticationService, JwtStrategy, GqlAuthGuard],
+  exports: [PassportModule, AuthenticationService, GqlAuthGuard],
+})
+export class AuthenticationModule {}
