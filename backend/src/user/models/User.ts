@@ -11,9 +11,9 @@ export class User extends Typegoose {
   @prop({ required: true })
   password!: string;
 
-  @Field((type) => Number)
+  @Field((type) => String)
   @prop({ required: true })
-  phoneNumber!: number;
+  phoneNumber!: string;
 
   @Field((type) => Boolean)
   @prop({ required: true })

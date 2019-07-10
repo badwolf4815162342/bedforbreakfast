@@ -16,7 +16,7 @@ input CreateAccommodationDto {
 input CreateUserDto {
   email: String!
   password: String!
-  phoneNumber: Float!
+  phoneNumber: String!
   isHost: Boolean!
   isGuest: Boolean!
   firstName: String!
@@ -39,7 +39,6 @@ scalar DateTime
 type Mutation {
   createAccommodation(createAccommodationDto: CreateAccommodationDto!): Accommodation!
   createUser(createUserDto: CreateUserDto!): User!
-  createTestUser(createUserDto: CreateUserDto!): User!
 }
 
 type Query {
@@ -50,7 +49,7 @@ type Query {
 type User {
   email: String!
   password: String!
-  phoneNumber: Float!
+  phoneNumber: String!
   isHost: Boolean!
   isGuest: Boolean!
   firstName: String!

@@ -11,8 +11,8 @@ export class CreateUserDto {
   password!: string;
 
   @Field()
-  @IsPhoneNumber
-  phoneNumber!: number;
+  @IsPhoneNumber('ZZ')
+  phoneNumber!: string;
 
   @Field()
   isHost!: boolean;
@@ -21,11 +21,11 @@ export class CreateUserDto {
   isGuest!: boolean;
 
   @Field()
-  @IsNotEmpty
+  @IsNotEmpty()
   firstName!: string;
 
   @Field()
-  @IsNotEmpty
+  @IsNotEmpty()
   lastName!: string;
 
   @Field()
@@ -35,7 +35,7 @@ export class CreateUserDto {
   gender!: string;
 
   @Field()
-  @IsNotEmpty
+  @IsNotEmpty()
   description!: string;
 
   @Field()
@@ -45,14 +45,14 @@ export class CreateUserDto {
   verified!: boolean;
 
   @Field()
-  @IsNotEmpty
+  @IsNotEmpty()
   homeTown!: string;
 
   @Field()
-  @IsNotEmpty
+  @IsNotEmpty()
   homeCountry!: string;
 
   @Field()
-  @IsNotEmpty
+  @IsNotEmpty()
   favoriteFood!: string;
 }
