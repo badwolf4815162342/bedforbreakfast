@@ -4,10 +4,9 @@ import { prop, Typegoose } from 'typegoose';
 @ObjectType()
 export class User extends Typegoose {
   @Field((type) => String)
-  @prop({ required: true })
+  @prop({ required: true, unique: true })
   email!: string;
 
-  @Field((type) => String)
   @prop({ required: true })
   password!: string;
 
@@ -16,11 +15,11 @@ export class User extends Typegoose {
   phoneNumber!: string;
 
   @Field((type) => Boolean)
-  @prop({ required: true })
+  @prop({ required: true, default: false })
   isHost!: boolean;
 
   @Field((type) => Boolean)
-  @prop({ required: true })
+  @prop({ required: true, default: false })
   isGuest!: boolean;
 
   @Field((type) => String)
@@ -48,7 +47,7 @@ export class User extends Typegoose {
   profilePicture!: string;
 
   @Field((type) => Boolean)
-  @prop({ required: true })
+  @prop({ required: true, default: false })
   verified!: boolean;
 
   @Field((type) => String)
