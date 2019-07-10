@@ -14,6 +14,10 @@ export class AccommodationsService {
     return await this.accommodationModel.find().exec();
   }
 
+  async findById(id: string): Promise<Accommodation | null> {
+    return this.accommodationModel.findById(id);
+  }
+
   async create(createAccommodationDto: {}): Promise<Accommodation> {
     const createdAccommodation = new this.accommodationModel(createAccommodationDto);
     return await createdAccommodation.save();

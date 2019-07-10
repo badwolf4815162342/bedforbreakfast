@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AccommodationsService } from './accommodations.service';
 import { CreateAccommodationDto } from './dto/create-accommodation.dto';
@@ -12,6 +13,15 @@ export class AccommodationResolver {
   @Query((returns) => [Accommodation])
   async accommodations(): Promise<Accommodation[]> {
     return this.accommodationService.findAll();
+  }
+
+  @Query((returns) => Accommodation)
+  async accommodationById(@Args('_id') id: string): Promise<Accommodation> {
+    const accommodation = await this.accommodationService.findById(id);
+    if (!accommodation) {
+      throw new NotFoundException(id);
+    }
+    return accommodation;
   }
 
   @Mutation((returns) => Accommodation)

@@ -1,8 +1,11 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, ID, ObjectType } from 'type-graphql';
 import { prop, Typegoose } from 'typegoose';
 
 @ObjectType()
 export class Accommodation extends Typegoose {
+  @Field((type) => ID)
+  _id!: string; //tslint:disable-line
+
   @Field((type) => String)
   @prop({ required: true })
   country!: string;
@@ -23,9 +26,8 @@ export class Accommodation extends Typegoose {
   @prop({ required: true })
   city!: string;
 
-  @Field((type) => String)
-  @prop({ required: false })
-  description!: string;
+  @Field({ nullable: true })
+  description?: string;
 
   @Field((type) => Number)
   @prop({ required: true })
