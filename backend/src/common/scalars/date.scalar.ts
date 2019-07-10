@@ -1,3 +1,4 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { CustomScalar, Scalar } from '@nestjs/graphql';
 import { Kind } from 'graphql';
 
@@ -17,7 +18,6 @@ export class DateScalar implements CustomScalar<number, Date> {
     if (ast.kind === Kind.INT) {
       return new Date(ast.value);
     }
-    throw new Error('Something bad happened');
-    return new Date(); // here null should be returned
+    throw new HttpException('Expected ISO Date String', HttpStatus.BAD_REQUEST);
   }
 }
