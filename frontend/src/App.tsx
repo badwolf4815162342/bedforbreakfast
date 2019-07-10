@@ -9,6 +9,7 @@ import LandingPage from './LandingPage/LandingPage';
 import Footer from './NavigationElements/Footer/Footer';
 import Navbar from './NavigationElements/Header/Header';
 import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
+import ProfileUserDescription from './ProfileComponent/ProfileComponent';
 import { MainThemeMaterial } from './StyledComponents/Theme';
 
 export default class App extends React.Component<any, any> {
@@ -26,6 +27,11 @@ export default class App extends React.Component<any, any> {
         {
           component: LandingPage,
           path: '/',
+          exact: true,
+        },
+        {
+          component: ProfileUserDescription,
+          path: '/profile',
           exact: true,
         },
       ],

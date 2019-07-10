@@ -33,5 +33,8 @@
     "tslint-etc": "^1.5.3",
     "tslint-no-circular-imports": "^0.7.0",
     "typescript": "^3.5.2"
+  },
+  "dependencies": {
+    "@material-ui/icons": "^4.2.1"
   }
 }
