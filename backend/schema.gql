@@ -14,7 +14,8 @@ type Accommodation {
   numberOfBeds: Float!
 }
 
-input CreateAccommodationDto {
+input AccommodationDto {
+  _id: String!
   country: String!
   streetName: String!
   streetNumber: String!
@@ -25,7 +26,8 @@ input CreateAccommodationDto {
 }
 
 type Mutation {
-  createAccommodation(createAccommodationDto: CreateAccommodationDto!): Accommodation!
+  alterAccommodation(accommodationDto: AccommodationDto!): Accommodation!
+  createAccommodation(createAccommodationDto: AccommodationDto!): Accommodation!
 }
 
 type Query {
