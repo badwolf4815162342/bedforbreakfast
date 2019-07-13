@@ -5,7 +5,7 @@ import { Mutation } from 'react-apollo';
 import { AUTH_TOKEN } from '../constants';
 
 const SIGN_UP_MUTATION = gql`
-  mutation SignupMutation(
+  mutation SignUpMutation(
     $email: String!
     $password: String!
     $phoneNumber: String!
@@ -138,7 +138,6 @@ class Login extends Component {
     const { token } = this.state.login ? data.login : data.signUp;
     this._saveUserData(token);
     console.log(token);
-    // this.props.history.push(`/`);
   }
 
   _saveUserData(token: string) {

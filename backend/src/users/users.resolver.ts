@@ -20,10 +20,11 @@ export class UserResolver {
   @Mutation((returns) => LoginResponseTo)
   async signUp(@Args('signUpDto') signUpDto: SignUpDto): Promise<LoginResponseTo> {
     const user = await this.userService.signUp(signUpDto);
-    user.isHost = true;
-    user.isGuest = true;
-    user.verified = true;
+    user.isHost = false;
+    user.isGuest = true; // TODO: JH when to set user beeing guest? Is everone a guest?
+    user.verified = false;
 
+    // also log user in
     const { token } = await this.userService.login({ email: user.email, password: user.password });
 
     return { user, token };
