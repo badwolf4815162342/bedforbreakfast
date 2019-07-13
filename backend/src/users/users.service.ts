@@ -3,11 +3,11 @@ import { compare, genSalt, hash } from 'bcryptjs';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
 
-import { AuthenticationService } from '../authentication/authentication.service'; // tslint:disable-line
+import { AuthenticationService } from '../authentication/authentication.service';
 import { JwtPayload } from '../authentication/interfaces/jwt-payload.interface';
 import { LoginResponseTo } from './dto/login-response.dto';
 import { LoginDto } from './dto/login.dto';
-import { RegisterUserDto } from './dto/register-user.dto';
+import { SignUpDto } from './dto/sign-up.dto';
 import { User } from './models/User';
 
 @Injectable()
@@ -31,14 +31,14 @@ export class UsersService {
     }
   }
 
-  async register(registerUserDto: RegisterUserDto): Promise<User> {
-    let { password } = registerUserDto;
+  async signUp(signUpDto: SignUpDto): Promise<User> {
+    let { password } = signUpDto;
 
     const salt = await genSalt();
     password = await hash(password, salt);
 
     // add hashed password to user object
-    const createdUser = new this.userModel({ ...registerUserDto, password });
+    const createdUser = new this.userModel({ ...signUpDto, password });
 
     return createdUser.save();
   }

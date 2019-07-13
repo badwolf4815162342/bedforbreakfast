@@ -29,7 +29,7 @@ type LoginResponseTo {
 }
 
 type Mutation {
-  registerUser(registerDto: RegisterUserDto!): User!
+  signUp(signUpDto: SignUpDto!): SignUpResponseTo!
   login(loginDto: LoginDto!): LoginResponseTo!
   createAccommodation(createAccommodationDto: CreateAccommodationDto!): Accommodation!
 }
@@ -39,7 +39,7 @@ type Query {
   accommodations: [Accommodation!]!
 }
 
-input RegisterUserDto {
+input SignUpDto {
   email: String!
   password: String!
   phoneNumber: String!
@@ -52,6 +52,11 @@ input RegisterUserDto {
   homeTown: String!
   homeCountry: String!
   favoriteFood: String!
+}
+
+type SignUpResponseTo {
+  token: String!
+  user: User!
 }
 
 type User {
