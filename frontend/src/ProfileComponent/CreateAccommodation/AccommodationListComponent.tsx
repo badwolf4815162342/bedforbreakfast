@@ -1,5 +1,5 @@
 import { gql } from 'apollo-boost';
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Query } from 'react-apollo';
 
 /* const ALL_ACCOMMODATIONS_QUERY = gql`
@@ -32,6 +32,10 @@ const ACCOMMODATION_BY_ID = gql`
   }
 `;
 
+interface CardProps {
+  title: string;
+  id: string;
+}
 interface Data {
   accommodationById: {
     _id: string;
@@ -62,9 +66,9 @@ const style = {
   color: 'red',
 };
 
-export const AccommodationList = () => (
+export const AccommodationList: FunctionComponent<CardProps> = ({ title, id, children }) => (
   <div>
-    <p style={style}>This is only for debugging</p>
+    <p style={style}>{title}</p>
     {/* <Query<Data, {}> query={ALL_ACCOMMODATIONS_QUERY}>
       {({ loading, error, data }) => {
         if (loading) {
@@ -89,7 +93,7 @@ export const AccommodationList = () => (
         );
       }}
     </Query> */}
-    <Query<Data, {}> query={ACCOMMODATION_BY_ID} variables={{ _id: '5d28973ece722c48c55bf0f5' }}>
+    <Query<Data, {}> query={ACCOMMODATION_BY_ID} variables={{ _id: id }}>
       {({ loading, error, data }) => {
         if (loading) {
           return <p>Loading...</p>;

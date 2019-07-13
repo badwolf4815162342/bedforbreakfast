@@ -251,7 +251,7 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean; acco
             </Mutation>
           </SubmitArea>
         </GridContainerXS>
-        <AccommodationList />
+        <AccommodationList title="Welcome!" id="5d28973ece722c48c55bf0f5" />
       </Section>
     );
   }
