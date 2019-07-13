@@ -5,6 +5,7 @@ import { gql } from 'apollo-boost';
 import { Mutation } from 'react-apollo';
 import { GridContainerXS, Section, SubmitButton } from '../../StyledComponents/StyledBasicItems';
 import { MainTheme } from '../../StyledComponents/Theme';
+import { AccommodationList } from './AccommodationListComponent';
 import {
   AccommodationTitle,
   AddressSubtitle,
@@ -250,6 +251,7 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean; acco
             </Mutation>
           </SubmitArea>
         </GridContainerXS>
+        <AccommodationList />
       </Section>
     );
   }

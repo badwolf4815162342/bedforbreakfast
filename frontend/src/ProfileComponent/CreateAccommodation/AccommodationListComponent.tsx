@@ -18,8 +18,8 @@ import { Query } from 'react-apollo';
 `; */
 
 const ACCOMMODATION_BY_ID = gql`
-  query {
-    accommodationById(_id: "5d25c6372ffa0b1d3c75e790") {
+  query accommodationById($_id: String!) {
+    accommodationById(_id: $_id) {
       _id
       country
       city
@@ -89,7 +89,7 @@ export const AccommodationList = () => (
         );
       }}
     </Query> */}
-    <Query<Data, {}> query={ACCOMMODATION_BY_ID}>
+    <Query<Data, {}> query={ACCOMMODATION_BY_ID} variables={{ _id: '5d28973ece722c48c55bf0f5' }}>
       {({ loading, error, data }) => {
         if (loading) {
           return <p>Loading...</p>;
