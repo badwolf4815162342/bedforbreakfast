@@ -29,7 +29,7 @@ type LoginResponseTo {
 }
 
 type Mutation {
-  registerUser(registerDto: RegisterUserDto!): User!
+  registerUser(registerDto: RegisterUserDto!): RegisterResponseTo!
   login(loginDto: LoginDto!): LoginResponseTo!
   createAccommodation(createAccommodationDto: CreateAccommodationDto!): Accommodation!
 }
@@ -37,6 +37,11 @@ type Mutation {
 type Query {
   users: [User!]!
   accommodations: [Accommodation!]!
+}
+
+type RegisterResponseTo {
+  token: String!
+  user: User!
 }
 
 input RegisterUserDto {

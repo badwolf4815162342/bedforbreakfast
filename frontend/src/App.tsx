@@ -5,8 +5,10 @@ import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { Content } from './AppStyle';
+import { AUTH_TOKEN } from './constants';
 import { Feed } from './Feed/Feed';
 import LandingPage from './LandingPage/LandingPage';
+import Login from './Login/Login';
 import Footer from './NavigationElements/Footer/Footer';
 import Navbar from './NavigationElements/Header/Header';
 import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
@@ -19,6 +21,11 @@ export default class App extends React.Component<any, any> {
     this.state = {
       title: 'BedForBreakfast',
       routes: [
+        {
+          component: Login,
+          path: '/login',
+          exact: true,
+        },
         {
           component: CreateAccommodation,
           path: '/createAccommodation',
@@ -46,7 +53,22 @@ export default class App extends React.Component<any, any> {
 
   render() {
     return (
-      <ApolloProvider client={new ApolloClient({ uri: 'http://localhost:3001/graphql' })}>
+      <ApolloProvider
+        client={
+          new ApolloClient({
+            uri: 'http://localhost:3001/graphql',
+            fetchOptions: { credentials: 'include' },
+            request: async (operation) => {
+              const token = localStorage.getItem(AUTH_TOKEN);
+              operation.setContext({
+                headers: {
+                  authorization: `Bearer  ${token}`,
+                },
+              });
+            },
+          })
+        }
+      >
         <div>
           <MuiThemeProvider theme={MainThemeMaterial}>
             <Router>
