@@ -29,7 +29,7 @@ type LoginResponseTo {
 }
 
 type Mutation {
-  signUp(signUpDto: SignUpDto!): SignUpResponseTo!
+  signUp(signUpDto: SignUpDto!): LoginResponseTo!
   login(loginDto: LoginDto!): LoginResponseTo!
   createAccommodation(createAccommodationDto: CreateAccommodationDto!): Accommodation!
 }
@@ -52,11 +52,6 @@ input SignUpDto {
   homeTown: String!
   homeCountry: String!
   favoriteFood: String!
-}
-
-type SignUpResponseTo {
-  token: String!
-  user: User!
 }
 
 type User {
