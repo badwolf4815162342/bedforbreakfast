@@ -5,7 +5,7 @@ import { gql } from 'apollo-boost';
 import { Mutation } from 'react-apollo';
 import { GridContainerXS, Section, SubmitButton } from '../../StyledComponents/StyledBasicItems';
 import { MainTheme } from '../../StyledComponents/Theme';
-import { AccommodationList } from './AccommodationListComponent';
+import Accommodation from './Accommodation';
 import {
   AccommodationTitle,
   AddressSubtitle,
@@ -63,12 +63,22 @@ const ALTER_ACCOMMODATION_MUTATION = gql`
     }
   }
 `;
-class CreateAccommodation extends React.Component<{}, { isEnabled: boolean; accommodation: Accommodation }> {
+
+interface CreateAccommodationProps {
+  accommodation: Accommodation;
+}
+
+interface CreateAccommodationState {
+  isEnabled: boolean;
+  accommodation: Accommodation;
+}
+class CreateAccommodation extends React.Component<CreateAccommodationProps, CreateAccommodationState> {
   constructor(props: any) {
     super(props);
     this.state = {
       isEnabled: false,
-      accommodation: new Accommodation('Germany', 'Boltzmannstraße', '3', '85748', 'Garching', '', 2),
+      accommodation:
+        props.accommodation != null ? props.accommodation : new Accommodation('', '', '', '', '', '', '', 0),
     };
   }
 
@@ -77,7 +87,21 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean; acco
   };
 
   handleChangeAccommodation = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ ...this.state, accommodation: { ...this.state.accommodation, [name]: event.target.value } });
+    if (name === 'numberOfBeds') {
+      if (event.target.value.length > 0) {
+        try {
+          const nrBeds = parseInt(event.target.value, 10);
+          this.setState({
+            ...this.state,
+            accommodation: { ...this.state.accommodation, [name]: nrBeds },
+          });
+        } catch (error) {
+          console.log('Number of beds was not a number');
+        }
+      }
+    } else {
+      this.setState({ ...this.state, accommodation: { ...this.state.accommodation, [name]: event.target.value } });
+    }
   };
 
   render() {
@@ -101,6 +125,7 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean; acco
           />
           <NrBedsText>Specify how many beds are available for guests</NrBedsText>
           <NrBedsSelector
+            type="number"
             required
             id="standard-required"
             label="Nr. beds"
@@ -230,7 +255,7 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean; acco
                       e.preventDefault();
                       createAccommodation({
                         variables: {
-                          _id: '',
+                          _id: this.state.accommodation._id,
                           country: this.state.accommodation.country,
                           city: this.state.accommodation.city,
                           streetName: this.state.accommodation.streetName,
@@ -251,38 +276,8 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean; acco
             </Mutation>
           </SubmitArea>
         </GridContainerXS>
-        <AccommodationList title="Welcome!" id="5d28973ece722c48c55bf0f5" />
       </Section>
     );
-  }
-}
-
-class Accommodation {
-  country: string;
-  streetName: string;
-  streetNumber: string;
-  zipCode: string;
-  city: string;
-  description: string;
-  numberOfBeds: number;
-  constructor(
-    country: string,
-    streetName: string,
-    streetNumber: string,
-    zipCode: string,
-    city: string,
-    description: string,
-    numberOfBeds: number,
-  ) {
-    this.country = country;
-    this.streetName = streetName;
-    this.streetNumber = streetNumber;
-    this.zipCode = zipCode;
-    this.city = city;
-    //TODO: longitude and latitude
-    this.description = description;
-    this.numberOfBeds = numberOfBeds;
-    //TODO: pictures
   }
 }
 

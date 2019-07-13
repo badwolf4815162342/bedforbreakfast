@@ -10,7 +10,7 @@ type Accommodation {
   streetNumber: String!
   zipCode: String!
   city: String!
-  description: String
+  description: String!
   numberOfBeds: Float!
 }
 
