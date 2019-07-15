@@ -104,3 +104,8 @@ export const CountryIcon = styled.svg`
   justify-self: end;
   grid-row: 10;
 `;
+
+export const SubmitArea = styled.div`
+  grid-column: 1/7;
+  grid-row: 11;
+`;

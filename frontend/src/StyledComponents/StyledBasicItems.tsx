@@ -1,18 +1,20 @@
+import { Button } from '@material-ui/core';
 import styled from 'styled-components';
 import { ScreenSizes } from './Screensizes';
 import { MainTheme } from './Theme';
 
 export const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: auto auto auto;
-  grid-column-gap: 10px;
+  grid-template-columns: auto auto auto auto auto auto auto;
+  grid-column-gap: 1vw;
   grid-row-gap: 10px;
   align-items: flex-end;
 `;
 
 export const GridContainerMD = styled(GridContainer)`
-  margin-right: 5%;
-  margin-left: 5%;
+  margin-right: 2vw;
+  margin-left: 2vw;
+  grid-template-columns: 7vw 7vw 7vw 7vw 7vw 7vw 7vw 7vw 7vw 7vw 7vw 7vw;
 `;
 
 export const GridContainerXS = styled(GridContainer)`
@@ -41,4 +43,9 @@ export const Subtitle = styled.h3`
 
 export const SubtitleSubtext = styled.p`
   color: ${MainTheme.grey.main};
+`;
+
+export const SubmitButton = styled(Button)`
+  float: right;
+  width: 25%;
 `;

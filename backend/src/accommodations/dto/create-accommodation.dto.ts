@@ -1,10 +1,28 @@
 import { Field, InputType } from 'type-graphql';
 
 @InputType()
-export class CreateAccommodationDto {
+export class AccommodationDto {
   @Field()
-  name!: string;
+  _id!: string; //tslint:disable-line
+
+  @Field()
+  country!: string;
+
+  @Field()
+  streetName!: string;
+
+  @Field()
+  streetNumber!: string;
+
+  @Field()
+  zipCode!: string;
 
   @Field()
   city!: string;
+
+  @Field({ nullable: true })
+  description?: string;
+
+  @Field()
+  numberOfBeds!: number;
 }

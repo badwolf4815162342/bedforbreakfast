@@ -4,19 +4,33 @@
 # -----------------------------------------------
 
 type Accommodation {
-  name: String!
+  _id: ID!
+  country: String!
+  streetName: String!
+  streetNumber: String!
+  zipCode: String!
   city: String!
+  description: String
+  numberOfBeds: Float!
 }
 
-input CreateAccommodationDto {
-  name: String!
+input AccommodationDto {
+  _id: String!
+  country: String!
+  streetName: String!
+  streetNumber: String!
+  zipCode: String!
   city: String!
+  description: String
+  numberOfBeds: Float!
 }
 
 type Mutation {
-  createAccommodation(createAccommodationDto: CreateAccommodationDto!): Accommodation!
+  alterAccommodation(accommodationDto: AccommodationDto!): Accommodation!
+  createAccommodation(createAccommodationDto: AccommodationDto!): Accommodation!
 }
 
 type Query {
   accommodations: [Accommodation!]!
+  accommodationById(_id: String!): Accommodation!
 }
