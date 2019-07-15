@@ -1,7 +1,8 @@
 import { registerDecorator, ValidationOptions } from 'class-validator';
 
 export function IsRoleType(property: string, validationOptions?: ValidationOptions) {
-  return function(object: Object, propertyName: string) {
+  // tslint:disable-next-line: only-arrow-functions
+  return function(object: any, propertyName: string) {
     registerDecorator({
       name: 'isRoleType',
       target: object.constructor,

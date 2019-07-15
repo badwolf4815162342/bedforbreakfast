@@ -4,6 +4,7 @@ import { prop, Typegoose } from 'typegoose';
 @ObjectType()
 export class User extends Typegoose {
   @Field((type) => ID)
+  // tslint:disable-next-line: variable-name
   readonly _id!: string;
 
   @Field((type) => String)
