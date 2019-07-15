@@ -13,53 +13,10 @@ input CreateAccommodationDto {
   city: String!
 }
 
-input CreateUserDto {
-  email: String!
-  password: String!
-  phoneNumber: String!
-  isHost: Boolean!
-  isGuest: Boolean!
-  firstName: String!
-  lastName: String!
-  birthday: DateTime!
-  gender: String!
-  description: String!
-  profilePicture: String!
-  verified: Boolean!
-  homeTown: String!
-  homeCountry: String!
-  favoriteFood: String!
-}
-
-"""
-The javascript `Date` as string. Type represents date and time as the ISO Date string.
-"""
-scalar DateTime
-
 type Mutation {
   createAccommodation(createAccommodationDto: CreateAccommodationDto!): Accommodation!
-  createUser(createUserDto: CreateUserDto!): User!
 }
 
 type Query {
   accommodations: [Accommodation!]!
-  users: [User!]!
-}
-
-type User {
-  email: String!
-  password: String!
-  phoneNumber: String!
-  isHost: Boolean!
-  isGuest: Boolean!
-  firstName: String!
-  lastName: String!
-  birthday: DateTime!
-  gender: String!
-  description: String!
-  profilePicture: String!
-  verified: Boolean!
-  homeTown: String!
-  homeCountry: String!
-  favoriteFood: String!
 }

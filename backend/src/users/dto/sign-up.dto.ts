@@ -2,7 +2,7 @@ import { IsEmail, IsNotEmpty, IsPhoneNumber } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 
 @InputType()
-export class CreateUserDto {
+export class SignUpDto {
   @Field()
   @IsEmail()
   email!: string;
@@ -13,12 +13,6 @@ export class CreateUserDto {
   @Field()
   @IsPhoneNumber('ZZ')
   phoneNumber!: string;
-
-  @Field()
-  isHost!: boolean;
-
-  @Field()
-  isGuest!: boolean;
 
   @Field()
   @IsNotEmpty()
@@ -40,9 +34,6 @@ export class CreateUserDto {
 
   @Field()
   profilePicture!: string;
-
-  @Field()
-  verified!: boolean;
 
   @Field()
   @IsNotEmpty()
