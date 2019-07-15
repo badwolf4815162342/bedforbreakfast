@@ -3,6 +3,7 @@ import { compare, genSalt, hash } from 'bcryptjs';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
 
+import { ObjectId } from 'mongodb';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { JwtPayload } from '../authentication/interfaces/jwt-payload.interface';
 import { LoginResponseTo } from './dto/login-response.dto';
@@ -18,8 +19,8 @@ export class UsersService {
     @Inject(forwardRef(() => AuthenticationService)) private readonly authService: AuthenticationService,
   ) {}
 
-  async findById(id: string): Promise<User | null> {
-    return this.userModel.findById(id);
+  async findById(id: ObjectId | string): Promise<User | null> {
+    return this.userModel.findById(id).exec();
   }
 
   async findAll(): Promise<User[]> {

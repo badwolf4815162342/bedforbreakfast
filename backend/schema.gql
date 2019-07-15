@@ -5,6 +5,7 @@
 
 type Accommodation {
   _id: ID!
+  user: User!
   country: String!
   streetName: String!
   streetNumber: String!
@@ -15,7 +16,7 @@ type Accommodation {
 }
 
 input AccommodationDto {
-  _id: String!
+  _id: String
   country: String!
   streetName: String!
   streetNumber: String!
@@ -72,11 +73,14 @@ type Mutation {
   createRequest(createRequestDto: CreateRequestDto!): Request!
 }
 
+"""Mongo object id scalar type"""
+scalar ObjectId
+
 type Query {
   users: [User!]!
   user(userId: String!): User
   accommodations: [Accommodation!]!
-  accommodationById(_id: String!): Accommodation!
+  accommodationById(_id: ObjectId!): Accommodation!
   meals: [Meal!]!
   ratings: [Rating!]!
   requests: [Request!]!
