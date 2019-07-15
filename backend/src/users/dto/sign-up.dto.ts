@@ -1,9 +1,9 @@
 import { IsEmail, IsNotEmpty, IsPhoneNumber } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
-import { GenderType, User } from '../models/User';
+import { GenderType } from '../models/User';
 
 @InputType()
-export class CreateUserDto implements Partial<User> {
+export class SignUpDto {
   @Field()
   @IsEmail()
   email!: string;
@@ -14,12 +14,6 @@ export class CreateUserDto implements Partial<User> {
   @Field()
   @IsPhoneNumber('ZZ')
   phoneNumber!: string;
-
-  @Field()
-  isHost!: boolean;
-
-  @Field()
-  isGuest!: boolean;
 
   @Field()
   @IsNotEmpty()
@@ -41,9 +35,6 @@ export class CreateUserDto implements Partial<User> {
 
   @Field()
   profilePicture!: string;
-
-  @Field()
-  verified!: boolean;
 
   @Field()
   @IsNotEmpty()

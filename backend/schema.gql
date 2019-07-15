@@ -4,15 +4,28 @@
 # -----------------------------------------------
 
 type Accommodation {
-  name: String!
+  _id: ID!
+  country: String!
+  streetName: String!
+  streetNumber: String!
+  zipCode: String!
   city: String!
+  description: String
+  numberOfBeds: Float!
 }
 
-input CreateAccommodationDto {
-  name: String!
+input AccommodationDto {
+  _id: String!
+  country: String!
+  streetName: String!
+  streetNumber: String!
+  zipCode: String!
   city: String!
+  description: String
+  numberOfBeds: Float!
 }
 
+<<<<<<< HEAD
 input CreateMealDto {
   description: String!
 }
@@ -64,10 +77,16 @@ type Mutation {
   createRating(createRatingDto: CreateRatingDto!): Rating!
   createRequest(createRequestDto: CreateRequestDto!): Request!
   createUser(createUserDto: CreateUserDto!): User!
+=======
+type Mutation {
+  alterAccommodation(accommodationDto: AccommodationDto!): Accommodation!
+  createAccommodation(createAccommodationDto: AccommodationDto!): Accommodation!
+>>>>>>> 2ee24a99b8c2db8331cb282876c2aa6ae839ff45
 }
 
 type Query {
   accommodations: [Accommodation!]!
+<<<<<<< HEAD
   meals: [Meal!]!
   ratings: [Rating!]!
   requests: [Request!]!
@@ -106,4 +125,7 @@ type User {
   homeTown: String!
   homeCountry: String!
   favoriteFood: String!
+=======
+  accommodationById(_id: String!): Accommodation!
+>>>>>>> 2ee24a99b8c2db8331cb282876c2aa6ae839ff45
 }
