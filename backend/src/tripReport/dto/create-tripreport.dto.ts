@@ -11,13 +11,13 @@ export class CreateTripReportDto {
   @Field()
   authorRole!: string;
 
-  @Field()
-  profilePicture!: string[];
+  @Field((type) => [String])
+  pictures!: string[];
 
   @Field()
   text!: string;
 
-  @Field()
+  @Field((type) => [String])
   likedBy!: string[];
 
   @Field()

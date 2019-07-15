@@ -15,15 +15,15 @@ export class TripReport extends Typegoose {
   @prop({ required: true })
   authorRole!: string;
 
-  @Field((type) => String)
+  @Field((type) => [String])
   @prop({ required: true })
-  profilePicture!: string[];
+  pictures!: string[];
 
   @Field((type) => String)
   @prop({ required: true })
   text!: string;
 
-  @Field((type) => String)
+  @Field((type) => [String])
   @prop({ required: true })
   likedBy!: string[];
 
