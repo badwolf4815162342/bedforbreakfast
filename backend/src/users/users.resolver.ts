@@ -1,5 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
+import { NotFoundException } from '@nestjs/common';
 import { LoginResponseTo } from './dto/login-response.dto';
 import { LoginDto } from './dto/login.dto';
 import { SignUpDto } from './dto/sign-up.dto';
@@ -33,5 +34,14 @@ export class UserResolver {
   @Mutation((returns) => LoginResponseTo)
   async login(@Args('loginDto') loginDto: LoginDto): Promise<LoginResponseTo> {
     return await this.userService.login(loginDto);
+  }
+
+  @Query((returns) => User, { nullable: true })
+  async user(@Args('userId') id: string): Promise<User> {
+    const user = await this.userService.findById(id);
+    if (!user) {
+      throw new NotFoundException(id);
+    }
+    return user;
   }
 }
