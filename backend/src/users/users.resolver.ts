@@ -25,7 +25,7 @@ export class UserResolver {
     user.verified = false;
 
     // also log user in
-    const { token } = await this.userService.login({ email: user.email, password: user.password });
+    const { token } = await this.userService.login({ email: user.email, password: signUpDto.password });
 
     return { user, token };
   }

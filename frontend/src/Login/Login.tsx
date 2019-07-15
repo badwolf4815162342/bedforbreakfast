@@ -57,14 +57,20 @@ interface Data {
   };
 }
 
-class Login extends Component {
-  state = {
-    login: true, // switch between Login and SignUp
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-  };
+class Login extends Component<
+  {},
+  { login: boolean; email: string; password: string; firstName: string; lastName: string }
+> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      login: true, // switch between Login and SignUp
+      email: '',
+      password: '',
+      firstName: '',
+      lastName: '',
+    };
+  }
 
   render() {
     const { login, email, password, firstName, lastName } = this.state;
