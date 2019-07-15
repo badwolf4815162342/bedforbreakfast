@@ -1,16 +1,9 @@
-import { Button, Tab, Tabs } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Button, Tab } from '@material-ui/core';
 import React from 'react';
-import { ProfileTabMenu } from './ProfileTabMenuStyle';
+import { ProfileTabMenuBox, ProfileTabs } from './ProfileTabMenuStyle';
+import TripReport from './ProfileTripReports/TripReport/TripReport';
 
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
-});
-
-export default function CenteredTabs() {
-  const classes = useStyles();
+export default function ProfileTabMenu() {
   const [value, setValue] = React.useState(0);
 
   function handleChange(event: React.ChangeEvent<{}>, newValue: number) {
@@ -18,8 +11,8 @@ export default function CenteredTabs() {
   }
 
   return (
-    <ProfileTabMenu className={classes.root}>
-      <Tabs value={value} onChange={handleChange} indicatorColor="secondary" textColor="secondary" centered>
+    <ProfileTabMenuBox>
+      <ProfileTabs value={value} onChange={handleChange}>
         <Tab label="Trip reports" />
         <Tab label="References" />
         <Tab label="Accommodation" />
@@ -27,7 +20,19 @@ export default function CenteredTabs() {
         <Button variant="contained" color="secondary">
           Request
         </Button>
-      </Tabs>
-    </ProfileTabMenu>
+      </ProfileTabs>
+      {value}
+      <TripReport
+        role={'accommodation'}
+        name={'Nuria A'}
+        homeTown={'Madrid'}
+        homeCountry={'Spain'}
+        date={'May, 2019, 4 days'}
+        //text={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'}
+        text={'Lorem ipsum dolor'}
+        likeCount={210}
+        liked={true}
+      />
+    </ProfileTabMenuBox>
   );
 }

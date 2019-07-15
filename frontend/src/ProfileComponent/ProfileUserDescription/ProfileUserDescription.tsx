@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 import Icon from '@material-ui/core/Icon';
@@ -19,28 +18,32 @@ import {
   Verified,
 } from './ProfileUserDescriptionStyle';
 
-class ProfileUserDescription extends React.Component<{}> {
-  user: User;
+interface ProfileProps {
+  firstName: string;
+  lastName: string;
+  age: string;
+  gender: string;
+  pRating: number;
+  nRating: number;
+  status: string;
+  description: string;
+  verified: boolean;
+  homeTown: string;
+  homeCountry: string;
+  favFood: string;
+}
+
+class ProfileUserDescription extends React.Component<ProfileProps, {}> {
   profilePic = <img src={pic} style={{ width: 185, height: 185, borderRadius: 180 }} />;
 
-  constructor(props: any) {
-    super(props);
-    this.user = new User(
-      'Jonathan',
-      'Foer',
-      '26',
-      'male',
-      7,
-      1,
-      'Accepting guests',
-      'I am a famous novelist, best known for novels Everything is Illuminated(2002), Extremely Loud Incredibly Close (2005), and for my non-fiction work Eating Animals (2009). My most recent novel, Here I Am, was published in 2016. I teach creative writing at New York University.',
-      true,
-      'Munich',
-      'Germany',
-      'Lasagna',
-      pic,
-    );
-  }
+  verified = this.props.verified ? (
+    <Verified>
+      {' '}
+      <Icon>verified_user</Icon>{' '}
+    </Verified>
+  ) : (
+    ''
+  );
 
   render() {
     return (
@@ -50,13 +53,10 @@ class ProfileUserDescription extends React.Component<{}> {
             <ProfilePic> {this.profilePic} </ProfilePic>
           </ProfilePicBox>
           <Name>
-            {this.user.firstName} {this.user.lastName}
-            <Verified>
-              {' '}
-              <Icon>check_circle</Icon>{' '}
-            </Verified>
+            {this.props.firstName} {this.props.lastName}
+            {this.verified}
             <Age>
-              {this.user.age}, {this.user.gender}
+              {this.props.age}, {this.props.gender}
             </Age>
           </Name>
           <Rating>
@@ -64,34 +64,34 @@ class ProfileUserDescription extends React.Component<{}> {
               {' '}
               <Icon>thumb_up</Icon>{' '}
             </IconInText>{' '}
-            {this.user.pRating}
+            {this.props.pRating}
             <IconInText>
               {' '}
               <Icon>thumb_down</Icon>{' '}
             </IconInText>{' '}
-            {this.user.nRating}
+            {this.props.nRating}
           </Rating>
           <Status>
             <IconInText>
               {' '}
               <Icon>play_circle_filled</Icon>{' '}
             </IconInText>
-            {this.user.status}
+            {this.props.status}
           </Status>
-          <Description> {this.user.description}</Description>
+          <Description> {this.props.description}</Description>
           <Hometown>
             <IconInText>
               {' '}
               <Icon>public</Icon>{' '}
             </IconInText>
-            From: {this.user.homeTown}, {this.user.homeCountry}
+            From: {this.props.homeTown}, {this.props.homeCountry}
           </Hometown>
           <FavoriteFood>
             <IconInText>
               {' '}
               <Icon>restaurant</Icon>{' '}
             </IconInText>
-            Favorite food: {this.user.favFood}
+            Favorite food: {this.props.favFood}
           </FavoriteFood>
         </ProfileDescription>
       </Section>
@@ -99,7 +99,7 @@ class ProfileUserDescription extends React.Component<{}> {
   }
 }
 
-class User {
+export class User {
   firstName: string;
   lastName: string;
   age: string;

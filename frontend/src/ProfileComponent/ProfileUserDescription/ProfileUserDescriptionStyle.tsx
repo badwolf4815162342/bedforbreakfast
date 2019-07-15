@@ -1,19 +1,13 @@
 import { Box, Paper } from '@material-ui/core';
 import styled from 'styled-components';
-import {
-  SubText,
-  SubtitleSubtext,
-  Text,
-} from '../../StyledComponents/StyledBasicItems';
+import { SubText, SubtitleSubtext, Text } from '../../StyledComponents/StyledBasicItems';
 import { MainThemeRGB } from '../../StyledComponents/Theme';
 
 export const ProfileDescription = styled(Paper)`
     width: 256px
-    margin-top: 10em
-    margin-left: 1em
-    margin-right: 3em
     padding: 1em
     text-align: center
+    border-radius: 15px !important
 `;
 
 export const ProfilePicBox = styled(Box)`
@@ -30,21 +24,16 @@ export const ProfilePicBox = styled(Box)`
     ${MainThemeRGB.primary.light.b},
     1
   );
-  align-items: left
-  text-align: left
-
 `;
 export const ProfilePic = styled(Box)`
-
   text-align: left
   position: relative
   top: 11px
   left: 1px
-
 `;
 export const Name = styled(SubtitleSubtext)`
   font-size: 24px;
-  line-height: 0.3;
+  line-height: 1;
 `;
 export const Age = styled(SubtitleSubtext)`
   line-height: 0.3;
@@ -60,14 +49,11 @@ export const Description = styled(Text)`
   text-align: justify;
 `;
 export const Hometown = styled(SubtitleSubtext)``;
+
 export const FavoriteFood = styled(SubtitleSubtext)``;
+
 export const IconInText = styled(SubText)``;
 
 export const Verified = styled(SubText)`
-  color: rgba(
-    ${MainThemeRGB.secondary.light.r},
-    ${MainThemeRGB.secondary.light.g},
-    ${MainThemeRGB.secondary.light.b},
-    1
-  );
+  color: rgba(${MainThemeRGB.secondary.main.r}, ${MainThemeRGB.secondary.main.g}, ${MainThemeRGB.secondary.main.b}, 1);
 `;
