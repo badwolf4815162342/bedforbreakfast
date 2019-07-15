@@ -26,8 +26,8 @@ export class Accommodation extends Typegoose {
   @prop({ required: true })
   city!: string;
 
-  @Field((type) => String)
-  @prop({ required: true })
+  @Field((type) => String, { nullable: true })
+  @prop()
   description?: string;
 
   @Field((type) => Number)

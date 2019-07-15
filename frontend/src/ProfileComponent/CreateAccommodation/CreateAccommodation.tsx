@@ -37,7 +37,7 @@ const ALTER_ACCOMMODATION_MUTATION = gql`
     $streetName: String!
     $streetNumber: String!
     $zipCode: String!
-    $description: String!
+    $description: String
     $numberOfBeds: Float!
   ) {
     alterAccommodation(
