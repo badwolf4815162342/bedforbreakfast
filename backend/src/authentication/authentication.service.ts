@@ -12,7 +12,7 @@ export class AuthenticationService {
   ) {}
 
   async signPayload(payload: JwtPayload) {
-    const accessToken = this.jwtService.sign(payload);
+    const accessToken = this.jwtService.sign(payload, { expiresIn: '12h' });
     return accessToken;
   }
 
