@@ -1,5 +1,6 @@
 import { IsEmail, IsNotEmpty, IsPhoneNumber } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
+import { GenderType } from '../models/User';
 
 @InputType()
 export class SignUpDto {
@@ -26,7 +27,7 @@ export class SignUpDto {
   birthday!: Date;
 
   @Field()
-  gender!: string;
+  gender!: GenderType;
 
   @Field()
   @IsNotEmpty()

@@ -1,8 +1,12 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, ID, ObjectType } from 'type-graphql';
 import { prop, Typegoose } from 'typegoose';
 
 @ObjectType()
 export class User extends Typegoose {
+  @Field((type) => ID)
+  // tslint:disable-next-line: variable-name
+  readonly _id!: string;
+
   @Field((type) => String)
   @prop({ required: true, unique: true })
   email!: string;
@@ -63,4 +67,6 @@ export class User extends Typegoose {
   favoriteFood!: string;
 }
 
-type GenderType = 'm' | 'w' | 'd';
+export type GenderType = 'm' | 'w' | 'd';
+
+export const UserModel = new User().getModelForClass(User);
