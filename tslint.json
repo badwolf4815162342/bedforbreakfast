@@ -1,19 +1,9 @@
 {
   "defaultSeverity": "error",
-  "extends": [
-    "tslint:recommended",
-    "tslint-no-circular-imports",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
   "jsRules": {},
   "rules": {
-    "await-promise": [
-      true,
-      "Bluebird",
-      "Thenable",
-      "SchemaBuilder",
-      "RequestPromise"
-    ],
+    "await-promise": [true, "Bluebird", "Thenable", "SchemaBuilder", "RequestPromise"],
     // "no-floating-promises": [
     //   true,
     //   "Bluebird",
