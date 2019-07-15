@@ -20,4 +20,8 @@ export class UserService {
     const createdUser = new this.userModel(createUserDto);
     return await createdUser.save();
   }
+
+  async findById(id: string): Promise<User | null> {
+    return this.userModel.findById(id);
+  }
 }

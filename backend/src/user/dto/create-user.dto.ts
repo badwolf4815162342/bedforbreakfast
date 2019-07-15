@@ -1,8 +1,9 @@
 import { IsEmail, IsNotEmpty, IsPhoneNumber } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
+import { GenderType, User } from '../models/User';
 
 @InputType()
-export class CreateUserDto {
+export class CreateUserDto implements Partial<User> {
   @Field()
   @IsEmail()
   email!: string;
@@ -32,7 +33,7 @@ export class CreateUserDto {
   birthday!: Date;
 
   @Field()
-  gender!: string;
+  gender!: GenderType;
 
   @Field()
   @IsNotEmpty()
