@@ -18,6 +18,10 @@ export class UsersService {
     @Inject(forwardRef(() => AuthenticationService)) private readonly authService: AuthenticationService,
   ) {}
 
+  async findById(id: string): Promise<User | null> {
+    return this.userModel.findById(id);
+  }
+
   async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
   }

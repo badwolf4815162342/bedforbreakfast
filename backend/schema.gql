@@ -31,6 +31,24 @@ input AccommodationDto {
   pictures: [String]
 }
 
+input CreateMealDto {
+  description: String!
+}
+
+input CreateRatingDto {
+  receiverRole: String!
+  description: String!
+  rating: Boolean!
+}
+
+input CreateRequestDto {
+  start: DateTime!
+  end: DateTime!
+  inRoleOf: String!
+  description: String!
+  requestStatus: String!
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
@@ -46,17 +64,42 @@ type LoginResponseTo {
   user: User!
 }
 
+type Meal {
+  description: String!
+}
+
 type Mutation {
   signUp(signUpDto: SignUpDto!): LoginResponseTo!
   login(loginDto: LoginDto!): LoginResponseTo!
   alterAccommodation(accommodationDto: AccommodationDto!): Accommodation!
   createAccommodation(createAccommodationDto: AccommodationDto!): Accommodation!
+  createMeal(createMealDto: CreateMealDto!): Meal!
+  createRating(createRatingDto: CreateRatingDto!): Rating!
+  createRequest(createRequestDto: CreateRequestDto!): Request!
 }
 
 type Query {
   users: [User!]!
+  user(userId: String!): User
   accommodations: [Accommodation!]!
   accommodationById(_id: String!): Accommodation!
+  meals: [Meal!]!
+  ratings: [Rating!]!
+  requests: [Request!]!
+}
+
+type Rating {
+  rating: Boolean!
+  description: String!
+  receiverRole: String!
+}
+
+type Request {
+  start: DateTime!
+  end: DateTime!
+  inRoleOf: String!
+  requestStatus: String!
+  description: String!
 }
 
 input SignUpDto {
@@ -75,6 +118,7 @@ input SignUpDto {
 }
 
 type User {
+  _id: ID!
   email: String!
   phoneNumber: String!
   isHost: Boolean!

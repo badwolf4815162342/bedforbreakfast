@@ -35,5 +35,9 @@
     "tsutils": "^3.14.0",
     "typescript": "^3.5.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "mongoose": "^5.6.4",
+    "reflect-metadata": "^0.1.13",
+    "typegoose": "^5.8.0"
+  }
 }
