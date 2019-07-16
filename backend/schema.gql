@@ -6,24 +6,30 @@
 type Accommodation {
   _id: ID!
   user: User!
+  isActive: Boolean!
   country: String!
   streetName: String!
   streetNumber: String!
   zipCode: String!
   city: String!
   description: String
+  district: String
   numberOfBeds: Float!
+  pictures: [String]
 }
 
 input AccommodationDto {
   _id: String
+  isActive: Boolean!
   country: String!
   streetName: String!
   streetNumber: String!
   zipCode: String!
   city: String!
   description: String
+  district: String
   numberOfBeds: Float!
+  pictures: [String]
 }
 
 input CreateMealDto {

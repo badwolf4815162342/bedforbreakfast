@@ -1,32 +1,39 @@
 class Accommodation {
   _id: string; //tslint:disable-line
+  isActive: boolean;
   country: string;
   streetName: string;
   streetNumber: string;
   zipCode: string;
   city: string;
   description: string;
+  district: string;
   numberOfBeds: number;
+  pictures: string[];
   constructor(
     _id: string, //tslint:disable-line
+    isActive: boolean,
     country: string,
     streetName: string,
     streetNumber: string,
     zipCode: string,
     city: string,
     description: string,
+    district: string,
     numberOfBeds: number,
+    pictures: string[],
   ) {
     this._id = _id;
+    this.isActive = isActive;
     this.country = country;
     this.streetName = streetName;
     this.streetNumber = streetNumber;
     this.zipCode = zipCode;
     this.city = city;
-    //TODO: longitude and latitude
     this.description = description;
+    this.district = district;
     this.numberOfBeds = numberOfBeds;
-    //TODO: pictures
+    this.pictures = pictures;
   }
 }
 

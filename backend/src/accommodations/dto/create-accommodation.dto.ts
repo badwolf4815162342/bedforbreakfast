@@ -7,6 +7,9 @@ export class AccommodationDto {
   _id?: string; //tslint:disable-line
 
   @Field()
+  isActive!: boolean;
+
+  @Field()
   country!: string;
 
   @Field()
@@ -24,8 +27,14 @@ export class AccommodationDto {
   @Field({ nullable: true })
   description?: string;
 
+  @Field({ nullable: true })
+  district?: string;
+
   @Field()
   numberOfBeds!: number;
+
+  @Field((type) => [String], { nullable: 'itemsAndList' })
+  pictures?: string[];
 
   user!: ObjectId;
 }
