@@ -1,5 +1,7 @@
-import { NotFoundException } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { forwardRef, Inject, NotFoundException } from '@nestjs/common';
+import { Args, Mutation, Parent, Query, ResolveProperty, Resolver } from '@nestjs/graphql';
+
+import { AccommodationsService } from '../accommodations/accommodations.service';
 import { LoginResponseTo } from './dto/login-response.dto';
 import { LoginDto } from './dto/login.dto';
 import { SignUpDto } from './dto/sign-up.dto';
@@ -8,7 +10,19 @@ import { UsersService } from './users.service';
 
 @Resolver((of: any) => User)
 export class UserResolver {
-  constructor(private readonly userService: UsersService) {}
+  constructor(
+    private readonly userService: UsersService,
+    @Inject(forwardRef(() => AccommodationsService)) private readonly accommodationService: AccommodationsService,
+  ) {}
+
+  @ResolveProperty()
+  async accommodation(@Parent() user: User) {
+    if (user.accommodation) {
+      return await this.accommodationService.findById(user.accommodation);
+    } else {
+      return null;
+    }
+  }
 
   @Query((returns) => [User])
   async users(): Promise<User[]> {
@@ -18,8 +32,6 @@ export class UserResolver {
   @Mutation((returns) => LoginResponseTo)
   async signUp(@Args('signUpDto') signUpDto: SignUpDto): Promise<LoginResponseTo> {
     const user = await this.userService.signUp(signUpDto);
-    user.isHost = false;
-    user.isGuest = true; // TODO: JH when to set user beeing guest? Is everone a guest?
     user.verified = false;
 
     // also log user in

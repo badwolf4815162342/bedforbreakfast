@@ -119,8 +119,6 @@ type User {
   _id: ID!
   email: String!
   phoneNumber: String!
-  isHost: Boolean!
-  isGuest: Boolean!
   firstName: String!
   lastName: String!
   birthday: DateTime!
@@ -131,4 +129,5 @@ type User {
   homeTown: String!
   homeCountry: String!
   favoriteFood: String!
+  accommodation: Accommodation
 }

@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { Field, InputType } from 'type-graphql';
 
 @InputType()
@@ -25,4 +26,6 @@ export class AccommodationDto {
 
   @Field()
   numberOfBeds!: number;
+
+  user!: ObjectId;
 }

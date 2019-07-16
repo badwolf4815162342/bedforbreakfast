@@ -57,6 +57,6 @@ export class AccommodationResolver {
     accommodationDto: AccommodationDto,
     @CurrentUser() user: User,
   ): Promise<Accommodation> {
-    return await this.accommodationsService.create({ ...accommodationDto, user });
+    return await this.accommodationsService.create({ ...accommodationDto, user: user._id });
   }
 }

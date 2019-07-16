@@ -1,9 +1,10 @@
 import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { compare, genSalt, hash } from 'bcryptjs';
+import { ObjectId } from 'mongodb';
 import { InjectModel } from 'nestjs-typegoose';
+import { AccommodationDto } from 'src/accommodations/dto/create-accommodation.dto';
 import { ModelType } from 'typegoose';
 
-import { ObjectId } from 'mongodb';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { JwtPayload } from '../authentication/interfaces/jwt-payload.interface';
 import { LoginResponseTo } from './dto/login-response.dto';
@@ -72,5 +73,19 @@ export class UsersService {
     const token = await this.authService.signPayload(payload);
 
     return { token, user };
+  }
+
+  async addAccommodation(accommodation: AccommodationDto) {
+    // check if user already has accommodation
+    const userDocument = await this.userModel.findById(accommodation.user).exec();
+    if (userDocument) {
+      const user = userDocument.toObject();
+      if (user.accommodation) {
+        throw new HttpException('User already has accommodation.', HttpStatus.BAD_REQUEST);
+      } else {
+        const newUser = { ...user, accommodation: accommodation._id };
+        await this.userModel.findByIdAndUpdate(user._id, newUser).exec();
+      }
+    }
   }
 }
