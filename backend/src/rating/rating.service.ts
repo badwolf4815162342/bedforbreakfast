@@ -3,7 +3,7 @@ import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
 
 import { CreateRatingDto } from './dto/create-rating.dto';
-import { Rating, RatingModel } from './models/Rating';
+import { Rating } from './models/Rating';
 
 @Injectable()
 export class RatingService {
