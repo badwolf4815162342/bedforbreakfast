@@ -19,6 +19,11 @@ export class AccommodationResolver {
     return this.accommodationService.findAll();
   }
 
+  @Query((returns) => [Accommodation])
+  async accommodationsByCity(@Args('city') city: string): Promise<Accommodation[]> {
+    return this.accommodationService.findByCity(city);
+  }
+
   @Query((returns) => Accommodation)
   async accommodationById(@Args('_id') id: string): Promise<Accommodation> {
     const accommodation = await this.accommodationService.findById(id);
