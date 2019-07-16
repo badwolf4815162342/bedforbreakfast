@@ -15,6 +15,7 @@ import {
   CountryIcon,
   Description,
   DescriptionIcon,
+  District,
   Divider,
   EnableSelector,
   EnableText,
@@ -32,34 +33,43 @@ import {
 const ALTER_ACCOMMODATION_MUTATION = gql`
   mutation alterAccommodation(
     $_id: String!
+    $isActive: Boolean!
     $country: String!
     $city: String!
     $streetName: String!
     $streetNumber: String!
     $zipCode: String!
     $description: String
+    $district: String
     $numberOfBeds: Float!
+    $pictures: [String]
   ) {
     alterAccommodation(
       accommodationDto: {
         _id: $_id
+        isActive: $isActive
         country: $country
         city: $city
         streetName: $streetName
         streetNumber: $streetNumber
         zipCode: $zipCode
         description: $description
+        district: $district
         numberOfBeds: $numberOfBeds
+        pictures: $pictures
       }
     ) {
       _id
+      isActive
       country
       city
       streetName
       streetNumber
       zipCode
       description
+      district
       numberOfBeds
+      pictures
     }
   }
 `;
@@ -69,16 +79,18 @@ interface CreateAccommodationProps {
 }
 
 interface CreateAccommodationState {
-  isEnabled: boolean;
   accommodation: Accommodation;
 }
 class CreateAccommodation extends React.Component<CreateAccommodationProps, CreateAccommodationState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      isEnabled: false,
       accommodation:
-        props.accommodation != null ? props.accommodation : new Accommodation('', '', '', '', '', '', '', 0),
+        props.accommodation != null
+          ? props.accommodation
+          : new Accommodation('', false, '', '', '', '', '', '', '', 0, [
+              'https://miro.medium.com/max/244/1*JVFm_pqNLKi4sobJzicbww.png',
+            ]),
     };
   }
 
@@ -87,7 +99,19 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
   };
 
   handleChangeAccommodation = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (name === 'numberOfBeds') {
+    if (name === 'isActive') {
+      if (event.target.value.length > 0) {
+        try {
+          const isActive = !this.state.accommodation.isActive;
+          this.setState({
+            ...this.state,
+            accommodation: { ...this.state.accommodation, [name]: isActive },
+          });
+        } catch (error) {
+          console.log('Number of beds was not a number');
+        }
+      }
+    } else if (name === 'numberOfBeds') {
       if (event.target.value.length > 0) {
         try {
           const nrBeds = parseInt(event.target.value, 10);
@@ -118,9 +142,9 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
             <EnableText>Make your apartment visible for others</EnableText>
           </Tooltip>
           <EnableSelector
-            checked={this.state.isEnabled}
-            onChange={this.handleChange('isEnabled')}
-            value="isEnabled"
+            checked={this.state.accommodation.isActive}
+            onChange={this.handleChangeAccommodation('isActive')}
+            value="isActive"
             inputProps={{ 'aria-label': 'secondary checkbox' }}
           />
           <NrBedsText>Specify how many beds are available for guests</NrBedsText>
@@ -197,6 +221,12 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
             defaultValue={this.state.accommodation.zipCode}
             onChange={this.handleChangeAccommodation('zipCode')}
           />
+          <District
+            id="standard-required"
+            label="District"
+            defaultValue={this.state.accommodation.district}
+            onChange={this.handleChangeAccommodation('district')}
+          />
           <CityName
             required
             id="standard-required"
@@ -238,13 +268,16 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
                 createAccommodation: (arg0: {
                   variables: {
                     _id: string;
+                    isActive: boolean;
                     country: string;
                     city: string;
                     streetName: string;
                     streetNumber: string;
                     zipCode: string;
                     description: string;
+                    district: string;
                     numberOfBeds: number;
+                    pictures: string[];
                   };
                 }) => void,
                 { data }: any,
@@ -253,16 +286,20 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
+                      console.log(this.state.accommodation);
                       createAccommodation({
                         variables: {
                           _id: this.state.accommodation._id,
+                          isActive: this.state.accommodation.isActive,
                           country: this.state.accommodation.country,
                           city: this.state.accommodation.city,
                           streetName: this.state.accommodation.streetName,
                           streetNumber: this.state.accommodation.streetNumber,
                           zipCode: this.state.accommodation.zipCode,
                           description: this.state.accommodation.description,
+                          district: this.state.accommodation.district,
                           numberOfBeds: this.state.accommodation.numberOfBeds,
+                          pictures: this.state.accommodation.pictures,
                         },
                       });
                     }}

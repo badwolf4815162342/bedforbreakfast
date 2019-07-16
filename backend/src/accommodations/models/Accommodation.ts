@@ -6,6 +6,10 @@ export class Accommodation extends Typegoose {
   @Field((type) => ID)
   _id!: string; //tslint:disable-line
 
+  @Field((type) => Boolean)
+  @prop({ required: true })
+  isActive!: boolean;
+
   @Field((type) => String)
   @prop({ required: true })
   country!: string;
@@ -30,7 +34,15 @@ export class Accommodation extends Typegoose {
   @prop()
   description?: string;
 
+  @Field((type) => String, { nullable: true })
+  @prop()
+  district?: string;
+
   @Field((type) => Number)
   @prop({ required: true })
   numberOfBeds!: string;
+
+  @Field((type) => [String], { nullable: 'itemsAndList' })
+  @prop()
+  pictures?: string[];
 }
