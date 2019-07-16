@@ -1,15 +1,12 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-
 import { NotFoundException } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { LoginResponseTo } from './dto/login-response.dto';
 import { LoginDto } from './dto/login.dto';
 import { SignUpDto } from './dto/sign-up.dto';
 import { User } from './models/User';
 import { UsersService } from './users.service';
 
-@Resolver((of: any) => {
-  return User;
-})
+@Resolver((of: any) => User)
 export class UserResolver {
   constructor(private readonly userService: UsersService) {}
 

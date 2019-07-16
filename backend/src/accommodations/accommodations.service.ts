@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { ObjectId } from 'mongodb';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
+
 import { AccommodationDto } from './dto/create-accommodation.dto';
 import { Accommodation } from './models/Accommodation';
 
@@ -15,7 +17,7 @@ export class AccommodationsService {
     return await this.accommodationModel.find().exec();
   }
 
-  async findById(id: string): Promise<Accommodation | null> {
+  async findById(id: ObjectId): Promise<Accommodation | null> {
     return this.accommodationModel.findById(id);
   }
 
@@ -39,8 +41,8 @@ export class AccommodationsService {
     return this.accommodationModel.findByIdAndUpdate(accommodationDto._id, accommodation);
   }
 
-  async create(createAccommodationDto: {}): Promise<Accommodation> {
-    const createdAccommodation = new this.accommodationModel(createAccommodationDto);
+  async create(accommodationDto: {}): Promise<Accommodation> {
+    const createdAccommodation = new this.accommodationModel(accommodationDto);
     return await createdAccommodation.save();
   }
 }

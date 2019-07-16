@@ -1,11 +1,11 @@
+import { ObjectId } from 'mongodb';
 import { Field, ID, ObjectType } from 'type-graphql';
 import { prop, Typegoose } from 'typegoose';
 
 @ObjectType()
 export class User extends Typegoose {
   @Field((type) => ID)
-  // tslint:disable-next-line: variable-name
-  readonly _id!: string;
+  readonly _id!: ObjectId; // tslint:disable-line variable-name
 
   @Field((type) => String)
   @prop({ required: true, unique: true })
@@ -68,5 +68,3 @@ export class User extends Typegoose {
 }
 
 export type GenderType = 'm' | 'w' | 'd';
-
-export const UserModel = new User().getModelForClass(User);
