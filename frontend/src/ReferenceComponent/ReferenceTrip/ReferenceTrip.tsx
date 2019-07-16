@@ -2,7 +2,7 @@ import React from 'react';
 
 import { GridContainerXS, Section } from '../../StyledComponents/StyledBasicItems';
 import { MainTheme } from '../../StyledComponents/Theme';
-import { TripReportTitle, Description, DescriptionIcon, Divider } from './ReferenceTripStyle';
+import { Description, DescriptionIcon, Divider, TripReportTitle } from './ReferenceTripStyle';
 
 class ReferenceTrip extends React.Component<{}, { isEnabled: boolean; tripReport: TripReport }> {
   constructor(props: any) {

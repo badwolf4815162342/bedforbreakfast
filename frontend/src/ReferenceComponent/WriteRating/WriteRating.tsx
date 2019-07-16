@@ -1,20 +1,20 @@
-import React from 'react';
 import Icon from '@material-ui/core/Icon';
+import React from 'react';
+import pic from '../../images/profilePic.jpg';
 import { GridContainerXS, Section } from '../../StyledComponents/StyledBasicItems';
 import { MainTheme } from '../../StyledComponents/Theme';
-import pic from '../../images/profilePic.jpg';
 import {
   Age,
+  Description,
+  DescriptionIcon,
+  Divider,
   IconInText,
   Name,
   ProfilePic,
   ProfilePicBox,
   RatingStyle,
-  Verified,
   RatingTitle,
-  Description,
-  DescriptionIcon,
-  Divider,
+  Verified,
 } from './WriteRatingStyle';
 
 class WriteRating extends React.Component<{}, { isEnabled: boolean; rating: Rating; user: User }> {

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import ReferenceTrip from './ReferenceTrip/ReferenceTrip';
-import WriteRating from './WriteRating/WriteRating';
 import { Section } from '../StyledComponents/StyledBasicItems';
 import { ReferenceTitle } from './ReferenceStyle';
+import ReferenceTrip from './ReferenceTrip/ReferenceTrip';
+import WriteRating from './WriteRating/WriteRating';
 
 class Reference extends React.Component<{}, { isEnabled: boolean }> {
   constructor(props: any) {

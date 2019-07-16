@@ -1,6 +1,6 @@
-import { Divider as divider, TextField, Box, Paper } from '@material-ui/core';
+import { Box, Divider as divider, Paper, TextField } from '@material-ui/core';
 import styled from 'styled-components';
-import { Subtitle as Title, SubtitleSubtext, SubText } from '../../StyledComponents/StyledBasicItems';
+import { SubText, Subtitle as Title, SubtitleSubtext } from '../../StyledComponents/StyledBasicItems';
 import { MainThemeRGB } from '../../StyledComponents/Theme';
 
 export const RatingTitle = styled(Title)`
