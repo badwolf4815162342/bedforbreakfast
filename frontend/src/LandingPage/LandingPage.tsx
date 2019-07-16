@@ -9,6 +9,8 @@ class LandingPage extends React.Component {
       <div>
         <Title>Welcome to BedForBreakfast</Title>
         <Link to={'createAccommodation'}>Create an accommodation here</Link>
+        <br></br>
+        <Link to={'createReference'}>Create a reference here</Link>
       </div>
     );
   }

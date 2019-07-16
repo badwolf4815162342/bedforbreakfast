@@ -42,3 +42,13 @@ export const Subtitle = styled.h3`
 export const SubtitleSubtext = styled.p`
   color: ${MainTheme.grey.main};
 `;
+
+export const Text = styled.p`
+  color: ${MainTheme.grey.dark};
+  font-size: 14px;
+  line-height: 20px;
+`;
+
+export const SubText = styled.sub`
+  color: ${MainTheme.grey.dark};
+`;

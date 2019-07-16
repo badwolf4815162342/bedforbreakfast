@@ -10,6 +10,7 @@ import LandingPage from './LandingPage/LandingPage';
 import Footer from './NavigationElements/Footer/Footer';
 import Navbar from './NavigationElements/Header/Header';
 import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
+import Reference from './ReferenceComponent/Reference';
 import { MainThemeMaterial } from './StyledComponents/Theme';
 
 export default class App extends React.Component<any, any> {
@@ -22,6 +23,11 @@ export default class App extends React.Component<any, any> {
         {
           component: CreateAccommodation,
           path: '/createAccommodation',
+          exact: true,
+        },
+        {
+          component: Reference,
+          path: '/createReference',
           exact: true,
         },
         {
