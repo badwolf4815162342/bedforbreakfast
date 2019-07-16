@@ -29,4 +29,4 @@ export class Request extends Typegoose {
 
 export const RequestModel = new Request().getModelForClass(Request);
 
-export type RequestStatus = 'REQUESTED' | 'ACCEPTED' | 'CANCELD' | 'DENIED';
+export type RequestStatus = 'REQUESTED' | 'ACCEPTED' | 'CANCELLED' | 'DENIED';
