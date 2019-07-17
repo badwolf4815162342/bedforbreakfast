@@ -100,7 +100,7 @@ class Login extends Component<
 
   render() {
     const { login, email, password, firstName, lastName, profilePicture } = this.state;
-    console.log(profilePicture);
+    console.log(this.state.profilePicture);
 
     return (
       <div>
@@ -172,7 +172,7 @@ class Login extends Component<
               </div>
             )}
           </Mutation> */}
-          <Mutation
+          {/* <Mutation
             mutation={ADD_PIC_MUTATION}
             variables={{
               picture: this.state.profilePicture,
@@ -181,8 +181,24 @@ class Login extends Component<
           >
             {(mutation: any) => (
               <div className="pointer mr2 button" onClick={mutation}>
+                {console.log(this.state.profilePicture)}
                 {login ? 'login' : 'create account'}
               </div>
+            )}
+          </Mutation> */}
+          <Mutation mutation={ADD_PIC_MUTATION}>
+            {(uploadFile: any) => (
+              <input
+                type="file"
+                required
+                onChange={({ target: { validity, files } }) => {
+                  const file = files ? files[0] : null;
+                  console.log(file);
+                  console.log(validity);
+
+                  validity.valid && uploadFile({ variables: { picture: file } });
+                }}
+              />
             )}
           </Mutation>
           <div className="pointer button" onClick={() => this.setState({ login: !login })}>
