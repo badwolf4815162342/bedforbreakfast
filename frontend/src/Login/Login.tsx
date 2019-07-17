@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 
-import { AUTH_TOKEN, USER_ID} from '../constants';
+import { AUTH_TOKEN, USER_ID } from '../constants';
 import { Section } from '../StyledComponents/StyledBasicItems';
 import {
   GenderLabel,
