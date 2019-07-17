@@ -8,9 +8,9 @@ export const MainTheme = {
     contrastText: '#000000',
   },
   secondary: {
-    light: '#637bfe',
-    main: '#3d5afe',
-    dark: '#2a3eb1',
+    light: '#B9C5E2',
+    main: '#8C9ECA',
+    dark: '#507EEE;',
     contrastText: '#ffffff',
   },
   grey: {
