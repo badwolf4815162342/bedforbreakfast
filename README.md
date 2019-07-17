@@ -44,7 +44,8 @@ mutation {
       email
     }
   }
-}```
+}
+```
 
 ### Update Request 
 -> only change requestStatus: 'REQUESTED' | 'ACCEPTED' | 'CANCELLED' | 'DENIED'
