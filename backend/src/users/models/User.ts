@@ -60,6 +60,14 @@ export class User extends Typegoose {
   @prop({ required: true })
   favoriteFood!: string;
 
+  @Field((type) => String)
+  @prop({ required: true, default: [] })
+  likedBy!: ObjectId[];
+
+  @Field((type) => String)
+  @prop({ required: true, default: [] })
+  dislikedBy!: ObjectId[];
+
   @Field((type) => Accommodation, { nullable: true })
   @prop({ ref: User })
   accommodation?: Ref<ObjectId>;

@@ -37,17 +37,19 @@ input CreateMealDto {
 }
 
 input CreateRatingDto {
+  _id: String
+  request: String!
   receiverRole: String!
   description: String!
   rating: Boolean!
 }
 
 input CreateRequestDto {
+  _id: String
   start: DateTime!
   end: DateTime!
-  inRoleOf: String!
+  receiver: String!
   description: String!
-  requestStatus: String!
 }
 
 """
@@ -76,8 +78,9 @@ type Mutation {
   alterAccommodation(accommodationDto: AccommodationDto!): Accommodation!
   createAccommodation(createAccommodationDto: AccommodationDto!): Accommodation!
   createMeal(createMealDto: CreateMealDto!): Meal!
-  createRating(createRatingDto: CreateRatingDto!): Rating!
   createRequest(createRequestDto: CreateRequestDto!): Request!
+  createRating(createRatingDto: CreateRatingDto!): Request!
+  updateRequestStatus(requestStatus: String!, id: String!): Request!
 }
 
 """Mongo object id scalar type"""
@@ -87,24 +90,31 @@ type Query {
   users: [User!]!
   user(userId: String!): User
   accommodations: [Accommodation!]!
+  accommodationsByCity(city: String!): [Accommodation!]!
   accommodationById(_id: ObjectId!): Accommodation!
   meals: [Meal!]!
-  ratings: [Rating!]!
   requests: [Request!]!
+  ratings: [Rating!]!
 }
 
 type Rating {
+  _id: ID!
+  request: Request!
+  author: User!
   rating: Boolean!
   description: String!
   receiverRole: String!
 }
 
 type Request {
+  _id: ID!
   start: DateTime!
   end: DateTime!
-  inRoleOf: String!
+  receiver: User!
+  proposer: User!
   requestStatus: String!
   description: String!
+  ratings: [Rating!]!
 }
 
 input SignUpDto {
@@ -139,5 +149,7 @@ type User {
   homeTown: String!
   homeCountry: String!
   favoriteFood: String!
+  likedBy: [String!]!
+  dislikedBy: [String!]!
   accommodation: Accommodation
 }

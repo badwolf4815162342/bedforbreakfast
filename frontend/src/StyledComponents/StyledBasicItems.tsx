@@ -28,6 +28,15 @@ export const GridContainerXS = styled(GridContainer)`
   }
 `;
 
+export const GridContainerTR = styled(GridContainer)`
+  grid-template-columns: 100px 100px auto;
+  grid-template-rows: 60px 10px auto 10px 60px;
+`;
+
+export const GridContainerR = styled(GridContainer)`
+  grid-template-columns: 100px 100px auto;
+`;
+
 export const Section = styled.div`
   margin-top: 50px;
 `;
@@ -41,8 +50,19 @@ export const Subtitle = styled.h3`
   color: ${MainTheme.secondary.dark};
 `;
 
-export const SubtitleSubtext = styled.p`
-  color: ${MainTheme.grey.main};
+export const SimpleLabelText = styled.div`
+  color: ${MainTheme.grey.dark};
+  margin-bottom: 20px;
+`;
+
+export const Text = styled.div`
+  color: ${MainTheme.grey.dark};
+  font-size: 14px;
+  line-height: 20px;
+`;
+
+export const SubText = styled.sub`
+  color: ${MainTheme.grey.dark};
 `;
 
 export const SubmitButton = styled(Button)`
