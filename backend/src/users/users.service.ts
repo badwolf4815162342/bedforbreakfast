@@ -46,7 +46,7 @@ export class UsersService {
     const salt = await genSalt();
     password = await hash(password, salt);
 
-    const imageUrl = this.imageUploadService.singleFileUpload(signUpDto.profilePicture);
+    const imageUrl = await this.imageUploadService.singleFileUpload(signUpDto.profilePicture);
 
     // add hashed password to user object
     const createdUser = new this.userModel({

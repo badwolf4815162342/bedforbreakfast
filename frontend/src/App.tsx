@@ -1,4 +1,6 @@
+import MomentUtils from '@date-io/moment';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink, Observable } from 'apollo-link';
@@ -114,7 +116,7 @@ export default class App extends React.Component<any, any> {
             link: ApolloLink.from([
               onError(({ graphQLErrors, networkError }) => {
                 if (graphQLErrors) {
-                  graphQLErrors.map(({ message, locations, path }) => {
+                  graphQLErrors.forEach(({ message, locations, path }) => {
                     console.log(
                       `[GraphQL error]: Message: ${JSON.stringify(message)}, Location: ${JSON.stringify(
                         locations,
@@ -133,7 +135,7 @@ export default class App extends React.Component<any, any> {
           })
         }
       >
-        <div>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
           <MuiThemeProvider theme={MainThemeMaterial}>
             <Router>
               <Navbar />
@@ -147,7 +149,7 @@ export default class App extends React.Component<any, any> {
               <Footer />
             </Router>
           </MuiThemeProvider>
-        </div>
+        </MuiPickersUtilsProvider>
       </ApolloProvider>
     );
   }

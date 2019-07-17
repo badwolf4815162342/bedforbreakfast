@@ -13,8 +13,8 @@ cloudinary.config({
 
 @Injectable()
 export class ImageUploadService {
-  async singleFileUpload(file: Upload) {
-    return this.processUpload(file);
+  async singleFileUpload(file: Upload): Promise<string> {
+    return await this.processUpload(file);
   }
 
   async multipleFileUpload(files: Upload[]) {
@@ -29,21 +29,24 @@ export class ImageUploadService {
   }
 
   private async processUpload(upload: Upload) {
-    const { createReadStream } = upload;
+    const { createReadStream } = await upload;
 
     let resultUrl = '';
 
     const cloudinaryUpload = async (stream: any) => {
       try {
         await new Promise((resolve, reject) => {
-          const streamLoad = cloudinary.v2.uploader.upload_stream((error: any, result: any) => {
-            if (result) {
-              resultUrl = result.url;
-              resolve(resultUrl);
-            } else {
-              reject(error);
-            }
-          });
+          const streamLoad = cloudinary.v2.uploader.upload_stream(
+            { folder: 'profile_pictures', width: 200, height: 200, crop: 'fill', gravity: 'faces' },
+            (error: any, result: any) => {
+              if (result) {
+                resultUrl = result.url;
+                resolve(resultUrl);
+              } else {
+                reject(error);
+              }
+            },
+          );
 
           stream.pipe(streamLoad);
         });

@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core';
 import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
@@ -24,6 +25,7 @@ import {
   RegisterButton,
   RegisterLink,
   SelectContainer,
+  UploadContainer,
 } from './LoginStyle';
 
 const SIGN_UP_MUTATION = gql`
@@ -103,6 +105,7 @@ interface LoginState {
   homeTown: string;
   homeCountry: string;
   favoriteFood: string;
+  profilePicture: File | undefined;
 }
 
 class Login extends Component<{}, LoginState> {
@@ -120,6 +123,7 @@ class Login extends Component<{}, LoginState> {
       homeTown: '',
       homeCountry: '',
       favoriteFood: '',
+      profilePicture: undefined,
     };
   }
 
@@ -136,6 +140,7 @@ class Login extends Component<{}, LoginState> {
       homeTown,
       homeCountry,
       favoriteFood,
+      profilePicture,
     } = this.state;
     return (
       <Section>
@@ -201,13 +206,36 @@ class Login extends Component<{}, LoginState> {
             />
             <InputBirthday
               value={birthday}
-              onChange={(e) => {
-                console.log(e.target.value);
-                this.setState({ birthday: new Date(e.target.value) });
+              onChange={(date) => {
+                if (date) {
+                  this.setState({ birthday: date.toDate() });
+                }
               }}
-              type="date"
+              format="DD.MM.YYYY"
+              disableFuture
               label="Your date of birth"
             />
+            <UploadContainer>
+              <input
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="raised-button-file"
+                multiple
+                type="file"
+                onChange={(e) => {
+                  if (e.target.files) {
+                    const file = e.target.files[0];
+                    console.log(file);
+                    this.setState({ profilePicture: file });
+                  }
+                }}
+              />
+              <label htmlFor="raised-button-file">
+                <Button variant="contained" component="span">
+                  Upload Profile Picture
+                </Button>
+              </label>
+            </UploadContainer>
             <SelectContainer>
               <GenderLabel>Gender:</GenderLabel>
               <select value={gender} onChange={(e) => this.setState({ gender: e.target.value })}>
@@ -248,13 +276,13 @@ class Login extends Component<{}, LoginState> {
                 firstName,
                 lastName,
                 phoneNumber: '+491784680003',
-                birthday: '1995-01-01',
-                gender: 'm',
-                description: 'Blblbl',
-                profilePicture: 'String',
-                homeTown: 'Cologne',
-                homeCountry: 'Germany',
-                favoriteFood: 'Pancakes',
+                birthday,
+                gender,
+                description,
+                profilePicture,
+                homeTown,
+                homeCountry,
+                favoriteFood,
               }}
               onCompleted={(data: Data) => this._confirm(data)}
             >
@@ -274,7 +302,6 @@ class Login extends Component<{}, LoginState> {
   async _confirm(data: Data) {
     const { token, user } = this.state.login ? data.login : data.signUp;
     this._saveUserData(token, user._id);
-    console.log(token);
   }
 
   _saveUserData(token: string, userId: string) {
