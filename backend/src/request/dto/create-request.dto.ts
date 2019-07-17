@@ -5,12 +5,15 @@ import { IsRoleType } from '../../common/validators/roleTypeValidator';
 import { Request, RequestStatus } from '../models/Request';
 
 @InputType()
-export class CreateRequestDto implements Partial<Request> {
+export class CreateRequestDto {
   @Field()
   start!: Date;
 
   @Field()
   end!: Date;
+
+  @Field()
+  receiver!: string;
 
   @Field()
   @IsRoleType('Given ($value) is not a Role Type (MEAL or ACCOMMONDATION)!')
@@ -20,7 +23,7 @@ export class CreateRequestDto implements Partial<Request> {
   @IsNotEmpty()
   description!: string;
 
-  @Field()
+  //@Field()
   // TODO: Validator
-  requestStatus!: RequestStatus;
+  //requestStatus!: RequestStatus;
 }

@@ -1,9 +1,14 @@
-import { Field, ObjectType } from 'type-graphql';
-import { prop, Typegoose } from 'typegoose';
-import { RoleType } from '../../rating/models/Rating';
+import { ObjectId } from 'mongodb';
+import { Field, ID, ObjectType } from 'type-graphql';
+import { arrayProp, prop, Ref, Typegoose } from 'typegoose';
+import { Rating, RoleType } from '../../rating/models/Rating';
+import { User } from '../../users/models/User';
 
 @ObjectType()
 export class Request extends Typegoose {
+  @Field((type) => ID)
+  readonly _id!: ObjectId; // tslint:disable-line variable-name
+
   @Field((type) => Date)
   @prop({ required: true })
   start!: Date;
@@ -12,7 +17,13 @@ export class Request extends Typegoose {
   @prop({ required: true })
   end!: Date;
 
-  // TODO: receiver
+  @Field((type) => User)
+  @prop({ ref: User, required: true })
+  receiver!: Ref<ObjectId>;
+
+  @Field((type) => User)
+  @prop({ ref: User, required: true })
+  proposer!: Ref<ObjectId>;
 
   @Field((type) => String)
   @prop({ required: true })
@@ -25,8 +36,10 @@ export class Request extends Typegoose {
   @Field((type) => String)
   @prop({ required: true })
   description!: string;
-}
 
-export const RequestModel = new Request().getModelForClass(Request);
+  @Field((type) => [Rating])
+  @arrayProp({ itemsRef: 'Rating' })
+  ratings?: Array<Ref<ObjectId>>;
+}
 
 export type RequestStatus = 'REQUESTED' | 'ACCEPTED' | 'CANCELLED' | 'DENIED';

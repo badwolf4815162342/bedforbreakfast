@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
 
+import { ObjectId } from 'mongodb';
 import { CreateRatingDto } from './dto/create-rating.dto';
-import { Rating, RatingModel } from './models/Rating';
+import { Rating } from './models/Rating';
 
 @Injectable()
 export class RatingService {
@@ -16,12 +17,12 @@ export class RatingService {
     return await this.ratingModel.find().exec();
   }
 
-  async create(createRatingDto: CreateRatingDto): Promise<Rating> {
+  async create(createRatingDto: {}): Promise<Rating> {
     const createdRating = new this.ratingModel(createRatingDto);
     return await createdRating.save();
   }
 
-  async findById(id: string): Promise<Rating | null> {
+  async findById(id: ObjectId): Promise<Rating | null> {
     return this.ratingModel.findById(id);
   }
 }

@@ -65,6 +65,14 @@ export class User extends Typegoose {
   @Field((type) => String)
   @prop({ required: true })
   favoriteFood!: string;
+
+  @Field((type) => String)
+  @prop({ required: true, default: [] })
+  likedBy!: ObjectId[];
+
+  @Field((type) => String)
+  @prop({ required: true, default: [] })
+  dislikedBy!: ObjectId[];
 }
 
 export type GenderType = 'm' | 'w' | 'd';

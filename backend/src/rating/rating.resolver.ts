@@ -1,26 +1,32 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-
-import { ObjectId } from 'mongodb';
-import { Arg } from 'type-graphql';
-import { ObjectIdScalar } from '../common/scalars/object-id.scalar';
-import { CreateRatingDto } from './dto/create-rating.dto';
-import { Rating, RatingModel } from './models/Rating';
+import { Query, Resolver, ResolveProperty, Parent } from '@nestjs/graphql';
+import { Rating } from './models/Rating';
 import { RatingService } from './rating.service';
-import { NotFoundException } from '@nestjs/common/exceptions/not-found.exception';
+import { RequestService } from '../request/request.service';
+import { Inject, forwardRef } from '@nestjs/common';
+import { UsersService } from '../users/users.service';
 
 @Resolver((of: any) => {
   return Rating;
 })
 export class RatingResolver {
-  constructor(private readonly ratingService: RatingService) {}
+  constructor(
+    private readonly ratingService: RatingService,
+    @Inject(forwardRef(() => RequestService)) private readonly requestService: RequestService,
+    @Inject(forwardRef(() => UsersService)) private readonly usersService: UsersService,
+  ) {}
 
   @Query((returns) => [Rating])
   async ratings(): Promise<Rating[]> {
     return this.ratingService.findAll();
   }
 
-  @Mutation((returns) => Rating)
-  async createRating(@Args('createRatingDto') createRatingDto: CreateRatingDto): Promise<Rating> {
-    return await this.ratingService.create(createRatingDto);
+  @ResolveProperty()
+  async request(@Parent() rating: Rating) {
+    return await this.requestService.findById(rating.request);
+  }
+
+  @ResolveProperty()
+  async author(@Parent() rating: Rating) {
+    return await this.usersService.findById(rating.author);
   }
 }

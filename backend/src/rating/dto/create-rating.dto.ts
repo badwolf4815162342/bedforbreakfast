@@ -5,7 +5,13 @@ import { IsRoleType } from '../../common/validators/roleTypeValidator';
 import { Rating, RoleType } from '../models/Rating';
 
 @InputType()
-export class CreateRatingDto implements Partial<Rating> {
+export class CreateRatingDto {
+  @Field({ nullable: true })
+  _id?: string; //tslint:disable-line
+
+  @Field()
+  request!: string;
+
   @Field()
   @IsRoleType('Given ($value) is not a Role Type (MEAL or ACCOMMONDATION)!')
   receiverRole!: RoleType;

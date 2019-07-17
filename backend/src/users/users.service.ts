@@ -6,6 +6,7 @@ import { ModelType } from 'typegoose';
 import { ObjectId } from 'mongodb';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { JwtPayload } from '../authentication/interfaces/jwt-payload.interface';
+import { AlterUserDto } from './dto/alter-user.dto';
 import { LoginResponseTo } from './dto/login-response.dto';
 import { LoginDto } from './dto/login.dto';
 import { SignUpDto } from './dto/sign-up.dto';
@@ -72,5 +73,45 @@ export class UsersService {
     const token = await this.authService.signPayload(payload);
 
     return { token, user };
+  }
+
+  async alter(alterUserDto: AlterUserDto): Promise<User | null> {
+    const user = {
+      firstName: alterUserDto.firstName,
+      lastName: alterUserDto.lastName,
+      email: alterUserDto.email,
+      phoneNumber: alterUserDto.phoneNumber,
+      birthday: alterUserDto.birthday,
+      gender: alterUserDto.gender,
+      profilePicture: alterUserDto.profilePicture,
+      homeTown: alterUserDto.homeTown,
+      homeCountry: alterUserDto.homeCountry,
+      favoriteFood: alterUserDto.favoriteFood,
+      isHost: alterUserDto.isHost,
+      isGuest: alterUserDto.isGuest,
+    };
+    if (alterUserDto._id === '') {
+      const createdAccommodation = new this.userModel(user);
+      return await createdAccommodation.save();
+    }
+    return this.userModel.findByIdAndUpdate(alterUserDto._id, user);
+  }
+
+  async change(userOld: User): Promise<User | null> {
+    const user = {
+      firstName: userOld.firstName,
+      lastName: userOld.lastName,
+      email: userOld.email,
+      phoneNumber: userOld.phoneNumber,
+      birthday: userOld.birthday,
+      gender: userOld.gender,
+      profilePicture: userOld.profilePicture,
+      homeTown: userOld.homeTown,
+      homeCountry: userOld.homeCountry,
+      favoriteFood: userOld.favoriteFood,
+      isHost: userOld.isHost,
+      isGuest: userOld.isGuest,
+    };
+    return this.userModel.findByIdAndUpdate(userOld._id, user);
   }
 }
