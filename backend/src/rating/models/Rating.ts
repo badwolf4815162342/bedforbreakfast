@@ -34,4 +34,4 @@ export class Rating extends Typegoose {
   receiverRole!: RoleType;
 }
 
-export type RoleType = 'MEAL' | 'ACCOMMONDATION';
+export type RoleType = 'MEAL' | 'ACCOMMODATION';
