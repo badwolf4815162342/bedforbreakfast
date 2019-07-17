@@ -1,26 +1,7 @@
-import { Box, Card, Divider as divider } from '@material-ui/core';
-import { Button } from '@material-ui/core';
+import { Box, Divider as divider } from '@material-ui/core';
 import styled from 'styled-components';
-import { SimpleLabelText, SubText, Text } from '../../../../StyledComponents/StyledBasicItems';
-import { MainThemeRGB } from '../../../../StyledComponents/Theme';
-
-export const TripReportCard = styled(Card)`
-  margin-top: 20px
-  margin-bottom: 0px
-  padding: 15px
-  width: inherit
-  position: relative;
-  border-radius: 15px !important
-  align-items: center
-`;
-
-export const TripReportPaper = styled(Box)`
-  padding: 15px
-  width: inherit
-  grid-column-start: 1;
-  grid-column-end: column4-end;
-  grid-row: 3;
-`;
+import { SubText, Text } from '../../../StyledComponents/StyledBasicItems';
+import { MainThemeRGB } from '../../../StyledComponents/Theme';
 
 export const ProfilePic = styled(Box)`
   text-align: left
@@ -29,10 +10,10 @@ export const ProfilePic = styled(Box)`
 `;
 
 export const ProfilePicBox = styled(Box)`
-  justify-self: end;
-  align-self: center
   grid-row: 1;
   grid-column: 2;
+  justify-self: end;
+  align-self: center
   width: 65px
   height: 65px
   border-radius: 180px
@@ -42,6 +23,16 @@ export const ProfilePicBox = styled(Box)`
     ${MainThemeRGB.secondary.light.b},
     1
   );
+`;
+
+export const AuthorPicBox = styled(ProfilePicBox)`
+  grid-row: 1;
+  grid-column: 2;
+`;
+
+export const ReferencePicBox = styled(ProfilePicBox)`
+  grid-row: 1;
+  grid-column: 5;
 `;
 
 export const Divider = styled(divider)`
@@ -74,6 +65,16 @@ export const UserInfo = styled(Text)`
   margin-bottom: 0px
 `;
 
+export const AuthorInfo = styled(UserInfo)`
+  grid-column: 3;
+  grid-row: 1;
+`;
+
+export const ReferenceInfo = styled(UserInfo)`
+  grid-column: 6;
+  grid-row: 1;
+`;
+
 export const Date = styled(Text)`
   grid-column: 4;
   grid-row: 1;
@@ -81,24 +82,9 @@ export const Date = styled(Text)`
   justify-self: center;
 `;
 
-export const Report = styled(Text)``;
-
-export const SeeMoreButton = styled(Button)`
-  variant: "text" 
-  grid-column: 4;
-  grid-row: 5;
-  align-self: center
-  justify-self: center;
-`;
-
-export const LikeCount = styled(SimpleLabelText)`
-  grid-column: 1;
-  grid-row: 5;
-  align-self: center;
-  justify-self: center;
-`;
-
 export const IconInText = styled(SubText)`
+  grid-column: 2;
+  grid-row: 1;
   align-self: center;
   color: rgba(${MainThemeRGB.secondary.main.r}, ${MainThemeRGB.secondary.main.g}, ${MainThemeRGB.secondary.main.b}, 1);
 `;

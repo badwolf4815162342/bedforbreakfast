@@ -1,21 +1,22 @@
 import { Box, Paper } from '@material-ui/core';
 import styled from 'styled-components';
-import { SubText, SubtitleSubtext, Text } from '../../StyledComponents/StyledBasicItems';
+import { SimpleLabelText, SubText, Text } from '../../StyledComponents/StyledBasicItems';
 import { MainThemeRGB } from '../../StyledComponents/Theme';
 
 export const ProfileDescription = styled(Paper)`
-    width: 256px
+    width: 280px
     padding: 1em
     text-align: center
     border-radius: 15px !important
+    margin-top: 50px
 `;
 
 export const ProfilePicBox = styled(Box)`
 
-  width: 195px
-  height: 195px
+  width: 215px
+  height: 215px
   border-radius: 180px
-    margin-top: -50%
+    margin-top: -70%
     margin-left: auto
     margin-right: auto
   background-color: rgba(
@@ -31,26 +32,27 @@ export const ProfilePic = styled(Box)`
   top: 11px
   left: 1px
 `;
-export const Name = styled(SubtitleSubtext)`
+export const Name = styled(SimpleLabelText)`
   font-size: 24px;
   line-height: 1;
+  margin-top: 25px;
 `;
-export const Age = styled(SubtitleSubtext)`
-  line-height: 0.3;
+export const Age = styled(SimpleLabelText)`
   font-size: 16px;
 `;
-export const Rating = styled(SubtitleSubtext)`
+export const Rating = styled(SimpleLabelText)`
   letter-spacing: 4px;
 `;
-export const Status = styled(SubtitleSubtext)``;
+export const Status = styled(SimpleLabelText)``;
 export const Description = styled(Text)`
-  margin-left: 1em;
-  margin-right: 1em;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 20px
   text-align: justify;
 `;
-export const Hometown = styled(SubtitleSubtext)``;
+export const Hometown = styled(SimpleLabelText)``;
 
-export const FavoriteFood = styled(SubtitleSubtext)``;
+export const FavoriteFood = styled(SimpleLabelText)``;
 
 export const IconInText = styled(SubText)``;
 

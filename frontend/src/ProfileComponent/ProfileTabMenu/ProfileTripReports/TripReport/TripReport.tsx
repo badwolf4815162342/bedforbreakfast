@@ -1,8 +1,7 @@
-
 import Icon from '@material-ui/core/Icon';
 import React from 'react';
 import pic from '../../../../images/user2.jpeg';
-import { GridContainer, Section } from '../../../../StyledComponents/StyledBasicItems';
+import { GridContainerTR as GridContainer } from '../../../../StyledComponents/StyledBasicItems';
 import {
   Date,
   Divider,
@@ -39,36 +38,37 @@ class TripReport extends React.Component<TripReportProps, {}> {
 
   render() {
     return (
-      <Section>
-        <TripReportCard>
-          <GridContainer>
-            <Role>{this.role}</Role>
-            <ProfilePicBox>
-              <ProfilePic>{this.profilePic}</ProfilePic>
-            </ProfilePicBox>
-            <UserInfo>
-              <Name>{this.props.name}</Name>
-              <HomeInfo>
-                From: {this.props.homeTown}, {this.props.homeCountry}
-              </HomeInfo>
-            </UserInfo>
-            <Date>{this.props.date}</Date>
-            <Divider />
-            <TripReportPaper>
-              <Report> {this.props.text} </Report>
-            </TripReportPaper>
-            <Divider />
-            <LikeCount>
-              {' '}
-              <IconInText>
-                <Icon>{this.liked}</Icon>
-              </IconInText>{' '}
-              {this.props.likeCount}{' '}
-            </LikeCount>
-            <SeeMoreButton color="secondary"> see more </SeeMoreButton>
-          </GridContainer>
-        </TripReportCard>
-      </Section>
+      <TripReportCard>
+        <GridContainer>
+          <Role>{this.role}</Role>
+          <ProfilePicBox>
+            <ProfilePic>{this.profilePic}</ProfilePic>
+          </ProfilePicBox>
+          <UserInfo>
+            <Name>{this.props.name}</Name>
+            <HomeInfo>
+              From: {this.props.homeTown}, {this.props.homeCountry}
+            </HomeInfo>
+          </UserInfo>
+          <Date>{this.props.date}</Date>
+          <Divider />
+          <TripReportPaper>
+            <Report> {this.props.text} </Report>
+          </TripReportPaper>
+          <Divider />
+          <LikeCount>
+            {' '}
+            <IconInText>
+              <Icon>{this.liked}</Icon>
+            </IconInText>{' '}
+            {this.props.likeCount}{' '}
+          </LikeCount>
+          <SeeMoreButton variant="text" color="secondary">
+            {' '}
+            see more{' '}
+          </SeeMoreButton>
+        </GridContainer>
+      </TripReportCard>
     );
   }
 }
