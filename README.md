@@ -20,7 +20,8 @@
 
 ### Send Request:
 
-`mutation {
+```
+mutation {
   createRequest(
     createRequestDto: {
       start: "2020-01-01"
@@ -43,7 +44,7 @@
       email
     }
   }
-}`
+}```
 
 ### Update Request 
 -> only change requestStatus: 'REQUESTED' | 'ACCEPTED' | 'CANCELLED' | 'DENIED'
