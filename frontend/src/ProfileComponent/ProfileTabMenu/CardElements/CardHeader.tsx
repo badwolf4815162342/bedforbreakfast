@@ -14,7 +14,7 @@ interface CardHeaderProps {
 
 class CardHeader extends React.Component<CardHeaderProps, {}> {
   role = this.props.role === 'accommodation' ? 'hosted' : 'visited';
-  aPic = <img src={pic} style={{ width: 65, height: 65, borderRadius: 180 }} />;
+  aPic = <img src={pic} style={{ width: 65, height: 65, borderRadius: 180 }} alt="Card" />;
 
   render() {
     return (

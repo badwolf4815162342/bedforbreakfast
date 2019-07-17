@@ -34,7 +34,7 @@ interface ProfileProps {
 }
 
 class ProfileUserDescription extends React.Component<ProfileProps, {}> {
-  profilePic = <img src={pic} style={{ width: 205, height: 205, borderRadius: 180 }} />;
+  profilePic = <img src={pic} style={{ width: 205, height: 205, borderRadius: 180 }} alt="Profile" />;
 
   verified = this.props.verified ? (
     <Verified>

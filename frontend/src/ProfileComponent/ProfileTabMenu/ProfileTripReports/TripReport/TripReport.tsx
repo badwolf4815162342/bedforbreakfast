@@ -34,7 +34,7 @@ interface TripReportProps {
 class TripReport extends React.Component<TripReportProps, {}> {
   role = this.props.role === 'accommodation' ? 'hosted' : 'visited';
   liked = this.props.liked ? 'favorite' : 'favorite_border';
-  profilePic = <img src={pic} style={{ width: 65, height: 65, borderRadius: 180 }} />;
+  profilePic = <img src={pic} style={{ width: 65, height: 65, borderRadius: 180 }} alt="Profile" />;
 
   render() {
     return (

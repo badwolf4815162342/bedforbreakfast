@@ -2,20 +2,22 @@ import { gql } from 'apollo-boost';
 import React from 'react';
 import { Query } from 'react-apollo';
 
+import { FeedItem } from './FeedItem/FeedItem';
+
 const ALL_ACCOMMODATIONS_QUERY = gql`
   query accommodations {
     accommodations {
-      name
       city
+      country
     }
   }
 `;
 
 interface Data {
-  accommodations: Array<{ name: string; city: string }>;
+  accommodations: Array<{ country: string; city: string }>;
 }
 
-export const AccommodationList = () => (
+export const Feed = () => (
   <Query<Data, {}> query={ALL_ACCOMMODATIONS_QUERY}>
     {({ loading, error, data }) => {
       if (loading) {
@@ -28,14 +30,7 @@ export const AccommodationList = () => (
         return <p>No Data :(</p>;
       }
 
-      return data.accommodations.map(({ name, city }) => (
-        // this could be a "child" component thats beeing wrapped, for info on how to do this with class components see: https://www.apollographql.com/docs/react/recipes/static-typing/#classes-vs-functions
-        <div key={name}>
-          <p>
-            {name}: {city}
-          </p>
-        </div>
-      ));
+      return data.accommodations.map((accommodation) => <FeedItem {...accommodation}></FeedItem>);
     }}
   </Query>
 );

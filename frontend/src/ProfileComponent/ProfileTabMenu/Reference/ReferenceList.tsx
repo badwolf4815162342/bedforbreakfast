@@ -8,6 +8,7 @@ class ReferenceList extends React.Component<{}> {
       authorName={'Jack Thompson'}
       aHomeTown={'London'}
       aHomeCountry={'England'}
+      // eslint-disable-next-line
       role={'meal'}
       date={'May, 2019, 4 days'}
       isPositive={true}
@@ -22,6 +23,7 @@ class ReferenceList extends React.Component<{}> {
       authorName={'Jack Thompson'}
       aHomeTown={'London'}
       aHomeCountry={'England'}
+      // eslint-disable-next-line
       role={'meal'}
       date={'May, 2019, 4 days'}
       isPositive={true}
@@ -36,6 +38,7 @@ class ReferenceList extends React.Component<{}> {
       authorName={'Jack Thompson'}
       aHomeTown={'London'}
       aHomeCountry={'England'}
+      // eslint-disable-next-line
       role={'meal'}
       date={'May, 2019, 4 days'}
       isPositive={false}
