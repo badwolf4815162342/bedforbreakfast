@@ -8,6 +8,10 @@ import { SignUpDto } from './dto/sign-up.dto';
 import { User } from './models/User';
 import { UsersService } from './users.service';
 
+import { createWriteStream } from 'fs';
+import { GraphQLUpload } from 'graphql-upload';
+import { Upload } from 'src/common/types/Upload';
+
 @Resolver((of: any) => User)
 export class UserResolver {
   constructor(
@@ -43,6 +47,20 @@ export class UserResolver {
   @Mutation((returns) => LoginResponseTo)
   async login(@Args('loginDto') loginDto: LoginDto): Promise<LoginResponseTo> {
     return await this.userService.login(loginDto);
+  }
+
+  @Mutation(() => Boolean)
+  async addProfilePicture(
+    @Args({ name: 'picture', type: () => GraphQLUpload })
+    picture: Upload,
+  ): Promise<boolean> {
+    const { createReadStream, filename } = picture;
+    return await new Promise(async (resolve, reject) =>
+      createReadStream()
+        .pipe(createWriteStream(__dirname + `/images/${filename}`))
+        .on('finish', () => resolve(true))
+        .on('error', () => reject(false)),
+    );
   }
 
   @Query((returns) => User, { nullable: true })

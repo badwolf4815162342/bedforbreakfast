@@ -72,6 +72,7 @@ type Meal {
 type Mutation {
   signUp(signUpDto: SignUpDto!): LoginResponseTo!
   login(loginDto: LoginDto!): LoginResponseTo!
+  addProfilePicture(picture: Upload!): Boolean!
   alterAccommodation(accommodationDto: AccommodationDto!): Accommodation!
   createAccommodation(createAccommodationDto: AccommodationDto!): Accommodation!
   createMeal(createMealDto: CreateMealDto!): Meal!
@@ -115,11 +116,14 @@ input SignUpDto {
   birthday: DateTime!
   gender: String!
   description: String!
-  profilePicture: String!
+  profilePicture: Upload!
   homeTown: String!
   homeCountry: String!
   favoriteFood: String!
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 type User {
   _id: ID!

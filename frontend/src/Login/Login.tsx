@@ -14,7 +14,7 @@ const SIGN_UP_MUTATION = gql`
     $birthday: DateTime!
     $gender: String!
     $description: String!
-    $profilePicture: String!
+    $profilePicture: Upload!
     $homeTown: String!
     $homeCountry: String!
     $favoriteFood: String!
@@ -54,6 +54,12 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
+const ADD_PIC_MUTATION = gql`
+  mutation AddProfilePicture($picture: Upload!) {
+    addProfilePicture(picture: $picture)
+  }
+`;
+
 interface Data {
   login: {
     user: {
@@ -71,7 +77,14 @@ interface Data {
 
 class Login extends Component<
   {},
-  { login: boolean; email: string; password: string; firstName: string; lastName: string }
+  {
+    login: boolean;
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    profilePicture: File | undefined;
+  }
 > {
   constructor(props: any) {
     super(props);
@@ -81,11 +94,14 @@ class Login extends Component<
       password: '',
       firstName: '',
       lastName: '',
+      profilePicture: undefined,
     };
   }
 
   render() {
-    const { login, email, password, firstName, lastName } = this.state;
+    const { login, email, password, firstName, lastName, profilePicture } = this.state;
+    console.log(profilePicture);
+
     return (
       <div>
         <h4 className="mv3">{login ? 'Login' : 'Sign Up'}</h4>
@@ -104,6 +120,18 @@ class Login extends Component<
                 type="text"
                 placeholder="Your last name"
               />
+              <input
+                onChange={(e) => {
+                  console.log(e.target.files);
+                  if (e.target.files) {
+                    const file = e.target.files[0];
+                    this.setState({ ...this.state, profilePicture: file });
+                    console.log(e.target.files[0]);
+                    console.log(this.state);
+                  }
+                }}
+                type="file"
+              />
             </div>
           )}
           <input
@@ -120,7 +148,7 @@ class Login extends Component<
           />
         </div>
         <div className="flex mt3">
-          <Mutation
+          {/* <Mutation
             mutation={login ? LOGIN_MUTATION : SIGN_UP_MUTATION}
             variables={{
               email,
@@ -131,12 +159,25 @@ class Login extends Component<
               birthday: '1995-01-01',
               gender: 'm',
               description: 'Blblbl',
-              profilePicture: 'String',
+              profilePicture,
               homeTown: 'Cologne',
               homeCountry: 'Germany',
               favoriteFood: 'Pancakes',
             }}
             onCompleted={(data: Data) => this._confirm(data)}
+          >
+            {(mutation: any) => (
+              <div className="pointer mr2 button" onClick={mutation}>
+                {login ? 'login' : 'create account'}
+              </div>
+            )}
+          </Mutation> */}
+          <Mutation
+            mutation={ADD_PIC_MUTATION}
+            variables={{
+              picture: this.state.profilePicture,
+            }}
+            onCompleted={(data: Data) => console.log(data)}
           >
             {(mutation: any) => (
               <div className="pointer mr2 button" onClick={mutation}>

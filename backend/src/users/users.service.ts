@@ -5,6 +5,7 @@ import { InjectModel } from 'nestjs-typegoose';
 import { AccommodationDto } from 'src/accommodations/dto/create-accommodation.dto';
 import { ModelType } from 'typegoose';
 
+import { createWriteStream } from 'fs';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { JwtPayload } from '../authentication/interfaces/jwt-payload.interface';
 import { LoginResponseTo } from './dto/login-response.dto';
@@ -43,8 +44,19 @@ export class UsersService {
     const salt = await genSalt();
     password = await hash(password, salt);
 
+    const { createReadStream, filename } = signUpDto.profilePicture;
+
+    const path = `/images/${filename}`;
+
+    const saveSuccess = await new Promise(async (resolve, reject) =>
+      createReadStream()
+        .pipe(createWriteStream(__dirname + path))
+        .on('finish', () => resolve(true))
+        .on('error', () => reject(false)),
+    );
+
     // add hashed password to user object
-    const createdUser = new this.userModel({ ...signUpDto, password });
+    const createdUser = new this.userModel({ ...signUpDto, password, profilePicture: __dirname + path });
 
     return createdUser.save();
   }
