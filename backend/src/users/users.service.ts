@@ -1,9 +1,10 @@
 import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { compare, genSalt, hash } from 'bcryptjs';
+import { ObjectId } from 'mongodb';
 import { InjectModel } from 'nestjs-typegoose';
+import { AccommodationDto } from 'src/accommodations/dto/create-accommodation.dto';
 import { ModelType } from 'typegoose';
 
-import { ObjectId } from 'mongodb';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { JwtPayload } from '../authentication/interfaces/jwt-payload.interface';
 import { AlterUserDto } from './dto/alter-user.dto';
@@ -87,8 +88,6 @@ export class UsersService {
       homeTown: alterUserDto.homeTown,
       homeCountry: alterUserDto.homeCountry,
       favoriteFood: alterUserDto.favoriteFood,
-      isHost: alterUserDto.isHost,
-      isGuest: alterUserDto.isGuest,
     };
     if (alterUserDto._id === '') {
       const createdAccommodation = new this.userModel(user);
@@ -97,21 +96,17 @@ export class UsersService {
     return this.userModel.findByIdAndUpdate(alterUserDto._id, user);
   }
 
-  async change(userOld: User): Promise<User | null> {
-    const user = {
-      firstName: userOld.firstName,
-      lastName: userOld.lastName,
-      email: userOld.email,
-      phoneNumber: userOld.phoneNumber,
-      birthday: userOld.birthday,
-      gender: userOld.gender,
-      profilePicture: userOld.profilePicture,
-      homeTown: userOld.homeTown,
-      homeCountry: userOld.homeCountry,
-      favoriteFood: userOld.favoriteFood,
-      isHost: userOld.isHost,
-      isGuest: userOld.isGuest,
-    };
-    return this.userModel.findByIdAndUpdate(userOld._id, user);
+  async addAccommodation(accommodation: AccommodationDto) {
+    // check if user already has accommodation
+    const userDocument = await this.userModel.findById(accommodation.user).exec();
+    if (userDocument) {
+      const user = userDocument.toObject();
+      if (user.accommodation) {
+        throw new HttpException('User already has accommodation.', HttpStatus.BAD_REQUEST);
+      } else {
+        const newUser = { ...user, accommodation: accommodation._id };
+        await this.userModel.findByIdAndUpdate(user._id, newUser).exec();
+      }
+    }
   }
 }

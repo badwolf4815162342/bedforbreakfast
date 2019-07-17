@@ -1,13 +1,13 @@
-import { Args, Mutation, Query, Resolver, ResolveProperty, Parent } from '@nestjs/graphql';
-import { CreateRequestDto } from './dto/create-request.dto';
-import { Request } from './models/Request';
-import { RequestService } from './request.service';
+import { forwardRef, Inject, NotFoundException, UseGuards } from '@nestjs/common';
+import { Args, Mutation, Parent, Query, ResolveProperty, Resolver } from '@nestjs/graphql';
 import { GqlAuthGuard, User as CurrentUser } from '../authentication/guards/jwt.auth.guard';
 import { CreateRatingDto } from '../rating/dto/create-rating.dto';
-import { RatingService } from '../rating/rating.service';
-import { UseGuards, forwardRef, Inject, NotFoundException } from '@nestjs/common';
-import { User } from '../users/models/User';
 import { Rating } from '../rating/models/Rating';
+import { RatingService } from '../rating/rating.service';
+import { User } from '../users/models/User';
+import { CreateRequestDto } from './dto/create-request.dto';
+import { Request, RequestStatus } from './models/Request';
+import { RequestService } from './request.service';
 
 import { UsersService } from '../users/users.service';
 
@@ -37,17 +37,18 @@ export class RequestResolver {
     if (!receiver) {
       throw new Error('Invalid receiver ID');
     }
-    if (receiver.isHost === false) {
-      throw new Error('Receiver is not a Host!');
+    if (!receiver.accommodation) {
+      throw new Error('Receiver has no Accommodation, so he is not a Host and you want to rate him as a guest!');
     }
-    // if !(receiver.accomondation) {
-    //   throw new Error('Receiver is not a Host!');
-    //}
+
+    // check if you are not rating yourself
     if (receiver._id.equals(proposer._id)) {
       throw new Error('Receiver can not be same person as proposer of the request!');
     }
-
-    // check if host is active in his accomondation if (receiver.accomondation)
+    // check if you only rate once
+    if ((await this.requestService.findByReceiverAndProposer(receiver._id, proposer._id)).length > 0) {
+      throw new Error('You already requested this accommodation!');
+    }
 
     return await this.requestService.create({ ...createRequestDto, proposer });
   }
@@ -70,6 +71,38 @@ export class RequestResolver {
 
     // update the recipe
     const updatedRequest = await this.requestService.alterRatings(request, newRate);
+    if (!updatedRequest) {
+      throw new NotFoundException(request._id);
+    }
+    return updatedRequest;
+  }
+
+  @Mutation((returns) => Request)
+  async updateRequestStatus(
+    @Args('id')
+    id: string,
+    @Args('requestStatus')
+    requestStatus: RequestStatus,
+    @CurrentUser() user: User,
+  ): Promise<Request> {
+    const request = await this.requestService.findById(id);
+    if (!request) {
+      throw new Error('Invalid request ID');
+    }
+    // if (request.receiver.equals(user._id)) {
+    //  throw new Error('You can only change requests proposed to you!');
+    // }
+    if (
+      !(
+        requestStatus.toString() === 'ACCEPTED' ||
+        requestStatus.toString() === 'CANCELLED' ||
+        requestStatus.toString() === 'DENIED'
+      )
+    ) {
+      throw new Error('Not a valid requestState try ACCEPTED or CANCELLED or DENIED');
+    }
+    request.requestStatus = requestStatus;
+    const updatedRequest = await this.requestService.change(request);
     if (!updatedRequest) {
       throw new NotFoundException(request._id);
     }

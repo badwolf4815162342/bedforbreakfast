@@ -1,9 +1,9 @@
-import { Query, Resolver, ResolveProperty, Parent } from '@nestjs/graphql';
+import { forwardRef, Inject } from '@nestjs/common';
+import { Parent, Query, ResolveProperty, Resolver } from '@nestjs/graphql';
+import { RequestService } from '../request/request.service';
+import { UsersService } from '../users/users.service';
 import { Rating } from './models/Rating';
 import { RatingService } from './rating.service';
-import { RequestService } from '../request/request.service';
-import { Inject, forwardRef } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
 
 @Resolver((of: any) => {
   return Rating;

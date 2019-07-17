@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 import { Field, ID, ObjectType } from 'type-graphql';
 import { arrayProp, prop, Ref, Typegoose } from 'typegoose';
-import { Rating, RoleType } from '../../rating/models/Rating';
+import { Rating } from '../../rating/models/Rating';
 import { User } from '../../users/models/User';
 
 @ObjectType()
@@ -24,10 +24,6 @@ export class Request extends Typegoose {
   @Field((type) => User)
   @prop({ ref: User, required: true })
   proposer!: Ref<ObjectId>;
-
-  @Field((type) => String)
-  @prop({ required: true })
-  inRoleOf!: RoleType;
 
   @Field((type) => String)
   @prop({ required: true })

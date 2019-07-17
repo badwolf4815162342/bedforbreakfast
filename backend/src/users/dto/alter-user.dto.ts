@@ -50,12 +50,4 @@ export class AlterUserDto {
   @Field()
   @IsNotEmpty()
   favoriteFood!: string;
-
-  @Field()
-  @IsNotEmpty()
-  isHost!: string;
-
-  @Field()
-  @IsNotEmpty()
-  isGuest!: string;
 }

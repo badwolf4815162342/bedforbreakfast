@@ -6,24 +6,30 @@
 type Accommodation {
   _id: ID!
   user: User!
+  isActive: Boolean!
   country: String!
   streetName: String!
   streetNumber: String!
   zipCode: String!
   city: String!
   description: String
+  district: String
   numberOfBeds: Float!
+  pictures: [String]
 }
 
 input AccommodationDto {
   _id: String
+  isActive: Boolean!
   country: String!
   streetName: String!
   streetNumber: String!
   zipCode: String!
   city: String!
   description: String
+  district: String
   numberOfBeds: Float!
+  pictures: [String]
 }
 
 input CreateMealDto {
@@ -39,10 +45,10 @@ input CreateRatingDto {
 }
 
 input CreateRequestDto {
+  _id: String
   start: DateTime!
   end: DateTime!
   receiver: String!
-  inRoleOf: String!
   description: String!
 }
 
@@ -73,6 +79,7 @@ type Mutation {
   createMeal(createMealDto: CreateMealDto!): Meal!
   createRequest(createRequestDto: CreateRequestDto!): Request!
   createRating(createRatingDto: CreateRatingDto!): Request!
+  updateRequestStatus(requestStatus: String!, id: String!): Request!
 }
 
 """Mongo object id scalar type"""
@@ -103,7 +110,6 @@ type Request {
   end: DateTime!
   receiver: User!
   proposer: User!
-  inRoleOf: String!
   requestStatus: String!
   description: String!
   ratings: [Rating!]!
@@ -128,8 +134,6 @@ type User {
   _id: ID!
   email: String!
   phoneNumber: String!
-  isHost: Boolean!
-  isGuest: Boolean!
   firstName: String!
   lastName: String!
   birthday: DateTime!
@@ -142,4 +146,5 @@ type User {
   favoriteFood: String!
   likedBy: [String!]!
   dislikedBy: [String!]!
+  accommodation: Accommodation
 }

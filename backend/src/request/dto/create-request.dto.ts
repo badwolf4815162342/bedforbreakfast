@@ -1,11 +1,11 @@
 import { IsNotEmpty } from 'class-validator';
-import { RoleType } from 'src/rating/models/Rating';
 import { Field, InputType } from 'type-graphql';
-import { IsRoleType } from '../../common/validators/roleTypeValidator';
-import { Request, RequestStatus } from '../models/Request';
 
 @InputType()
 export class CreateRequestDto {
+  @Field({ nullable: true })
+  _id?: string; //tslint:disable-line
+
   @Field()
   start!: Date;
 
@@ -16,14 +16,6 @@ export class CreateRequestDto {
   receiver!: string;
 
   @Field()
-  @IsRoleType('Given ($value) is not a Role Type (MEAL or ACCOMMONDATION)!')
-  inRoleOf!: RoleType;
-
-  @Field()
   @IsNotEmpty()
   description!: string;
-
-  //@Field()
-  // TODO: Validator
-  //requestStatus!: RequestStatus;
 }

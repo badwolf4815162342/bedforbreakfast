@@ -1,9 +1,13 @@
+import { ObjectId } from 'mongodb';
 import { Field, InputType } from 'type-graphql';
 
 @InputType()
 export class AccommodationDto {
   @Field({ nullable: true })
   _id?: string; //tslint:disable-line
+
+  @Field()
+  isActive!: boolean;
 
   @Field()
   country!: string;
@@ -23,6 +27,14 @@ export class AccommodationDto {
   @Field({ nullable: true })
   description?: string;
 
+  @Field({ nullable: true })
+  district?: string;
+
   @Field()
   numberOfBeds!: number;
+
+  @Field((type) => [String], { nullable: 'itemsAndList' })
+  pictures?: string[];
+
+  user!: ObjectId;
 }

@@ -8,13 +8,16 @@ const ACCOMMODATION_BY_ID = gql`
   query accommodationById($_id: String!) {
     accommodationById(_id: $_id) {
       _id
+      isActive
       country
       city
       streetName
       streetNumber
       zipCode
       description
+      district
       numberOfBeds
+      pictures
     }
   }
 `;
@@ -51,20 +54,22 @@ class AccommodationLoad extends React.Component<AccommodationLoadProps, Accommod
 
             console.log(data);
             const accommodation = data.accommodationById;
-            // {_id, streetName} = data.accommidationById;
             return (
               <div>
                 <CreateAccommodation
                   accommodation={
                     new Accommodation(
                       accommodation._id,
+                      accommodation.isActive,
                       accommodation.country,
                       accommodation.streetName,
                       accommodation.streetNumber,
                       accommodation.zipCode,
                       accommodation.city,
                       accommodation.description,
+                      accommodation.district,
                       accommodation.numberOfBeds,
+                      accommodation.pictures,
                     )
                   }
                 />
@@ -80,13 +85,16 @@ class AccommodationLoad extends React.Component<AccommodationLoadProps, Accommod
 interface Data {
   accommodationById: {
     _id: string;
+    isActive: boolean;
     country: string;
     city: string;
     streetName: string;
     streetNumber: string;
     zipCode: string;
     description: string;
+    district: string;
     numberOfBeds: number;
+    pictures: string[];
   };
 }
 

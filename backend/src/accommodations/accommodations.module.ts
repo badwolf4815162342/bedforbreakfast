@@ -10,5 +10,6 @@ import { Accommodation } from './models/Accommodation';
 @Module({
   imports: [TypegooseModule.forFeature([Accommodation]), AuthenticationModule, UsersModule],
   providers: [AccommodationsService, AccommodationResolver],
+  exports: [AccommodationsService],
 })
 export class AccommodationsModule {}

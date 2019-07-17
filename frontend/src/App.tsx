@@ -13,6 +13,7 @@ import Footer from './NavigationElements/Footer/Footer';
 import Navbar from './NavigationElements/Header/Header';
 import AccommodationLoad from './ProfileComponent/CreateAccommodation/AccommodationLoad';
 import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
+import ProfileUserDescription from './ProfileComponent/ProfileComponent';
 import SearchResults from './SearchResults/SearchResults';
 import { MainThemeMaterial } from './StyledComponents/Theme';
 
@@ -51,6 +52,11 @@ export default class App extends React.Component<any, any> {
         {
           component: LandingPage,
           path: '/',
+          exact: true,
+        },
+        {
+          component: ProfileUserDescription,
+          path: '/profile',
           exact: true,
         },
       ],
