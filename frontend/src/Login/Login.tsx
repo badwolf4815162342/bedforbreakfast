@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 
-import { AUTH_TOKEN } from '../constants';
+import { AUTH_TOKEN, USER_ID} from '../constants';
 import { Section } from '../StyledComponents/StyledBasicItems';
 import {
   GenderLabel,
@@ -57,6 +57,9 @@ const SIGN_UP_MUTATION = gql`
         favoriteFood: $favoriteFood
       }
     ) {
+      user {
+        _id
+      }
       token
     }
   }
@@ -65,6 +68,9 @@ const SIGN_UP_MUTATION = gql`
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($email: String!, $password: String!) {
     login(loginDto: { email: $email, password: $password }) {
+      user {
+        _id
+      }
       token
     }
   }
@@ -72,9 +78,15 @@ const LOGIN_MUTATION = gql`
 
 interface Data {
   login: {
+    user: {
+      _id: string;
+    };
     token: string;
   };
   signUp: {
+    user: {
+      _id: string;
+    };
     token: string;
   };
 }
@@ -260,13 +272,14 @@ class Login extends Component<{}, LoginState> {
   }
 
   async _confirm(data: Data) {
-    const { token } = this.state.login ? data.login : data.signUp;
-    this._saveUserData(token);
+    const { token, user } = this.state.login ? data.login : data.signUp;
+    this._saveUserData(token, user._id);
     console.log(token);
   }
 
-  _saveUserData(token: string) {
+  _saveUserData(token: string, userId: string) {
     localStorage.setItem(AUTH_TOKEN, token);
+    localStorage.setItem(USER_ID, userId);
   }
 }
 

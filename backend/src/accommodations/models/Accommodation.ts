@@ -1,10 +1,17 @@
+import { ObjectId } from 'mongodb';
 import { Field, ID, ObjectType } from 'type-graphql';
-import { prop, Typegoose } from 'typegoose';
+import { prop, Ref, Typegoose } from 'typegoose';
+
+import { User } from '../../users/models/User';
 
 @ObjectType()
 export class Accommodation extends Typegoose {
   @Field((type) => ID)
-  _id!: string; //tslint:disable-line
+  readonly _id!: ObjectId; // tslint:disable-line variable-name
+
+  @Field((type) => User)
+  @prop({ ref: User, required: true })
+  user!: Ref<ObjectId>;
 
   @Field((type) => Boolean)
   @prop({ required: true })

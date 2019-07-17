@@ -1,6 +1,8 @@
 import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { compare, genSalt, hash } from 'bcryptjs';
+import { ObjectId } from 'mongodb';
 import { InjectModel } from 'nestjs-typegoose';
+import { AccommodationDto } from 'src/accommodations/dto/create-accommodation.dto';
 import { ModelType } from 'typegoose';
 
 import { AuthenticationService } from '../authentication/authentication.service';
@@ -18,8 +20,8 @@ export class UsersService {
     @Inject(forwardRef(() => AuthenticationService)) private readonly authService: AuthenticationService,
   ) {}
 
-  async findById(id: string): Promise<User | null> {
-    return this.userModel.findById(id);
+  async findById(id: ObjectId | string): Promise<User | null> {
+    return this.userModel.findById(id).exec();
   }
 
   async findAll(): Promise<User[]> {
@@ -71,5 +73,19 @@ export class UsersService {
     const token = await this.authService.signPayload(payload);
 
     return { token, user };
+  }
+
+  async addAccommodation(accommodation: AccommodationDto) {
+    // check if user already has accommodation
+    const userDocument = await this.userModel.findById(accommodation.user).exec();
+    if (userDocument) {
+      const user = userDocument.toObject();
+      if (user.accommodation) {
+        throw new HttpException('User already has accommodation.', HttpStatus.BAD_REQUEST);
+      } else {
+        const newUser = { ...user, accommodation: accommodation._id };
+        await this.userModel.findByIdAndUpdate(user._id, newUser).exec();
+      }
+    }
   }
 }

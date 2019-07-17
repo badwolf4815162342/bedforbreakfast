@@ -1,11 +1,13 @@
+import { ObjectId } from 'mongodb';
 import { Field, ID, ObjectType } from 'type-graphql';
-import { prop, Typegoose } from 'typegoose';
+import { prop, Ref, Typegoose } from 'typegoose';
+
+import { Accommodation } from '../../accommodations/models/Accommodation';
 
 @ObjectType()
 export class User extends Typegoose {
   @Field((type) => ID)
-  // tslint:disable-next-line: variable-name
-  readonly _id!: string;
+  readonly _id!: ObjectId; // tslint:disable-line variable-name
 
   @Field((type) => String)
   @prop({ required: true, unique: true })
@@ -17,14 +19,6 @@ export class User extends Typegoose {
   @Field((type) => String)
   @prop({ required: true })
   phoneNumber!: string;
-
-  @Field((type) => Boolean)
-  @prop({ required: true, default: false })
-  isHost!: boolean;
-
-  @Field((type) => Boolean)
-  @prop({ required: true, default: false })
-  isGuest!: boolean;
 
   @Field((type) => String)
   @prop({ required: true })
@@ -65,8 +59,10 @@ export class User extends Typegoose {
   @Field((type) => String)
   @prop({ required: true })
   favoriteFood!: string;
+
+  @Field((type) => Accommodation, { nullable: true })
+  @prop({ ref: User })
+  accommodation?: Ref<ObjectId>;
 }
 
 export type GenderType = 'm' | 'w' | 'd';
-
-export const UserModel = new User().getModelForClass(User);
