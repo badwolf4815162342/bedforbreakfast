@@ -86,6 +86,7 @@ type Query {
   users: [User!]!
   user(userId: String!): User
   accommodations: [Accommodation!]!
+  accommodationsByCity(city: ObjectId!): [Accommodation!]!
   accommodationById(_id: ObjectId!): Accommodation!
   meals: [Meal!]!
   ratings: [Rating!]!
