@@ -72,7 +72,7 @@ type Meal {
 type Mutation {
   signUp(signUpDto: SignUpDto!): LoginResponseTo!
   login(loginDto: LoginDto!): LoginResponseTo!
-  addProfilePicture(picture: Upload!): Boolean!
+  addProfilePicture(picture: Upload!): String!
   alterAccommodation(accommodationDto: AccommodationDto!): Accommodation!
   createAccommodation(createAccommodationDto: AccommodationDto!): Accommodation!
   createMeal(createMealDto: CreateMealDto!): Meal!

@@ -45,6 +45,7 @@
     "nestjs-typegoose": "^5.2.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
+    "promises-all": "^1.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^2.6.3",
     "rxjs": "^6.5.2",

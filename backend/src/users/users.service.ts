@@ -5,9 +5,9 @@ import { InjectModel } from 'nestjs-typegoose';
 import { AccommodationDto } from 'src/accommodations/dto/create-accommodation.dto';
 import { ModelType } from 'typegoose';
 
-import { createWriteStream } from 'fs';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { JwtPayload } from '../authentication/interfaces/jwt-payload.interface';
+import { ImageUploadService } from '../image-upload/image-upload.service';
 import { LoginResponseTo } from './dto/login-response.dto';
 import { LoginDto } from './dto/login.dto';
 import { SignUpDto } from './dto/sign-up.dto';
@@ -19,6 +19,7 @@ export class UsersService {
     @InjectModel(User)
     private readonly userModel: ModelType<User>,
     @Inject(forwardRef(() => AuthenticationService)) private readonly authService: AuthenticationService,
+    private readonly imageUploadService: ImageUploadService,
   ) {}
 
   async findById(id: ObjectId | string): Promise<User | null> {
@@ -44,19 +45,15 @@ export class UsersService {
     const salt = await genSalt();
     password = await hash(password, salt);
 
-    const { createReadStream, filename } = signUpDto.profilePicture;
-
-    const path = `/images/${filename}`;
-
-    const saveSuccess = await new Promise(async (resolve, reject) =>
-      createReadStream()
-        .pipe(createWriteStream(__dirname + path))
-        .on('finish', () => resolve(true))
-        .on('error', () => reject(false)),
-    );
+    const imageUrl = this.imageUploadService.singleFileUpload(signUpDto.profilePicture);
 
     // add hashed password to user object
-    const createdUser = new this.userModel({ ...signUpDto, password, profilePicture: __dirname + path });
+    const createdUser = new this.userModel({
+      ...signUpDto,
+      password,
+      profilePicture: imageUrl,
+      verified: false,
+    });
 
     return createdUser.save();
   }
