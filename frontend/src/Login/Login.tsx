@@ -118,7 +118,7 @@ class Login extends Component<{}, LoginState> {
       firstName: '',
       lastName: '',
       birthday: new Date(),
-      gender: '',
+      gender: 'male',
       description: '',
       homeTown: '',
       homeCountry: '',
