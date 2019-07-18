@@ -108,6 +108,31 @@ mutation {
 
 receivedRatings query needs userId of user x as a field
 ```
+query {
+  receivedRatings (userId: "5d2effa567a4f511e4f4d7d5" ) {
+    _id
+    description
+    receiverRole
+    rating
+    receiver {
+      _id
+    }
+    request {
+      _id
+      start
+      end
+      description
+      requestStatus
+      ratings {
+        _id
+      }
+    }
+    author {
+      _id
+      firstName
+    }
+  }
+}
 ```
 
 ### Submit TripReport:
