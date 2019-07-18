@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import React from 'react';
 import { Query } from 'react-apollo';
 import Accommodation from './Accommodation';
@@ -32,7 +32,7 @@ class AccommodationLoad extends React.Component<AccommodationLoadProps, Accommod
   constructor(props: any) {
     super(props);
     this.state = {
-      accommodationId: '5d2a0613e009d1c937f77293',
+      accommodationId: '5d2d9ef2c4615536f8829687',
     };
   }
 

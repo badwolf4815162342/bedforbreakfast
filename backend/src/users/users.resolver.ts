@@ -1,7 +1,10 @@
 import { forwardRef, Inject, NotFoundException } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveProperty, Resolver } from '@nestjs/graphql';
+import { GraphQLUpload } from 'graphql-upload';
+import { Upload } from 'src/common/types/Upload';
 
 import { AccommodationsService } from '../accommodations/accommodations.service';
+import { ImageUploadService } from '../image-upload/image-upload.service';
 import { LoginResponseTo } from './dto/login-response.dto';
 import { LoginDto } from './dto/login.dto';
 import { SignUpDto } from './dto/sign-up.dto';
@@ -13,6 +16,7 @@ export class UserResolver {
   constructor(
     private readonly userService: UsersService,
     @Inject(forwardRef(() => AccommodationsService)) private readonly accommodationService: AccommodationsService,
+    private readonly imageUploadService: ImageUploadService,
   ) {}
 
   @ResolveProperty()
@@ -32,7 +36,6 @@ export class UserResolver {
   @Mutation((returns) => LoginResponseTo)
   async signUp(@Args('signUpDto') signUpDto: SignUpDto): Promise<LoginResponseTo> {
     const user = await this.userService.signUp(signUpDto);
-    user.verified = false;
 
     // also log user in
     const { token } = await this.userService.login({ email: user.email, password: signUpDto.password });
@@ -43,6 +46,14 @@ export class UserResolver {
   @Mutation((returns) => LoginResponseTo)
   async login(@Args('loginDto') loginDto: LoginDto): Promise<LoginResponseTo> {
     return await this.userService.login(loginDto);
+  }
+
+  @Mutation(() => String)
+  async addProfilePicture(
+    @Args({ name: 'picture', type: () => GraphQLUpload })
+    picture: Upload,
+  ): Promise<string> {
+    return this.imageUploadService.singleFileUpload(picture);
   }
 
   @Query((returns) => User, { nullable: true })

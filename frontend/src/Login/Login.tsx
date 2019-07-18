@@ -1,8 +1,32 @@
+import { Button } from '@material-ui/core';
 import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 
 import { AUTH_TOKEN, USER_ID } from '../constants';
+import { Section } from '../StyledComponents/StyledBasicItems';
+import {
+  GenderLabel,
+  GiveInformation,
+  InputBirthday,
+  InputCountry,
+  InputDescription,
+  InputEmail,
+  InputFavoriteFood,
+  InputFirstName,
+  InputHometown,
+  InputLastName,
+  InputPassword,
+  LoginBox,
+  LoginButton,
+  LoginHeader,
+  LoginLink,
+  RegisterBox,
+  RegisterButton,
+  RegisterLink,
+  SelectContainer,
+  UploadContainer,
+} from './LoginStyle';
 
 const SIGN_UP_MUTATION = gql`
   mutation SignUpMutation(
@@ -14,7 +38,7 @@ const SIGN_UP_MUTATION = gql`
     $birthday: DateTime!
     $gender: String!
     $description: String!
-    $profilePicture: String!
+    $profilePicture: Upload!
     $homeTown: String!
     $homeCountry: String!
     $favoriteFood: String!
@@ -69,10 +93,22 @@ interface Data {
   };
 }
 
-class Login extends Component<
-  {},
-  { login: boolean; email: string; password: string; firstName: string; lastName: string }
-> {
+interface LoginState {
+  login: boolean;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  birthday: Date;
+  gender: string;
+  description: string;
+  homeTown: string;
+  homeCountry: string;
+  favoriteFood: string;
+  profilePicture: File | undefined;
+}
+
+class Login extends Component<{}, LoginState> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -81,81 +117,191 @@ class Login extends Component<
       password: '',
       firstName: '',
       lastName: '',
+      birthday: new Date(),
+      gender: 'male',
+      description: '',
+      homeTown: '',
+      homeCountry: '',
+      favoriteFood: '',
+      profilePicture: undefined,
     };
   }
 
   render() {
-    const { login, email, password, firstName, lastName } = this.state;
+    const {
+      login,
+      email,
+      password,
+      firstName,
+      lastName,
+      birthday,
+      gender,
+      description,
+      homeTown,
+      homeCountry,
+      favoriteFood,
+      profilePicture,
+    } = this.state;
     return (
-      <div>
-        <h4 className="mv3">{login ? 'Login' : 'Sign Up'}</h4>
-        <div className="flex flex-column">
-          {!login && (
-            <div>
+      <Section>
+        {login && (
+          <LoginBox>
+            <LoginHeader>Login</LoginHeader>
+            <InputEmail
+              value={email}
+              onChange={(e) => this.setState({ email: e.target.value })}
+              type="email"
+              label="Your email address"
+            />
+            <InputPassword
+              value={password}
+              onChange={(e) => this.setState({ password: e.target.value })}
+              type="password"
+              label="Choose a safe password"
+            />
+            <Mutation
+              mutation={LOGIN_MUTATION}
+              variables={{
+                email,
+                password,
+              }}
+              onCompleted={(data: Data) => this._confirm(data)}
+            >
+              {(mutation: any) => (
+                <LoginButton variant="contained" color="secondary" type="submit" onClick={mutation}>
+                  Login
+                </LoginButton>
+              )}
+            </Mutation>
+            <RegisterLink onClick={() => this.setState({ login: !login })}>Need to create an account?</RegisterLink>
+          </LoginBox>
+        )}
+        {!login && (
+          <RegisterBox>
+            <LoginHeader>Sign up</LoginHeader>
+            <InputEmail
+              value={email}
+              onChange={(e) => this.setState({ email: e.target.value })}
+              type="email"
+              label="Your email address"
+            />
+            <InputPassword
+              value={password}
+              onChange={(e) => this.setState({ password: e.target.value })}
+              type="password"
+              label="Choose a safe password"
+            />
+            <GiveInformation>Additional Information</GiveInformation>
+            <InputFirstName
+              value={firstName}
+              onChange={(e) => this.setState({ firstName: e.target.value })}
+              type="text"
+              label="Your first name"
+            />
+            <InputLastName
+              value={lastName}
+              onChange={(e) => this.setState({ lastName: e.target.value })}
+              type="text"
+              label="Your last name"
+            />
+            <InputBirthday
+              value={birthday}
+              onChange={(date) => {
+                if (date) {
+                  this.setState({ birthday: date.toDate() });
+                }
+              }}
+              format="DD.MM.YYYY"
+              disableFuture
+              label="Your date of birth"
+            />
+            <UploadContainer>
               <input
-                value={firstName}
-                onChange={(e) => this.setState({ firstName: e.target.value })}
-                type="text"
-                placeholder="Your first name"
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="raised-button-file"
+                multiple
+                type="file"
+                onChange={(e) => {
+                  if (e.target.files) {
+                    const file = e.target.files[0];
+                    console.log(file);
+                    this.setState({ profilePicture: file });
+                  }
+                }}
               />
-              <input
-                value={lastName}
-                onChange={(e) => this.setState({ lastName: e.target.value })}
-                type="text"
-                placeholder="Your last name"
-              />
-            </div>
-          )}
-          <input
-            value={email}
-            onChange={(e) => this.setState({ email: e.target.value })}
-            type="text"
-            placeholder="Your email address"
-          />
-          <input
-            value={password}
-            onChange={(e) => this.setState({ password: e.target.value })}
-            type="password"
-            placeholder="Choose a safe password"
-          />
-        </div>
-        <div className="flex mt3">
-          <Mutation
-            mutation={login ? LOGIN_MUTATION : SIGN_UP_MUTATION}
-            variables={{
-              email,
-              password,
-              firstName,
-              lastName,
-              phoneNumber: '+491784680003',
-              birthday: '1995-01-01',
-              gender: 'm',
-              description: 'Blblbl',
-              profilePicture: 'String',
-              homeTown: 'Cologne',
-              homeCountry: 'Germany',
-              favoriteFood: 'Pancakes',
-            }}
-            onCompleted={(data: Data) => this._confirm(data)}
-          >
-            {(mutation: any) => (
-              <div className="pointer mr2 button" onClick={mutation}>
-                {login ? 'login' : 'create account'}
-              </div>
-            )}
-          </Mutation>
-          <div className="pointer button" onClick={() => this.setState({ login: !login })}>
-            {login ? 'need to create an account?' : 'already have an account?'}
-          </div>
-        </div>
-      </div>
+              <label htmlFor="raised-button-file">
+                <Button variant="contained" component="span">
+                  Upload Profile Picture
+                </Button>
+              </label>
+            </UploadContainer>
+            <SelectContainer>
+              <GenderLabel>Gender:</GenderLabel>
+              <select value={gender} onChange={(e) => this.setState({ gender: e.target.value })}>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </SelectContainer>
+            <InputDescription
+              value={description}
+              onChange={(e) => this.setState({ description: e.target.value })}
+              type="text"
+              label="Describe yourself"
+            />
+            <InputHometown
+              value={homeTown}
+              onChange={(e) => this.setState({ homeTown: e.target.value })}
+              type="text"
+              label="Your hometown"
+            />
+            <InputCountry
+              value={homeCountry}
+              onChange={(e) => this.setState({ homeCountry: e.target.value })}
+              type="text"
+              label="Your home country"
+            />
+            <InputFavoriteFood
+              value={favoriteFood}
+              onChange={(e) => this.setState({ favoriteFood: e.target.value })}
+              type="text"
+              label="Your favorite food"
+            />
+            <Mutation
+              mutation={SIGN_UP_MUTATION}
+              variables={{
+                email,
+                password,
+                firstName,
+                lastName,
+                phoneNumber: '+491784680003',
+                birthday,
+                gender,
+                description,
+                profilePicture,
+                homeTown,
+                homeCountry,
+                favoriteFood,
+              }}
+              onCompleted={(data: Data) => this._confirm(data)}
+            >
+              {(mutation: any) => (
+                <RegisterButton variant="contained" color="secondary" type="submit" onClick={mutation}>
+                  Create Account
+                </RegisterButton>
+              )}
+            </Mutation>
+            <LoginLink onClick={() => this.setState({ login: !login })}>Already have an account?</LoginLink>
+          </RegisterBox>
+        )}
+      </Section>
     );
   }
 
   async _confirm(data: Data) {
     const { token, user } = this.state.login ? data.login : data.signUp;
     this._saveUserData(token, user._id);
-    console.log(token);
   }
 
   _saveUserData(token: string, userId: string) {

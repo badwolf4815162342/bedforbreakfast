@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import React, { FunctionComponent } from 'react';
 import { Query } from 'react-apollo';
 

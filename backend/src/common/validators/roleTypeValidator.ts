@@ -11,7 +11,7 @@ export function IsRoleType(property: string, validationOptions?: ValidationOptio
       options: validationOptions,
       validator: {
         validate(value: any) {
-          return typeof value === 'string' && (value === 'MEAL' || value === 'ACCOMMONDATION');
+          return typeof value === 'string' && (value === 'MEAL' || value === 'ACCOMMODATION');
           // you can return a Promise<boolean> here as well, if you want to make async validation
         },
       },

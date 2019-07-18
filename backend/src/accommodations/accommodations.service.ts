@@ -19,6 +19,10 @@ export class AccommodationsService {
     return await this.accommodationModel.find().exec();
   }
 
+  async findByCity(cityName: string): Promise<Accommodation[]> {
+    return await this.accommodationModel.find({ city: cityName }).exec();
+  }
+
   async findById(id: ObjectId): Promise<Accommodation | null> {
     return this.accommodationModel.findById(id);
   }
