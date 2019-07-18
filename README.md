@@ -104,7 +104,7 @@ mutation {
 }
 ```
 
-### Get ratings rating user x:
+### Get ratings rating user x: POTENTIAL BROKEN
 
 receivedRatings query needs userId of user x as a field
 ```
