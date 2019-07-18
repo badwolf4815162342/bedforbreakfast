@@ -73,4 +73,4 @@ export class User extends Typegoose {
   accommodation?: Ref<ObjectId>;
 }
 
-export type GenderType = 'm' | 'w' | 'd';
+export type GenderType = 'm' | 'f' | 'd';
