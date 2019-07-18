@@ -3,6 +3,7 @@ import { Field, ID, ObjectType } from 'type-graphql';
 import { arrayProp, prop, Ref, Typegoose } from 'typegoose';
 
 import { Accommodation } from '../../accommodations/models/Accommodation';
+import { Meal } from '../../meal/models/Meal';
 
 @ObjectType()
 export class User extends Typegoose {
@@ -71,6 +72,10 @@ export class User extends Typegoose {
   @Field((type) => Accommodation, { nullable: true })
   @prop({ ref: User })
   accommodation?: Ref<ObjectId>;
+
+  @Field((type) => [Meal])
+  @arrayProp({ itemsRef: 'Meal' })
+  meals?: Array<Ref<ObjectId>>;
 }
 
 export type GenderType = 'm' | 'w' | 'd';

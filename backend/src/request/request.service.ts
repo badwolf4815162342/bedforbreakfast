@@ -31,7 +31,7 @@ export class RequestService {
     return await createdRequest.save();
   }
 
-  async alterRatings(request: Request, newRate: Rating): Promise<Request | null> {
+  async addRating(request: Request, newRate: Rating): Promise<Request | null> {
     const newRequest = {
       ratings: request.ratings,
     };

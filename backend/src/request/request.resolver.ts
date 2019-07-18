@@ -124,8 +124,8 @@ export class RequestResolver {
 
     const newRate = await this.ratingService.create({ ...createRatingDto, author, receiver });
 
-    // update the recipe
-    const updatedRequest = await this.requestService.alterRatings(request, newRate);
+    // update the request
+    const updatedRequest = await this.requestService.addRating(request, newRate);
     if (!updatedRequest) {
       throw new NotFoundException(request._id);
     }

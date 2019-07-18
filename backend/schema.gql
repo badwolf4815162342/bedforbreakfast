@@ -33,6 +33,7 @@ input AccommodationDto {
 }
 
 input CreateMealDto {
+  _id: String
   description: String!
 }
 
@@ -68,6 +69,8 @@ type LoginResponseTo {
 }
 
 type Meal {
+  _id: ID!
+  user: User!
   description: String!
 }
 
@@ -75,9 +78,10 @@ type Mutation {
   signUp(signUpDto: SignUpDto!): LoginResponseTo!
   login(loginDto: LoginDto!): LoginResponseTo!
   addProfilePicture(picture: Upload!): String!
+  createMeal(createMealDto: CreateMealDto!): Meal!
+  addMealPicture(picture: Upload!): String!
   alterAccommodation(accommodationDto: AccommodationDto!): Accommodation!
   createAccommodation(createAccommodationDto: AccommodationDto!): Accommodation!
-  createMeal(createMealDto: CreateMealDto!): Meal!
   createRequest(createRequestDto: CreateRequestDto!): Request!
   createRating(createRatingDto: CreateRatingDto!): Request!
   updateRequestStatus(updateRequestStatusDto: UpdateRequestStatusDto!): Request!
@@ -89,10 +93,10 @@ scalar ObjectId
 type Query {
   users: [User!]!
   user(userId: String!): User
+  meals: [Meal!]!
   accommodations: [Accommodation!]!
   accommodationsByCity(city: String!): [Accommodation!]!
   accommodationById(_id: ObjectId!): Accommodation!
-  meals: [Meal!]!
   requests: [Request!]!
   ratings: [Rating!]!
   receivedRatings(userId: String!): [Rating!]!
@@ -173,4 +177,5 @@ type User {
   likedBy: [User!]!
   dislikedBy: [User!]!
   accommodation: Accommodation
+  meals: [Meal!]!
 }

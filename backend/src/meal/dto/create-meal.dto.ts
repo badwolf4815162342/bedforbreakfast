@@ -1,9 +1,11 @@
 import { IsNotEmpty } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
-import { Meal } from '../models/Meal';
 
 @InputType()
-export class CreateMealDto implements Partial<Meal> {
+export class CreateMealDto {
+  @Field({ nullable: true })
+  _id?: string; //tslint:disable-line
+
   @Field()
   @IsNotEmpty()
   description!: string;
