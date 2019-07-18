@@ -18,6 +18,11 @@ const GET_USER_BY_ID = gql`
       homeTown
       homeCountry
       favoriteFood
+      likedBy
+      dislikedBy
+      accommodation {
+        isActive
+      }
     }
   }
 `;
@@ -35,6 +40,9 @@ interface UserData {
     homeTown: string;
     homeCountry: string;
     favoriteFood: string;
+    likedBy: string[];
+    dislikedBy: string[];
+    isActive: boolean;
   };
 }
 
@@ -48,7 +56,7 @@ class ProfileComponent extends React.Component<{}> {
       case 'f':
         return 'female';
       case 'd':
-        return 'divers';
+        return 'diverse';
       default:
         return 'not defined';
     }
@@ -71,6 +79,9 @@ class ProfileComponent extends React.Component<{}> {
           console.log(data);
           const user = data.user;
           const gender = this.fullGenderLabel(user.gender);
+          const pRating = user.likedBy.length;
+          const nRating = user.dislikedBy.length;
+          const status = user.isActive ? 'Accepting guests' : 'Not accepting guests';
 
           return (
             <Section>
@@ -81,9 +92,9 @@ class ProfileComponent extends React.Component<{}> {
                   lastName={user.lastName}
                   birthday={user.birthday}
                   gender={gender}
-                  pRating={7}
-                  nRating={1}
-                  status={'Accepting guests'}
+                  pRating={pRating}
+                  nRating={nRating}
+                  status={status}
                   description={user.description}
                   verified={user.verified}
                   homeTown={user.homeTown}
