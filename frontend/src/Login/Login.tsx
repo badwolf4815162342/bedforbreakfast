@@ -6,6 +6,7 @@ import { Mutation } from 'react-apollo';
 import { AUTH_TOKEN, USER_ID } from '../constants';
 import { Section } from '../StyledComponents/StyledBasicItems';
 import {
+  Error,
   GenderLabel,
   GiveInformation,
   InputBirthday,
@@ -17,14 +18,17 @@ import {
   InputHometown,
   InputLastName,
   InputPassword,
+  InputPhone,
   LoginBox,
   LoginButton,
   LoginHeader,
   LoginLink,
   RegisterBox,
   RegisterButton,
+  RegisterButtonContainer,
   RegisterLink,
   SelectContainer,
+  SuccessSignUp,
   UploadContainer,
 } from './LoginStyle';
 
@@ -95,6 +99,7 @@ interface Data {
 
 interface LoginState {
   login: boolean;
+  successSignUp: boolean;
   email: string;
   password: string;
   firstName: string;
@@ -104,6 +109,7 @@ interface LoginState {
   description: string;
   homeTown: string;
   homeCountry: string;
+  phoneNumber: string;
   favoriteFood: string;
   profilePicture: File | undefined;
 }
@@ -113,6 +119,7 @@ class Login extends Component<{}, LoginState> {
     super(props);
     this.state = {
       login: true, // switch between Login and SignUp
+      successSignUp: false,
       email: '',
       password: '',
       firstName: '',
@@ -122,6 +129,7 @@ class Login extends Component<{}, LoginState> {
       description: '',
       homeTown: '',
       homeCountry: '',
+      phoneNumber: '',
       favoriteFood: '',
       profilePicture: undefined,
     };
@@ -130,6 +138,7 @@ class Login extends Component<{}, LoginState> {
   render() {
     const {
       login,
+      successSignUp,
       email,
       password,
       firstName,
@@ -139,6 +148,7 @@ class Login extends Component<{}, LoginState> {
       description,
       homeTown,
       homeCountry,
+      phoneNumber,
       favoriteFood,
       profilePicture,
     } = this.state;
@@ -165,7 +175,10 @@ class Login extends Component<{}, LoginState> {
                 email,
                 password,
               }}
-              onCompleted={(data: Data) => this._confirm(data)}
+              onCompleted={(data: Data) => {
+                this.setState({ successSignUp: true });
+                this._confirm(data);
+              }}
             >
               {(mutation: any) => (
                 <LoginButton variant="contained" color="secondary" type="submit" onClick={mutation}>
@@ -174,18 +187,21 @@ class Login extends Component<{}, LoginState> {
               )}
             </Mutation>
             <RegisterLink onClick={() => this.setState({ login: !login })}>Need to create an account?</RegisterLink>
+            {successSignUp && <SuccessSignUp>You signed up successfully</SuccessSignUp>}
           </LoginBox>
         )}
         {!login && (
           <RegisterBox>
             <LoginHeader>Sign up</LoginHeader>
             <InputEmail
+              required
               value={email}
               onChange={(e) => this.setState({ email: e.target.value })}
               type="email"
               label="Your email address"
             />
             <InputPassword
+              required
               value={password}
               onChange={(e) => this.setState({ password: e.target.value })}
               type="password"
@@ -193,18 +209,21 @@ class Login extends Component<{}, LoginState> {
             />
             <GiveInformation>Additional Information</GiveInformation>
             <InputFirstName
+              required
               value={firstName}
               onChange={(e) => this.setState({ firstName: e.target.value })}
               type="text"
               label="Your first name"
             />
             <InputLastName
+              required
               value={lastName}
               onChange={(e) => this.setState({ lastName: e.target.value })}
               type="text"
               label="Your last name"
             />
             <InputBirthday
+              required
               value={birthday}
               onChange={(date) => {
                 if (date) {
@@ -232,12 +251,12 @@ class Login extends Component<{}, LoginState> {
               />
               <label htmlFor="raised-button-file">
                 <Button variant="contained" component="span">
-                  Upload Profile Picture
+                  Upload Profile Picture*
                 </Button>
               </label>
             </UploadContainer>
             <SelectContainer>
-              <GenderLabel>Gender:</GenderLabel>
+              <GenderLabel>Gender*:</GenderLabel>
               <select value={gender} onChange={(e) => this.setState({ gender: e.target.value })}>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -245,24 +264,36 @@ class Login extends Component<{}, LoginState> {
               </select>
             </SelectContainer>
             <InputDescription
+              multiline
+              required
               value={description}
               onChange={(e) => this.setState({ description: e.target.value })}
               type="text"
               label="Describe yourself"
             />
             <InputHometown
+              required
               value={homeTown}
               onChange={(e) => this.setState({ homeTown: e.target.value })}
               type="text"
               label="Your hometown"
             />
             <InputCountry
+              required
               value={homeCountry}
               onChange={(e) => this.setState({ homeCountry: e.target.value })}
               type="text"
               label="Your home country"
             />
+            <InputPhone
+              required
+              value={phoneNumber}
+              onChange={(e) => this.setState({ phoneNumber: e.target.value })}
+              type="tel"
+              label="Your phone number"
+            />
             <InputFavoriteFood
+              required
               value={favoriteFood}
               onChange={(e) => this.setState({ favoriteFood: e.target.value })}
               type="text"
@@ -275,7 +306,7 @@ class Login extends Component<{}, LoginState> {
                 password,
                 firstName,
                 lastName,
-                phoneNumber: '+491784680003',
+                phoneNumber,
                 birthday,
                 gender,
                 description,
@@ -284,15 +315,53 @@ class Login extends Component<{}, LoginState> {
                 homeCountry,
                 favoriteFood,
               }}
-              onCompleted={(data: Data) => this._confirm(data)}
             >
-              {(mutation: any) => (
-                <RegisterButton variant="contained" color="secondary" type="submit" onClick={mutation}>
-                  Create Account
-                </RegisterButton>
+              {(signUp: any, { loading, error, data }: any) => (
+                <RegisterButtonContainer>
+                  {error && (
+                    <div>
+                      <Error>Error occurred.</Error>
+                      <Error> Please provide all Information needed.</Error>
+                    </div>
+                  )}
+                  {loading && <p>Loading...</p>}
+                  {data && this.setState({ successSignUp: true, login: !login })}
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      this.setState({ successSignUp: false });
+                      signUp({
+                        variables: {
+                          email: this.state.email,
+                          password: this.state.password,
+                          firstName: this.state.firstName,
+                          lastName: this.state.lastName,
+                          phoneNumber: this.state.phoneNumber,
+                          birthday: this.state.birthday,
+                          gender: this.state.gender,
+                          description: this.state.description,
+                          profilePicture: this.state.profilePicture,
+                          homeTown: this.state.homeTown,
+                          homeCountry: this.state.homeCountry,
+                          favoriteFood: this.state.favoriteFood,
+                        },
+                      });
+                    }}
+                  >
+                    <RegisterButton variant="contained" color="secondary" type="submit" disabled={loading}>
+                      Create account
+                    </RegisterButton>
+                  </form>
+                </RegisterButtonContainer>
               )}
             </Mutation>
-            <LoginLink onClick={() => this.setState({ login: !login })}>Already have an account?</LoginLink>
+            <LoginLink
+              onClick={() => {
+                this.setState({ successSignUp: false, login: !login });
+              }}
+            >
+              Already have an account?
+            </LoginLink>
           </RegisterBox>
         )}
       </Section>
