@@ -26,14 +26,12 @@ mutation {
     createRequestDto: {
       start: "2020-01-01"
       end: "2020-10-01"
-      inRoleOf: "MEAL"
       description: "fvzfuz"
       receiver: "5d2e4f790000f5471085c4d9"
     }
   ) {
     start
     end
-    inRoleOf
     description
     requestStatus
     receiver {
@@ -49,7 +47,33 @@ mutation {
 
 ### Update Request 
 -> only change requestStatus: 'REQUESTED' | 'ACCEPTED' | 'CANCELLED' | 'DENIED'
-
+```
+mutation {
+  updateRequestStatus(
+    updateRequestStatusDto: {
+      _id: "5d305505fee6575d74d0ca51"
+      requestStatus: ACCEPTED
+    }
+  ) {
+    start
+    end
+    description
+    requestStatus
+    ratings {
+      description
+      request {
+        _id
+        description
+      }
+      receiverRole
+      rating
+      author {
+        firstName
+      }
+    }
+  }
+}
+```
 
 ## Rating and Reference:
 
