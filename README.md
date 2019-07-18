@@ -78,4 +78,22 @@ mutation {
 ## Rating and Reference:
 
 ### Submit Rating:
+
+```
+mutation {
+  createRating(
+    createRatingDto: {
+      request: "5d30577180496764c0dffa6b"
+      description: "myrating"
+      receiverRole: MEAL
+      rating: true
+    }
+  ) {
+    _id
+    description
+    requestStatus
+  }
+}
+```
+
 ### Submit TripReport:
