@@ -64,4 +64,36 @@ export class UserResolver {
     }
     return user;
   }
+
+  @ResolveProperty()
+  async likedBy(@Parent() user: User) {
+    const likedBy: User[] = [];
+    if (user.likedBy) {
+      await Promise.all(
+        user.likedBy.map(async (likeUserId) => {
+          const like = await this.userService.findById(likeUserId);
+          if (like) {
+            likedBy.push(like);
+          }
+        }),
+      );
+    }
+    return likedBy;
+  }
+
+  @ResolveProperty()
+  async dislikedBy(@Parent() user: User) {
+    const dislikedBy: User[] = [];
+    if (user.dislikedBy) {
+      await Promise.all(
+        user.dislikedBy.map(async (dislikeUserId) => {
+          const dislike = await this.userService.findById(dislikeUserId);
+          if (dislike) {
+            dislikedBy.push(dislike);
+          }
+        }),
+      );
+    }
+    return dislikedBy;
+  }
 }

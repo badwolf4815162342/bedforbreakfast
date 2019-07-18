@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { Field, ID, ObjectType } from 'type-graphql';
-import { prop, Ref, Typegoose } from 'typegoose';
+import { arrayProp, prop, Ref, Typegoose } from 'typegoose';
 
 import { Accommodation } from '../../accommodations/models/Accommodation';
 
@@ -60,13 +60,13 @@ export class User extends Typegoose {
   @prop({ required: true })
   favoriteFood!: string;
 
-  @Field((type) => String)
-  @prop({ required: true, default: [] })
-  likedBy!: ObjectId[];
+  @Field((type) => [User])
+  @arrayProp({ itemsRef: 'User' })
+  likedBy?: Array<Ref<ObjectId>>;
 
-  @Field((type) => String)
-  @prop({ required: true, default: [] })
-  dislikedBy!: ObjectId[];
+  @Field((type) => [User])
+  @arrayProp({ itemsRef: 'User' })
+  dislikedBy?: Array<Ref<ObjectId>>;
 
   @Field((type) => Accommodation, { nullable: true })
   @prop({ ref: User })

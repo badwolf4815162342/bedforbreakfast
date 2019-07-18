@@ -118,4 +118,17 @@ export class UsersService {
       }
     }
   }
+
+  async alterLikes(user: User, rating: boolean, author: User): Promise<User | null> {
+    const newUser = {
+      likedBy: user.likedBy,
+      dislikedBy: user.dislikedBy,
+    };
+    if (rating) {
+      (newUser.likedBy as ObjectId[]).push(author._id);
+    } else {
+      (newUser.dislikedBy as ObjectId[]).push(author._id);
+    }
+    return this.userModel.findByIdAndUpdate(user._id, newUser);
+  }
 }
