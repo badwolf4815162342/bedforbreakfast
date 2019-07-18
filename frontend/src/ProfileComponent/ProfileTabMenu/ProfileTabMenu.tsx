@@ -5,13 +5,13 @@ import TripReportList from './ProfileTripReports/TripReport/TripReportList';
 import ReferenceList from './Reference/ReferenceList';
 import SendRequest from './SendRequest';
 
-export default function ProfileTabMenu() {
+export default function ProfileTabMenu(prop: { userID: string }) {
   const [value, setValue] = React.useState(0);
 
   const tripReportSection = <TripReportList />;
   const referenceSection = <ReferenceList />;
   const accommodationSection = <Button>accommodation</Button>;
-  const foodSection = <Button>food</Button>;
+  const foodSection = <Button>{prop.userID}</Button>;
 
   const [section, setSection] = React.useState(tripReportSection);
 

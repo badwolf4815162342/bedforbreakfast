@@ -20,6 +20,7 @@ const GET_USER_BY_ID = gql`
       favoriteFood
       likedBy
       dislikedBy
+      profilePicture
       accommodation {
         isActive
       }
@@ -43,15 +44,18 @@ interface UserData {
     likedBy: string[];
     dislikedBy: string[];
     isActive: boolean;
+    profilePicture: string;
   };
 }
 
 class ProfileComponent extends React.Component<{}> {
-  userID = '5d2f2c78ac366f42ed527388';
+  userID = '5d30960c9c0a43aa9f14fbee';
 
   fullGenderLabel(gender: string) {
     switch (gender) {
       case 'm':
+        return 'male';
+      case 'male':
         return 'male';
       case 'f':
         return 'female';
@@ -100,8 +104,9 @@ class ProfileComponent extends React.Component<{}> {
                   homeTown={user.homeTown}
                   homeCountry={user.homeCountry}
                   favFood={user.favoriteFood}
+                  profilePic={user.profilePicture}
                 />
-                <StyledTabMenu />
+                <StyledTabMenu userID={user._id} />
               </ProfileBox>
             </Section>
           );
