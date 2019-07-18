@@ -31,7 +31,7 @@ export class AccommodationResolver {
 
   @Query((returns) => [Accommodation])
   async accommodationsByCity(@Args('city') city: string): Promise<Accommodation[]> {
-    return this.accommodationService.findByCity(city);
+    return this.accommodationsService.findByCity(city);
   }
 
   @Query((returns) => Accommodation)

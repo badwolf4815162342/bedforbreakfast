@@ -1,4 +1,5 @@
 import { Button, TextField } from '@material-ui/core';
+import { DatePicker } from '@material-ui/pickers';
 import styled from 'styled-components';
 import { MainTheme, MainThemeRGB } from '../StyledComponents/Theme';
 
@@ -75,9 +76,14 @@ export const InputLastName = styled(TextField)`
   grid-row: 6/6;
 `;
 
-export const InputBirthday = styled(TextField)`
+export const InputBirthday = styled(DatePicker)`
   grid-column: 2/6;
   grid-row: 7/7;
+`;
+
+export const UploadContainer = styled.div`
+  grid-column: 2/6;
+  grid-row: 8/8;
 `;
 
 export const GenderLabel = styled.p`
@@ -89,7 +95,7 @@ export const GenderLabel = styled.p`
 
 export const SelectContainer = styled.div`
   grid-column: 2/6;
-  grid-row: 8/8;
+  grid-row: 9/9;
   padding: 6px 0 7px;
   select {
     font: inherit;
@@ -106,32 +112,32 @@ export const SelectContainer = styled.div`
 
 export const InputHometown = styled(TextField)`
   grid-column: 2/6;
-  grid-row: 9/9;
+  grid-row: 10/10;
 `;
 
 export const InputCountry = styled(TextField)`
   grid-column: 2/6;
-  grid-row: 10/10;
+  grid-row: 11/11;
 `;
 
 export const InputFavoriteFood = styled(TextField)`
   grid-column: 2/6;
-  grid-row: 11/11;
+  grid-row: 12/12;
 `;
 
 export const InputDescription = styled(TextField)`
   grid-column: 2/6;
-  grid-row: 12/12;
+  grid-row: 13/13;
 `;
 
 export const RegisterButton = styled(Button)`
   grid-column: 2/6;
-  grid-row: 13/13;
+  grid-row: 14/14;
 `;
 
 export const LoginLink = styled.a`
   grid-column: 1/7;
-  grid-row: 14/14;
+  grid-row: 15/15;
   text-align: center;
   :hover {
     color: ${MainTheme.primary.main};

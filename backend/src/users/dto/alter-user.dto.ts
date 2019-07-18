@@ -1,11 +1,12 @@
 import { IsEmail, IsNotEmpty, IsPhoneNumber } from 'class-validator';
-import { GraphQLUpload } from 'graphql-upload';
-import { Upload } from 'src/common/types/Upload';
 import { Field, InputType } from 'type-graphql';
 import { GenderType } from '../models/User';
 
 @InputType()
-export class SignUpDto {
+export class AlterUserDto {
+  @Field({ nullable: true })
+  _id?: string; //tslint:disable-line
+
   @Field()
   @IsEmail()
   email!: string;
@@ -35,8 +36,8 @@ export class SignUpDto {
   @IsNotEmpty()
   description!: string;
 
-  @Field((type) => GraphQLUpload)
-  profilePicture!: Upload;
+  @Field()
+  profilePicture!: string;
 
   @Field()
   @IsNotEmpty()
