@@ -1,6 +1,6 @@
-import React from 'react';
-
 import Icon from '@material-ui/core/Icon';
+import React from 'react';
+import Moment from 'react-moment';
 import pic from '../../images/profilePic.jpeg';
 import { Section } from '../../StyledComponents/StyledBasicItems';
 import {
@@ -21,7 +21,7 @@ import {
 interface ProfileProps {
   firstName: string;
   lastName: string;
-  age: string;
+  birthday: Date;
   gender: string;
   pRating: number;
   nRating: number;
@@ -55,10 +55,10 @@ class ProfileUserDescription extends React.Component<ProfileProps, {}> {
           <Name>
             {this.props.firstName} {this.props.lastName}
             {this.verified}
-            <Age>
-              {this.props.age}, {this.props.gender}
-            </Age>
           </Name>
+          <Age>
+            <Moment date={this.props.birthday} fromNow ago titleFormat="YY" /> old , {this.props.gender}
+          </Age>
           <Rating>
             <IconInText>
               {' '}
