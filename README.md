@@ -79,6 +79,8 @@ mutation {
 
 ### Submit Rating:
 
+Is it possible that one person has to positive ratings from the same person because the person rated to trips with this host positive?
+
 ```
 mutation {
   createRating(
