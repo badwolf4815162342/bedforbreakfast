@@ -120,4 +120,33 @@ get users meals as list of meals in user query
 ### GetUsers:
 
 ```
+query {
+  users {
+    _id
+    firstName
+    lastName
+    email
+    phoneNumber
+    firstName
+    lastName
+    birthday
+    gender
+    profilePicture
+    homeTown
+    homeCountry
+    favoriteFood
+    dislikedBy {
+      firstName
+      email
+    }
+    likedBy {
+      firstName
+      email
+    }
+    accommodation {
+      _id
+      isActive
+    }
+  }
+}
 ```
