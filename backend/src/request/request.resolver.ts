@@ -9,6 +9,7 @@ import { CreateRequestDto } from './dto/create-request.dto';
 import { Request, RequestStatus } from './models/Request';
 import { RequestService } from './request.service';
 
+import { AccommodationsService } from '../accommodations/accommodations.service';
 import { UsersService } from '../users/users.service';
 import { UpdateRequestStatusDto } from './dto/update-requestStatus.dto';
 
@@ -20,6 +21,7 @@ export class RequestResolver {
     private readonly requestService: RequestService,
     @Inject(forwardRef(() => RatingService)) private readonly ratingService: RatingService,
     @Inject(forwardRef(() => UsersService)) private readonly usersService: UsersService,
+    private readonly accommodationsService: AccommodationsService,
   ) {}
 
   @Query((returns) => [Request])
@@ -33,7 +35,6 @@ export class RequestResolver {
     @Args('createRequestDto') createRequestDto: CreateRequestDto,
     @CurrentUser() proposer: User,
   ): Promise<Request> {
-    // TODO: if user is active
     // check if receiver exists
     const receiver = await this.usersService.findById(createRequestDto.receiver);
     if (!receiver) {
@@ -41,6 +42,12 @@ export class RequestResolver {
     }
     if (!receiver.accommodation) {
       throw new Error('Receiver has no Accommodation, so he is not a Host and you want to rate him as a guest!');
+    }
+    const accommodation = await this.accommodationsService.findById(receiver.accommodation);
+    if (accommodation) {
+      if (!accommodation.isActive) {
+        throw new Error('Receiver is not active at the moment!');
+      }
     }
 
     // check if you are not rating yourself
