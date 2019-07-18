@@ -2,31 +2,100 @@ import React from 'react';
 import { Section } from '../StyledComponents/StyledBasicItems';
 import { ProfileBackgroundPaper, ProfileBox, StyledTabMenu, StyledUserDescription } from './ProfileComponentStyle';
 
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+
+const GET_USER_BY_ID = gql`
+  query user($userId: String!) {
+    user(userId: $userId) {
+      _id
+      firstName
+      lastName
+      birthday
+      gender
+      description
+      verified
+      homeTown
+      homeCountry
+      favoriteFood
+    }
+  }
+`;
+
+interface UserData {
+  user: {
+    _id: string;
+    phoneNumber: string;
+    firstName: string;
+    lastName: string;
+    birthday: Date;
+    gender: string;
+    description: string;
+    verified: boolean;
+    homeTown: string;
+    homeCountry: string;
+    favoriteFood: string;
+  };
+}
+
 class ProfileComponent extends React.Component<{}> {
+  userID = '5d2f2c78ac366f42ed527388';
+
+  fullGenderLabel(gender: string) {
+    switch (gender) {
+      case 'm':
+        return 'male';
+      case 'f':
+        return 'female';
+      case 'd':
+        return 'divers';
+      default:
+        return 'not defined';
+    }
+  }
+
   render() {
     return (
-      <Section>
-        <ProfileBackgroundPaper></ProfileBackgroundPaper>
-        <ProfileBox>
-          <StyledUserDescription
-            firstName={'Jonathan'}
-            lastName={'Foer'}
-            age={'26'}
-            gender={'male'}
-            pRating={7}
-            nRating={1}
-            status={'Accepting guests'}
-            description={
-              'I am a famous novelist, best known for novels Everything is Illuminated(2002), Extremely Loud Incredibly Close (2005), and for my non-fiction work Eating Animals (2009). My most recent novel, Here I Am, was published in 2016. I teach creative writing at New York University.'
-            }
-            verified={true}
-            homeTown={'Munich'}
-            homeCountry={'Germany'}
-            favFood={'Lasagna'}
-          />
-          <StyledTabMenu />
-        </ProfileBox>
-      </Section>
+      <Query<UserData, {}> query={GET_USER_BY_ID} variables={{ userId: this.userID }}>
+        {({ loading, error, data }) => {
+          if (loading) {
+            return <p>Loading...</p>;
+          }
+          if (error) {
+            return <p>Error :( Fix me</p>;
+          }
+          if (!data) {
+            return <p>No Data :(</p>;
+          }
+
+          console.log(data);
+          const user = data.user;
+          const gender = this.fullGenderLabel(user.gender);
+
+          return (
+            <Section>
+              <ProfileBackgroundPaper></ProfileBackgroundPaper>
+              <ProfileBox>
+                <StyledUserDescription
+                  firstName={user.firstName}
+                  lastName={user.lastName}
+                  birthday={user.birthday}
+                  gender={gender}
+                  pRating={7}
+                  nRating={1}
+                  status={'Accepting guests'}
+                  description={user.description}
+                  verified={user.verified}
+                  homeTown={user.homeTown}
+                  homeCountry={user.homeCountry}
+                  favFood={user.favoriteFood}
+                />
+                <StyledTabMenu />
+              </ProfileBox>
+            </Section>
+          );
+        }}
+      </Query>
     );
   }
 }

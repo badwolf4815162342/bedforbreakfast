@@ -34,12 +34,10 @@ export const ProfilePic = styled(Box)`
 `;
 export const Name = styled(SimpleLabelText)`
   font-size: 24px;
-  line-height: 1;
+  line-height: 0.1;
   margin-top: 25px;
 `;
-export const Age = styled(SimpleLabelText)`
-  font-size: 16px;
-`;
+export const Age = styled(SimpleLabelText)``;
 export const Rating = styled(SimpleLabelText)`
   letter-spacing: 4px;
 `;
