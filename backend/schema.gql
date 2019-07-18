@@ -95,7 +95,7 @@ type Query {
   meals: [Meal!]!
   requests: [Request!]!
   ratings: [Rating!]!
-  receivedRatings(userId: ObjectId!): [Rating!]!
+  receivedRatings(userId: String!): [Rating!]!
 }
 
 type Rating {
