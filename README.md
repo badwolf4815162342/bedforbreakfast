@@ -75,6 +75,12 @@ mutation {
 }
 ```
 
+### Request possible 
+
+Query that has user id , id of host he wants to request, REQUESTED field
+=> if this query returns a value you cant request this accomodation again
+=> ) I'm creating a request that return true/false (true is can still be requested)
+
 ## Rating and Reference:
 
 ### Submit Rating:
@@ -98,4 +104,13 @@ mutation {
 }
 ```
 
+### Get ratings rating user x:
+
+receivedRatings query needs userId of user x as a field
+
 ### Submit TripReport:
+
+
+## User:
+
+get users meals as list of meals in user query
