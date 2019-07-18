@@ -81,6 +81,17 @@ Query that has user id , id of host he wants to request, REQUESTED field
 => if this query returns a value you cant request this accomodation again
 => ) I'm creating a request that return true/false (true is can still be requested)
 
+```
+query {
+canBeRequested(
+    canBeRequestedDto: {
+      requestId: "5d30dcda17d3053ac8421bb1"
+      hostId: "5d2e4f790000f5471085c4d9"
+    }
+  ) 
+}
+```
+
 ## Rating and Reference:
 
 ### Submit Rating:
