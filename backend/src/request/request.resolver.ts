@@ -11,6 +11,7 @@ import { RequestService } from './request.service';
 
 import { AccommodationsService } from '../accommodations/accommodations.service';
 import { UsersService } from '../users/users.service';
+import { CanBeRequestedDto } from './dto/can-be-requested.dto';
 import { UpdateRequestStatusDto } from './dto/update-requestStatus.dto';
 
 @Resolver((of: any) => {
@@ -58,8 +59,16 @@ export class RequestResolver {
     if ((await this.requestService.findByReceiverAndProposer(receiver._id, proposer._id)).length > 0) {
       throw new Error('You already requested this accommodation!');
     }
-    // TODO: Date check
-
+    // Date check
+    const today = new Date();
+    const startDate: Date = createRequestDto.start;
+    const endDate: Date = createRequestDto.end;
+    if (startDate < today) {
+      throw new Error('You can not request for a start date in the past!');
+    }
+    if (endDate < startDate) {
+      throw new Error('Start date has to be before end date!');
+    }
     return await this.requestService.create({ ...createRequestDto, proposer });
   }
 
@@ -120,7 +129,12 @@ export class RequestResolver {
       // you as host create a rating for guest(proposer of request)
       receiver = await this.usersService.findById(request.proposer);
     }
-    // TODO: Date check
+    // Date check
+    const today = new Date();
+    const endDate: Date = request.end;
+    if (endDate > today) {
+      throw new Error('You can not rate a request for a trip that has not happend yet!');
+    }
 
     const newRate = await this.ratingService.create({ ...createRatingDto, author, receiver });
 
@@ -156,6 +170,41 @@ export class RequestResolver {
       throw new NotFoundException(request._id);
     }
     return request;
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Query((returns) => Boolean)
+  async canBeRequested(
+    @Args('canBeRequestedDto') canBeRequestedDto: CanBeRequestedDto,
+    @CurrentUser() user: User,
+    // tslint:disable-next-line: ban-types
+  ): Promise<Boolean> {
+    const request = await this.requestService.findById(canBeRequestedDto.requestId);
+    if (!request) {
+      throw new Error('Invalid request ID');
+    }
+    const receiver = await this.usersService.findById(canBeRequestedDto.hostId);
+    if (!receiver) {
+      throw new Error('Invalid receiver ID');
+    }
+    if (!receiver.accommodation) {
+      return false;
+    }
+    const accommodation = await this.accommodationsService.findById(receiver.accommodation);
+    if (accommodation) {
+      if (!accommodation.isActive) {
+        return false;
+      }
+    }
+    // check if you are not rating yourself
+    if (receiver._id.equals(user._id)) {
+      return false;
+    }
+    // check if you only rate once
+    if ((await this.requestService.findByReceiverAndProposerAndOpen(receiver._id, user._id)).length > 0) {
+      return false;
+    }
+    return true;
   }
 
   @ResolveProperty()

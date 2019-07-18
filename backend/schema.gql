@@ -32,9 +32,16 @@ input AccommodationDto {
   pictures: [String]
 }
 
+input CanBeRequestedDto {
+  _id: String
+  hostId: String!
+  requestId: String!
+}
+
 input CreateMealDto {
   _id: String
   description: String!
+  profilePicture: Upload!
 }
 
 input CreateRatingDto {
@@ -71,6 +78,7 @@ type LoginResponseTo {
 type Meal {
   _id: ID!
   user: User!
+  profilePicture: String!
   description: String!
 }
 
@@ -98,6 +106,7 @@ type Query {
   accommodationsByCity(city: String!): [Accommodation!]!
   accommodationById(_id: ObjectId!): Accommodation!
   requests: [Request!]!
+  canBeRequested(canBeRequestedDto: CanBeRequestedDto!): Boolean!
   ratings: [Rating!]!
   receivedRatings(userId: String!): [Rating!]!
 }

@@ -12,7 +12,9 @@ export class Meal extends Typegoose {
   @prop({ ref: User, required: true })
   user!: Ref<ObjectId>;
 
-  // TODO: picture
+  @Field((type) => String)
+  @prop({ required: true })
+  profilePicture!: string;
 
   @Field((type) => String)
   @prop({ required: true })
