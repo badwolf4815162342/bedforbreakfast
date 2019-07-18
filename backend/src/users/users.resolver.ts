@@ -1,10 +1,14 @@
-import { forwardRef, Inject, NotFoundException } from '@nestjs/common';
+import { forwardRef, Inject, NotFoundException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveProperty, Resolver } from '@nestjs/graphql';
 import { GraphQLUpload } from 'graphql-upload';
-import { Upload } from 'src/common/types/Upload';
+import { Upload } from '../common/types/Upload';
 
 import { AccommodationsService } from '../accommodations/accommodations.service';
+import { GqlAuthGuard, User as CurrentUser } from '../authentication/guards/jwt.auth.guard';
 import { ImageUploadService } from '../image-upload/image-upload.service';
+import { CreateMealDto } from '../meal/dto/create-meal.dto';
+import { MealService } from '../meal/meal.service';
+import { Meal } from '../meal/models/Meal';
 import { LoginResponseTo } from './dto/login-response.dto';
 import { LoginDto } from './dto/login.dto';
 import { SignUpDto } from './dto/sign-up.dto';
@@ -16,17 +20,9 @@ export class UserResolver {
   constructor(
     private readonly userService: UsersService,
     @Inject(forwardRef(() => AccommodationsService)) private readonly accommodationService: AccommodationsService,
+    @Inject(forwardRef(() => MealService)) private readonly mealService: MealService,
     private readonly imageUploadService: ImageUploadService,
   ) {}
-
-  @ResolveProperty()
-  async accommodation(@Parent() user: User) {
-    if (user.accommodation) {
-      return await this.accommodationService.findById(user.accommodation);
-    } else {
-      return null;
-    }
-  }
 
   @Query((returns) => [User])
   async users(): Promise<User[]> {
@@ -65,6 +61,21 @@ export class UserResolver {
     return user;
   }
 
+  // tslint:disable-next-line: max-line-length
+  // Conditions: logged in as request.proposer or request.receiver Trip accepted, request date is before today, only 2 ratings possible receiverOfRequest,AuthorOfRequest
+  @UseGuards(GqlAuthGuard)
+  @Mutation((returns) => Meal)
+  async createMeal(@Args('createMealDto') createMealDto: CreateMealDto, @CurrentUser() user: User): Promise<Meal> {
+    const newMeal = await this.mealService.create({ ...createMealDto, user });
+
+    // update the user
+    const updatedUser = await this.userService.addMeal(user, newMeal);
+    if (!updatedUser) {
+      throw new NotFoundException(user._id);
+    }
+    return newMeal;
+  }
+
   @ResolveProperty()
   async likedBy(@Parent() user: User) {
     const likedBy: User[] = [];
@@ -95,5 +106,21 @@ export class UserResolver {
       );
     }
     return dislikedBy;
+  }
+
+  @ResolveProperty()
+  async meals(@Parent() user: User) {
+    const meals: Meal[] = [];
+    if (user.meals) {
+      await Promise.all(
+        user.meals.map(async (mealId) => {
+          const meal = await this.mealService.findById(mealId);
+          if (meal) {
+            meals.push(meal);
+          }
+        }),
+      );
+    }
+    return meals;
   }
 }

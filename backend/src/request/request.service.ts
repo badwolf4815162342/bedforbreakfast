@@ -25,13 +25,22 @@ export class RequestService {
     return this.requestModel.find({ receiver: receiverId, proposer: proposerId }).exec();
   }
 
+  async findByReceiverAndProposerAndOpen(
+    receiverId: ObjectId | string,
+    proposerId: ObjectId | string,
+  ): Promise<Request[]> {
+    return this.requestModel
+      .find({ receiver: receiverId, proposer: proposerId, requestStatus: RequestStatus.REQUESTED })
+      .exec();
+  }
+
   async create(createRequestDto: {}): Promise<Request> {
     const createdRequest = new this.requestModel(createRequestDto);
     createdRequest.requestStatus = RequestStatus.REQUESTED; // always first status when creating
     return await createdRequest.save();
   }
 
-  async alterRatings(request: Request, newRate: Rating): Promise<Request | null> {
+  async addRating(request: Request, newRate: Rating): Promise<Request | null> {
     const newRequest = {
       ratings: request.ratings,
     };

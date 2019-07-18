@@ -13,7 +13,7 @@ cloudinary.config({
 
 @Injectable()
 export class ImageUploadService {
-  async singleFileUpload(file: Upload, options: any): Promise<string> {
+  async singleFileUpload(file: Upload, options?: any): Promise<string> {
     return await this.processUpload(file, options);
   }
 
