@@ -47,6 +47,13 @@ export const RegisterLink = styled.a`
   }
 `;
 
+export const SuccessSignUp = styled.p`
+  grid-column: 1/7;
+  grid-row: 6/6;
+  text-align: center;
+  color: green;
+`;
+
 export const RegisterBox = styled.div`
   max-width: 500px;
   display: grid;
@@ -84,6 +91,12 @@ export const InputBirthday = styled(DatePicker)`
 export const UploadContainer = styled.div`
   grid-column: 2/6;
   grid-row: 8/8;
+  label {
+    width: 100%;
+    span {
+      width: 100%;
+    }
+  }
 `;
 
 export const GenderLabel = styled.p`
@@ -120,24 +133,38 @@ export const InputCountry = styled(TextField)`
   grid-row: 11/11;
 `;
 
-export const InputFavoriteFood = styled(TextField)`
+export const InputPhone = styled(TextField)`
   grid-column: 2/6;
   grid-row: 12/12;
 `;
 
-export const InputDescription = styled(TextField)`
+export const InputFavoriteFood = styled(TextField)`
   grid-column: 2/6;
   grid-row: 13/13;
 `;
 
-export const RegisterButton = styled(Button)`
+export const InputDescription = styled(TextField)`
   grid-column: 2/6;
   grid-row: 14/14;
 `;
 
+export const RegisterButtonContainer = styled.div`
+  grid-column: 2/6;
+  grid-row: 15/15;
+  text-align: center;
+`;
+
+export const RegisterButton = styled(Button)`
+  width: 100%;
+`;
+
+export const Error = styled.p`
+  color: red;
+`;
+
 export const LoginLink = styled.a`
   grid-column: 1/7;
-  grid-row: 15/15;
+  grid-row: 16/16;
   text-align: center;
   :hover {
     color: ${MainTheme.primary.main};
