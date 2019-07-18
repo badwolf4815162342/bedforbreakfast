@@ -107,6 +107,8 @@ mutation {
 ### Get ratings rating user x:
 
 receivedRatings query needs userId of user x as a field
+```
+```
 
 ### Submit TripReport:
 
@@ -114,3 +116,8 @@ receivedRatings query needs userId of user x as a field
 ## User:
 
 get users meals as list of meals in user query
+
+### GetUsers:
+
+```
+```
