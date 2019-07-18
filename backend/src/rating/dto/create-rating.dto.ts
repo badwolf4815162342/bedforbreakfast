@@ -12,8 +12,8 @@ export class CreateRatingDto {
   @Field()
   request!: string;
 
-  @Field()
-  @IsRoleType('Given ($value) is not a Role Type (MEAL or ACCOMMONDATION)!')
+  @Field((type) => RoleType)
+  @IsRoleType('Given ($value) is not a Role Type (MEAL or ACCOMMODATION)!')
   receiverRole!: RoleType;
 
   @Field()

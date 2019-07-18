@@ -114,7 +114,7 @@ interface LoginState {
   profilePicture: File | undefined;
 }
 
-class Login extends Component<{}, LoginState> {
+class Login extends Component<any, LoginState> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -178,6 +178,7 @@ class Login extends Component<{}, LoginState> {
               onCompleted={(data: Data) => {
                 this.setState({ successSignUp: true });
                 this._confirm(data);
+                this.props.history.push('/');
               }}
             >
               {(mutation: any) => (
@@ -258,16 +259,18 @@ class Login extends Component<{}, LoginState> {
             <SelectContainer>
               <GenderLabel>Gender*:</GenderLabel>
               <select value={gender} onChange={(e) => this.setState({ gender: e.target.value })}>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="m">Male</option>
+                <option value="f">Female</option>
+                <option value="d">Diverse</option>
               </select>
             </SelectContainer>
             <InputDescription
               multiline
               required
               value={description}
-              onChange={(e) => this.setState({ description: e.target.value })}
+              onChange={(e) => {
+                this.setState({ description: e.target.value });
+              }}
               type="text"
               label="Describe yourself"
             />

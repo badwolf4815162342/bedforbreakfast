@@ -8,6 +8,7 @@ import { ModelType } from 'typegoose';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { JwtPayload } from '../authentication/interfaces/jwt-payload.interface';
 import { ImageUploadService } from '../image-upload/image-upload.service';
+import { Meal } from '../meal/models/Meal';
 import { AlterUserDto } from './dto/alter-user.dto';
 import { LoginResponseTo } from './dto/login-response.dto';
 import { LoginDto } from './dto/login.dto';
@@ -123,5 +124,25 @@ export class UsersService {
         await this.userModel.findByIdAndUpdate(user._id, newUser).exec();
       }
     }
+  }
+  async addMeal(user: User, meal: Meal): Promise<User | null> {
+    const newUser = {
+      meals: user.meals,
+    };
+    (user.meals as ObjectId[]).push(meal._id);
+    return this.userModel.findByIdAndUpdate(user._id, newUser);
+  }
+
+  async alterLikes(user: User, rating: boolean, author: User): Promise<User | null> {
+    const newUser = {
+      likedBy: user.likedBy,
+      dislikedBy: user.dislikedBy,
+    };
+    if (rating) {
+      (newUser.likedBy as ObjectId[]).push(author._id);
+    } else {
+      (newUser.dislikedBy as ObjectId[]).push(author._id);
+    }
+    return this.userModel.findByIdAndUpdate(user._id, newUser);
   }
 }
