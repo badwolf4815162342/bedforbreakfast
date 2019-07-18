@@ -4,6 +4,7 @@ import {
   DialogTitle,
   TextField,
 } from '@material-ui/core';
+import { DatePicker } from '@material-ui/pickers';
 import styled from 'styled-components';
 
 export const RequestButtonBox = styled(Box)`
@@ -11,6 +12,11 @@ export const RequestButtonBox = styled(Box)`
 `;
 
 export const RequestDialog = styled(Dialog)`
+  align-self: center;
+  maxwidth: xs;
+`;
+
+export const SentRequestDialog = styled(Dialog)`
   align-self: center;
   maxwidth: xs;
 `;
@@ -29,8 +35,7 @@ export const RequestDialogBox = styled(Box)`
 
 export const RequestMessage = styled(TextField)``;
 
-export const RequestDate = styled(TextField)``;
-
+export const InputDate = styled(DatePicker)``;
 export const DateBox = styled(Box)`
     display: flex
     justify-content: space-evenly

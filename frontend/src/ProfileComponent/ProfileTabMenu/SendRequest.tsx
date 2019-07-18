@@ -1,10 +1,10 @@
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import TextField from '@material-ui/core/TextField';
 import React from 'react';
 import {
   DateBox,
+  InputDate,
   RequestButtonBox,
   RequestDialog,
   RequestDialogBox,
@@ -16,6 +16,8 @@ export default function SendRequest() {
   const [open, setOpen] = React.useState(false);
   const [sentOpen, setSentOpen] = React.useState(false);
   const [canRequest, setCanRequest] = React.useState(true);
+  const [from, setFrom] = React.useState(new Date());
+  const [to, setTo] = React.useState(new Date());
 
   function handleClickOpen() {
     setOpen(true);
@@ -45,21 +47,27 @@ export default function SendRequest() {
           <RequestDialogTitle id="form-dialog-title">Send a request to stay with </RequestDialogTitle>
           <DialogContent>
             <DateBox>
-              <TextField
-                id="dateFrom"
+              <InputDate
+                value={from}
+                onChange={(date) => {
+                  if (date) {
+                    setFrom(date.toDate());
+                  }
+                }}
+                format="DD.MM.YYYY"
+                disablePast
                 label="From"
-                type="date"
-                InputLabelProps={{
-                  shrink: true,
-                }}
               />
-              <TextField
-                id="dateTo"
-                label="To"
-                type="date"
-                InputLabelProps={{
-                  shrink: true,
+              <InputDate
+                value={to}
+                onChange={(date) => {
+                  if (date) {
+                    setTo(date.toDate());
+                  }
                 }}
+                format="DD.MM.YYYY"
+                disablePast
+                label="To"
               />
             </DateBox>
             <RequestMessage
@@ -84,7 +92,7 @@ export default function SendRequest() {
       <RequestDialog open={sentOpen} onClose={handleSentClose} aria-labelledby="form-dialog-title" fullWidth>
         <RequestDialogBox>
           <RequestDialogTitle id="form-dialog-title">Your request has been sent!</RequestDialogTitle>
-          <DialogContent>Now you can look for tickets for these dates on our partner's website</DialogContent>
+          <DialogContent>Now you can look for tickets for these dates on our partner's website!</DialogContent>
           <DialogActions>
             <Button onClick={handleSentClose} color="secondary">
               Close
