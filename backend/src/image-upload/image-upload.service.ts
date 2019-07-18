@@ -13,12 +13,12 @@ cloudinary.config({
 
 @Injectable()
 export class ImageUploadService {
-  async singleFileUpload(file: Upload): Promise<string> {
-    return await this.processUpload(file);
+  async singleFileUpload(file: Upload, options: any): Promise<string> {
+    return await this.processUpload(file, options);
   }
 
-  async multipleFileUpload(files: Upload[]) {
-    const { resolve, reject } = await promisesAll.all(files.map(this.processUpload));
+  async multipleFileUpload(files: Upload[], options: any) {
+    const { resolve, reject } = await promisesAll.all(files.map((file) => this.processUpload(file, options)));
 
     if (reject.length) {
       reject.forEach((name: string, message: string) => {
@@ -28,7 +28,7 @@ export class ImageUploadService {
     return resolve;
   }
 
-  private async processUpload(upload: Upload) {
+  private async processUpload(upload: Upload, options: any) {
     const { createReadStream } = await upload;
 
     let resultUrl = '';
@@ -36,17 +36,14 @@ export class ImageUploadService {
     const cloudinaryUpload = async (stream: any) => {
       try {
         await new Promise((resolve, reject) => {
-          const streamLoad = cloudinary.v2.uploader.upload_stream(
-            { folder: 'profile_pictures', width: 200, height: 200, crop: 'fill', gravity: 'faces' },
-            (error: any, result: any) => {
-              if (result) {
-                resultUrl = result.url;
-                resolve(resultUrl);
-              } else {
-                reject(error);
-              }
-            },
-          );
+          const streamLoad = cloudinary.v2.uploader.upload_stream(options, (error: any, result: any) => {
+            if (result) {
+              resultUrl = result.url;
+              resolve(resultUrl);
+            } else {
+              reject(error);
+            }
+          });
 
           stream.pipe(streamLoad);
         });
