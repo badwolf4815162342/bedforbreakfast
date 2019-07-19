@@ -1,6 +1,6 @@
 import { Box, Card, Divider as divider } from '@material-ui/core';
 import styled from 'styled-components';
-import { SubText, Text } from '../../../StyledComponents/StyledBasicItems';
+import { SimpleLabelText, SubText, Text } from '../../../StyledComponents/StyledBasicItems';
 import { MainThemeRGB } from '../../../StyledComponents/Theme';
 
 export const ReferenceCard = styled(Card)`
@@ -34,4 +34,8 @@ export const IconInText = styled(SubText)`
   align-self: start;
   justify-self: start;
   color: rgba(${MainThemeRGB.secondary.main.r}, ${MainThemeRGB.secondary.main.g}, ${MainThemeRGB.secondary.main.b}, 1);
+`;
+
+export const NoReferencesLabe = styled(SimpleLabelText)`
+  text-align: center;
 `;
