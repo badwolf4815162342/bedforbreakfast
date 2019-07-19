@@ -78,4 +78,4 @@ export class User extends Typegoose {
   meals?: Array<Ref<ObjectId>>;
 }
 
-export type GenderType = 'm' | 'w' | 'd';
+export type GenderType = 'm' | 'f' | 'd';
