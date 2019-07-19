@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { Field, ID, ObjectType } from 'type-graphql';
+import { Field, ID, ObjectType, registerEnumType } from 'type-graphql';
 import { arrayProp, prop, Ref, Typegoose } from 'typegoose';
 import { Rating } from '../../rating/models/Rating';
 import { User } from '../../users/models/User';
@@ -38,4 +38,14 @@ export class Request extends Typegoose {
   ratings?: Array<Ref<ObjectId>>;
 }
 
-export type RequestStatus = 'REQUESTED' | 'ACCEPTED' | 'CANCELLED' | 'DENIED';
+export enum RequestStatus {
+  REQUESTED = 'REQUESTED',
+  ACCEPTED = 'ACCEPTED',
+  CANCELLED = 'CANCELLED',
+  DENIED = 'DENIED',
+}
+
+registerEnumType(RequestStatus, {
+  name: 'requestStatus', // this one is mandatory
+  description: 'The basic RequestStatus', // this one is optional
+});

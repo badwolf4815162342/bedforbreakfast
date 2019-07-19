@@ -1,5 +1,5 @@
 import { forwardRef, Inject } from '@nestjs/common';
-import { Parent, Query, ResolveProperty, Resolver } from '@nestjs/graphql';
+import { Args, Parent, Query, ResolveProperty, Resolver } from '@nestjs/graphql';
 import { RequestService } from '../request/request.service';
 import { UsersService } from '../users/users.service';
 import { Rating } from './models/Rating';
@@ -20,13 +20,23 @@ export class RatingResolver {
     return this.ratingService.findAll();
   }
 
-  @ResolveProperty()
-  async request(@Parent() rating: Rating) {
-    return await this.requestService.findById(rating.request);
+  @Query((returns) => [Rating])
+  async receivedRatings(@Args('userId') userId: string): Promise<Rating[]> {
+    return await this.ratingService.findByReceiver(userId);
   }
 
   @ResolveProperty()
   async author(@Parent() rating: Rating) {
     return await this.usersService.findById(rating.author);
+  }
+
+  @ResolveProperty()
+  async receiver(@Parent() rating: Rating) {
+    return await this.usersService.findById(rating.receiver);
+  }
+
+  @ResolveProperty()
+  async request(@Parent() rating: Rating) {
+    return await this.requestService.findById(rating.request);
   }
 }

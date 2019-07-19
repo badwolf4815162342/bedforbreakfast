@@ -32,14 +32,22 @@ input AccommodationDto {
   pictures: [String]
 }
 
+input CanBeRequestedDto {
+  _id: String
+  hostId: String!
+  requestId: String!
+}
+
 input CreateMealDto {
+  _id: String
   description: String!
+  profilePicture: Upload!
 }
 
 input CreateRatingDto {
   _id: String
   request: String!
-  receiverRole: String!
+  receiverRole: RoleType!
   description: String!
   rating: Boolean!
 }
@@ -68,42 +76,49 @@ type LoginResponseTo {
 }
 
 type Meal {
+  _id: ID!
+  user: User!
+  profilePicture: String!
   description: String!
 }
 
 type Mutation {
+  addMealPicture(picture: Upload!): String!
   signUp(signUpDto: SignUpDto!): LoginResponseTo!
   login(loginDto: LoginDto!): LoginResponseTo!
   addProfilePicture(picture: Upload!): String!
+  createMeal(createMealDto: CreateMealDto!): Meal!
   alterAccommodation(accommodationDto: AccommodationDto!): Accommodation!
   createAccommodation(createAccommodationDto: AccommodationDto!): Accommodation!
-  createMeal(createMealDto: CreateMealDto!): Meal!
   createRequest(createRequestDto: CreateRequestDto!): Request!
   createRating(createRatingDto: CreateRatingDto!): Request!
-  updateRequestStatus(requestStatus: String!, id: String!): Request!
+  updateRequestStatus(updateRequestStatusDto: UpdateRequestStatusDto!): Request!
 }
 
 """Mongo object id scalar type"""
 scalar ObjectId
 
 type Query {
+  meals: [Meal!]!
   users: [User!]!
   user(userId: String!): User
   accommodations: [Accommodation!]!
   accommodationsByCity(city: String!): [Accommodation!]!
   accommodationById(_id: ObjectId!): Accommodation!
-  meals: [Meal!]!
   requests: [Request!]!
+  canBeRequested(canBeRequestedDto: CanBeRequestedDto!): Boolean!
   ratings: [Rating!]!
+  receivedRatings(userId: String!): [Rating!]!
 }
 
 type Rating {
   _id: ID!
   request: Request!
   author: User!
+  receiver: User!
   rating: Boolean!
   description: String!
-  receiverRole: String!
+  receiverRole: RoleType!
 }
 
 type Request {
@@ -115,6 +130,20 @@ type Request {
   requestStatus: String!
   description: String!
   ratings: [Rating!]!
+}
+
+"""The basic RequestStatus"""
+enum requestStatus {
+  REQUESTED
+  ACCEPTED
+  CANCELLED
+  DENIED
+}
+
+"""The basic directions"""
+enum RoleType {
+  MEAL
+  ACCOMMODATION
 }
 
 input SignUpDto {
@@ -130,6 +159,11 @@ input SignUpDto {
   homeTown: String!
   homeCountry: String!
   favoriteFood: String!
+}
+
+input UpdateRequestStatusDto {
+  _id: String
+  requestStatus: requestStatus!
 }
 
 """The `Upload` scalar type represents a file upload."""
@@ -149,7 +183,8 @@ type User {
   homeTown: String!
   homeCountry: String!
   favoriteFood: String!
-  likedBy: [String!]!
-  dislikedBy: [String!]!
+  likedBy: [User!]!
+  dislikedBy: [User!]!
   accommodation: Accommodation
+  meals: [Meal!]!
 }
