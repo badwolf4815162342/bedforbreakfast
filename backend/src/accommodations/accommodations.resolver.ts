@@ -57,7 +57,7 @@ export class AccommodationResolver {
       existingAccommodation = await this.accommodationsService.findById(new ObjectID(accommodationDto._id));
 
       if (existingAccommodation) {
-        if (existingAccommodation.user === user._id) {
+        if (existingAccommodation.user === user._id && user.accommodation === existingAccommodation._id) {
           return await this.accommodationsService.alter(accommodationDto);
         } else {
           throw new HttpException('User can only update their own accommodation.', HttpStatus.FORBIDDEN);

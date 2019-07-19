@@ -286,7 +286,7 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      console.log(this.state.accommodation);
+
                       createAccommodation({
                         variables: {
                           _id: this.state.accommodation._id,

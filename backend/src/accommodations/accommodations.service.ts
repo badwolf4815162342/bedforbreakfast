@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
@@ -39,12 +39,17 @@ export class AccommodationsService {
   }
 
   async create(accommodationDto: AccommodationDto): Promise<Accommodation> {
-    const newAccommodation = new this.accommodationModel(accommodationDto);
-    const createdAccommodation = await newAccommodation.save();
+    const userOfAccommodation = await this.userService.findById(accommodationDto.user);
+    if (userOfAccommodation && !userOfAccommodation.accommodation) {
+      const newAccommodation = new this.accommodationModel(accommodationDto);
+      const createdAccommodation = await newAccommodation.save();
 
-    // also add new accommodation to user
-    await this.userService.addAccommodation(createdAccommodation.toObject());
+      // also add new accommodation to user
+      await this.userService.addAccommodation(createdAccommodation.toObject());
 
-    return createdAccommodation;
+      return createdAccommodation;
+    } else {
+      throw new HttpException('User already has accommodation.', HttpStatus.FORBIDDEN);
+    }
   }
 }

@@ -245,7 +245,6 @@ class Login extends Component<any, LoginState> {
                 onChange={(e) => {
                   if (e.target.files) {
                     const file = e.target.files[0];
-                    console.log(file);
                     this.setState({ profilePicture: file });
                   }
                 }}
