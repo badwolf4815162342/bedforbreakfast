@@ -9,7 +9,7 @@ class Accommodation {
   description: string;
   district: string;
   numberOfBeds: number;
-  pictures: string[];
+  pictures: File[];
   constructor(
     _id: string | undefined, //tslint:disable-line
     isActive: boolean,
@@ -21,7 +21,7 @@ class Accommodation {
     description: string,
     district: string,
     numberOfBeds: number,
-    pictures: string[],
+    pictures: File[],
   ) {
     this._id = _id;
     this.isActive = isActive;

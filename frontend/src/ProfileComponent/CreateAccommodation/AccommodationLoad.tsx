@@ -94,7 +94,7 @@ interface Data {
     description: string;
     district: string;
     numberOfBeds: number;
-    pictures: string[];
+    pictures: File[];
   };
 }
 

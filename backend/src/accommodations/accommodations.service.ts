@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
 
+import { ImageUploadService } from '../image-upload/image-upload.service';
 import { UsersService } from '../users/users.service';
 import { AccommodationDto } from './dto/create-accommodation.dto';
 import { Accommodation } from './models/Accommodation';
@@ -13,6 +14,7 @@ export class AccommodationsService {
     @InjectModel(Accommodation)
     private readonly accommodationModel: ModelType<Accommodation>,
     private readonly userService: UsersService,
+    private readonly imageUploadService: ImageUploadService,
   ) {}
 
   async findAll(): Promise<Accommodation[]> {
@@ -41,7 +43,16 @@ export class AccommodationsService {
   async create(accommodationDto: AccommodationDto): Promise<Accommodation> {
     const userOfAccommodation = await this.userService.findById(accommodationDto.user);
     if (userOfAccommodation && !userOfAccommodation.accommodation) {
-      const newAccommodation = new this.accommodationModel(accommodationDto);
+      let pictureUrls: string[] = [];
+      if (accommodationDto.pictures) {
+        pictureUrls = await this.imageUploadService.multipleFileUpload(accommodationDto.pictures, {
+          folder: 'accommodation_pictures',
+          height: 245,
+          crop: 'fill',
+        });
+      }
+
+      const newAccommodation = new this.accommodationModel({ ...accommodationDto, pictures: pictureUrls });
       const createdAccommodation = await newAccommodation.save();
 
       // also add new accommodation to user
