@@ -23,7 +23,6 @@ export class AccommodationResolver {
     return await this.usersService.findById(accommodation.user);
   }
 
-  @UseGuards(GqlAuthGuard)
   @Query((returns) => [Accommodation])
   async accommodations(): Promise<Accommodation[]> {
     return await this.accommodationsService.findAll();

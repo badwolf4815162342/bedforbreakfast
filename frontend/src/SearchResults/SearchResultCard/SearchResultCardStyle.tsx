@@ -3,12 +3,14 @@ import styled from 'styled-components';
 import { MainTheme, MainThemeRGB } from './../../StyledComponents/Theme';
 
 export const CardAccommodation = styled.div`
+  margin-right: 2px;
+  margin-left: 2px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
-  grid-column: 1/13;
+  height: 244px;
   display: grid;
   grid-gap: 10px;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 5vh 15vh 10vh;
+  grid-template-rows: auto;
 `;
 
 export const ImageContainerAccommodation = styled.div`
@@ -16,11 +18,12 @@ export const ImageContainerAccommodation = styled.div`
   grid-column-end: 1;
   grid-row-start: 1;
   grid-row-end: 4;
+  max-height: 244px;
 `;
 
 export const ImageAccommodation = styled.img`
   width: 100%;
-  height: 100%;
+  height: 244px;
   object-fit: cover;
 `;
 
@@ -36,7 +39,7 @@ export const AccommodationDescription = styled.p`
   grid-column-end: 2;
   grid-row-start: 2;
   grid-row-end: 4;
-  max-height: 12vh;
+  height: 12vh;
   overflow: scroll;
 `;
 
@@ -52,6 +55,13 @@ export const BorderBox = styled.div`
   grid-row-start: 1;
   grid-row-end: 4;
   border-right: 1px solid ${MainTheme.grey.main};
+  max-height: 244px;
+`;
+
+export const BorderLessBox = styled.div`
+  grid-row-start: 1;
+  grid-row-end: 4;
+  max-height: 244px;
 `;
 
 export const UserName = styled.h3`
@@ -66,7 +76,7 @@ export const UserDescription = styled.p`
   grid-column-end: 4;
   grid-row-start: 2;
   grid-row-end: 4;
-  max-height: 12vh;
+  height: 12vh;
   overflow: scroll;
 `;
 
