@@ -1,7 +1,9 @@
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import gql from 'graphql-tag';
 import React from 'react';
+import { Mutation } from 'react-apollo';
 import {
   DateBox,
   InputDate,
@@ -12,13 +14,48 @@ import {
   RequestMessage,
 } from './SendRequestStyle';
 
-export default function SendRequest() {
+const SEND_REQUEST_MUTATION = gql`
+  mutation SendRequestMutation($receiver: String!, $from: Date!, $to: Date!, $description: String!) {
+    createRequest(createRequestDto: { start: $from, end: $to, description: $description, receiver: $receiver }) {
+      start
+      end
+      description
+      requestStatus
+      receiver {
+        email
+      }
+      proposer {
+        firstName
+        email
+      }
+    }
+  }
+`;
+
+interface Data {
+  createRequest: {
+    start: Date;
+    end: Date;
+    description: string;
+    requestStatus: boolean;
+    receiver: {
+      email: string;
+    };
+    proposer: {
+      firstName: string;
+      email: string;
+    };
+  };
+}
+
+export default function SendRequest(props: { userID: string }) {
   const [open, setOpen] = React.useState(false);
   const [sentOpen, setSentOpen] = React.useState(false);
   const [canRequest, setCanRequest] = React.useState(true);
   const [from, setFrom] = React.useState(new Date());
   const [to, setTo] = React.useState(new Date());
-
+  const [description, setDescription] = React.useState('');
+  const receiver = props.userID;
   function handleClickOpen() {
     setOpen(true);
   }
@@ -71,6 +108,8 @@ export default function SendRequest() {
               />
             </DateBox>
             <RequestMessage
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               id="message"
               label="Describe the purpose your trip"
               color="secondary"
@@ -83,9 +122,24 @@ export default function SendRequest() {
             <Button onClick={handleClose} color="secondary">
               Cancel
             </Button>
-            <Button variant="contained" onClick={handleSend} color="secondary">
-              Send
-            </Button>
+            <Mutation
+              mutation={SEND_REQUEST_MUTATION}
+              variables={{
+                receiver,
+                from,
+                to,
+                description,
+              }}
+              onCompleted={(data: Data) => {
+                setCanRequest(false);
+              }}
+            >
+              {(mutation: any) => (
+                <Button variant="contained" onClick={handleSend} color="secondary">
+                  Send
+                </Button>
+              )}
+            </Mutation>
           </DialogActions>
         </RequestDialogBox>
       </RequestDialog>
