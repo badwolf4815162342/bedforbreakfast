@@ -24,4 +24,8 @@ export class RatingService {
   async findById(id: ObjectId): Promise<Rating | null> {
     return this.ratingModel.findById(id);
   }
+
+  async findByReceiver(receiverId: ObjectId | string): Promise<Rating[]> {
+    return this.ratingModel.find({ receiver: receiverId }).exec();
+  }
 }

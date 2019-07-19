@@ -1,9 +1,4 @@
-import {
-  Box,
-  Dialog,
-  DialogTitle,
-  TextField,
-} from '@material-ui/core';
+import { Box, Dialog, DialogTitle, TextField } from '@material-ui/core';
 import { DatePicker } from '@material-ui/pickers';
 import styled from 'styled-components';
 
