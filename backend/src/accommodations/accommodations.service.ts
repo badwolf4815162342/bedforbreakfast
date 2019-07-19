@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
@@ -27,24 +27,15 @@ export class AccommodationsService {
     return this.accommodationModel.findById(id);
   }
 
-  async alter(accommodationDto: AccommodationDto): Promise<Accommodation | null> {
-    const accommodation = {
-      isActive: accommodationDto.isActive,
-      country: accommodationDto.country,
-      streetName: accommodationDto.streetName,
-      streetNumber: accommodationDto.streetNumber,
-      zipCode: accommodationDto.zipCode,
-      city: accommodationDto.city,
-      description: accommodationDto.description,
-      district: accommodationDto.description,
-      numberOfBeds: accommodationDto.numberOfBeds,
-      pictures: accommodationDto.pictures,
-    };
-    if (accommodationDto._id === '') {
-      const createdAccommodation = new this.accommodationModel(accommodation);
-      return await createdAccommodation.save();
+  async alter(accommodationDto: AccommodationDto): Promise<Accommodation> {
+    const resultAccommodation = await this.accommodationModel
+      .findByIdAndUpdate(accommodationDto._id, accommodationDto)
+      .exec();
+    if (resultAccommodation) {
+      return resultAccommodation;
+    } else {
+      throw NotFoundException;
     }
-    return this.accommodationModel.findByIdAndUpdate(accommodationDto._id, accommodation);
   }
 
   async create(accommodationDto: AccommodationDto): Promise<Accommodation> {

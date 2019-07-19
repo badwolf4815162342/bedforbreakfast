@@ -32,7 +32,7 @@ import {
 
 const ALTER_ACCOMMODATION_MUTATION = gql`
   mutation alterAccommodation(
-    $_id: String!
+    $_id: String
     $isActive: Boolean!
     $country: String!
     $city: String!
@@ -88,7 +88,7 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
       accommodation:
         props.accommodation != null
           ? props.accommodation
-          : new Accommodation('', false, '', '', '', '', '', '', '', 0, [
+          : new Accommodation(undefined, false, '', '', '', '', '', '', '', 0, [
               'https://miro.medium.com/max/244/1*JVFm_pqNLKi4sobJzicbww.png',
             ]),
     };
@@ -267,7 +267,7 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
               {(
                 createAccommodation: (arg0: {
                   variables: {
-                    _id: string;
+                    _id: string | undefined;
                     isActive: boolean;
                     country: string;
                     city: string;
