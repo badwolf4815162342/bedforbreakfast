@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
@@ -27,33 +27,29 @@ export class AccommodationsService {
     return this.accommodationModel.findById(id);
   }
 
-  async alter(accommodationDto: AccommodationDto): Promise<Accommodation | null> {
-    const accommodation = {
-      isActive: accommodationDto.isActive,
-      country: accommodationDto.country,
-      streetName: accommodationDto.streetName,
-      streetNumber: accommodationDto.streetNumber,
-      zipCode: accommodationDto.zipCode,
-      city: accommodationDto.city,
-      description: accommodationDto.description,
-      district: accommodationDto.description,
-      numberOfBeds: accommodationDto.numberOfBeds,
-      pictures: accommodationDto.pictures,
-    };
-    if (accommodationDto._id === '') {
-      const createdAccommodation = new this.accommodationModel(accommodation);
-      return await createdAccommodation.save();
+  async alter(accommodationDto: AccommodationDto): Promise<Accommodation> {
+    const resultAccommodation = await this.accommodationModel
+      .findByIdAndUpdate(accommodationDto._id, accommodationDto)
+      .exec();
+    if (resultAccommodation) {
+      return resultAccommodation;
+    } else {
+      throw NotFoundException;
     }
-    return this.accommodationModel.findByIdAndUpdate(accommodationDto._id, accommodation);
   }
 
   async create(accommodationDto: AccommodationDto): Promise<Accommodation> {
-    const newAccommodation = new this.accommodationModel(accommodationDto);
-    const createdAccommodation = await newAccommodation.save();
+    const userOfAccommodation = await this.userService.findById(accommodationDto.user);
+    if (userOfAccommodation && !userOfAccommodation.accommodation) {
+      const newAccommodation = new this.accommodationModel(accommodationDto);
+      const createdAccommodation = await newAccommodation.save();
 
-    // also add new accommodation to user
-    await this.userService.addAccommodation(createdAccommodation.toObject());
+      // also add new accommodation to user
+      await this.userService.addAccommodation(createdAccommodation.toObject());
 
-    return createdAccommodation;
+      return createdAccommodation;
+    } else {
+      throw new HttpException('User already has accommodation.', HttpStatus.FORBIDDEN);
+    }
   }
 }

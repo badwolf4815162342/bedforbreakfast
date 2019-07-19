@@ -1,5 +1,5 @@
 class Accommodation {
-  _id: string; //tslint:disable-line
+  _id: string | undefined; //tslint:disable-line
   isActive: boolean;
   country: string;
   streetName: string;
@@ -11,7 +11,7 @@ class Accommodation {
   numberOfBeds: number;
   pictures: string[];
   constructor(
-    _id: string, //tslint:disable-line
+    _id: string | undefined, //tslint:disable-line
     isActive: boolean,
     country: string,
     streetName: string,

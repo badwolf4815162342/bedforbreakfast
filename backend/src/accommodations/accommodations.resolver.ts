@@ -1,6 +1,6 @@
-import { NotFoundException, UseGuards } from '@nestjs/common';
+import { HttpException, HttpStatus, NotFoundException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveProperty, Resolver } from '@nestjs/graphql';
-import { ObjectId } from 'mongodb';
+import { ObjectId, ObjectID } from 'mongodb';
 import { Arg } from 'type-graphql';
 
 import { GqlAuthGuard, User as CurrentUser } from '../authentication/guards/jwt.auth.guard';
@@ -43,16 +43,29 @@ export class AccommodationResolver {
     return accommodation;
   }
 
+  @UseGuards(GqlAuthGuard)
   @Mutation((returns) => Accommodation)
   async alterAccommodation(
     @Args('accommodationDto')
     accommodationDto: AccommodationDto,
+    @CurrentUser() user: User,
   ): Promise<Accommodation> {
-    const accommodation = await this.accommodationsService.alter(accommodationDto);
-    if (!accommodation) {
-      throw new NotFoundException(accommodationDto._id);
+    let existingAccommodation: Accommodation | null;
+    if (!accommodationDto._id) {
+      return await this.accommodationsService.create({ ...accommodationDto, user: user._id });
+    } else {
+      existingAccommodation = await this.accommodationsService.findById(new ObjectID(accommodationDto._id));
+
+      if (existingAccommodation) {
+        if (existingAccommodation.user === user._id && user.accommodation === existingAccommodation._id) {
+          return await this.accommodationsService.alter(accommodationDto);
+        } else {
+          throw new HttpException('User can only update their own accommodation.', HttpStatus.FORBIDDEN);
+        }
+      } else {
+        return await this.accommodationsService.create({ ...accommodationDto, user: user._id });
+      }
     }
-    return accommodation;
   }
 
   @UseGuards(GqlAuthGuard)

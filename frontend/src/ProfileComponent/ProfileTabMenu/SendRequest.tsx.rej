@@ -1,0 +1,4 @@
+diff a/frontend/src/ProfileComponent/ProfileTabMenu/SendRequest.tsx b/frontend/src/ProfileComponent/ProfileTabMenu/SendRequest.tsx	(rejected hunks)
+@@ -58 +58 @@ export default function SendRequest(props: { userID: string }) {
+-  const receiver= props.userID;
++  const receiver = props.userID;
