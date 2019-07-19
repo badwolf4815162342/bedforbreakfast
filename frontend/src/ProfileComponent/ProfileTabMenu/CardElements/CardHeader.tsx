@@ -1,4 +1,5 @@
 import React from 'react';
+import Moment from 'react-moment';
 import pic from '../../../images/user2.jpeg';
 import { GridContainerR as GridContainer } from '../../../StyledComponents/StyledBasicItems';
 import { Date, Divider, HomeInfo, Name, ProfilePic, ProfilePicBox, Role, UserInfo } from './CardHeaderStyle';
@@ -8,7 +9,7 @@ interface CardHeaderProps {
   aHomeTown: string;
   aHomeCountry: string;
   role: string;
-  date: string;
+  date: Date;
   //profile pictures + report pictures
 }
 
@@ -29,7 +30,9 @@ class CardHeader extends React.Component<CardHeaderProps, {}> {
             From: {this.props.aHomeTown}, {this.props.aHomeCountry}
           </HomeInfo>
         </UserInfo>
-        <Date>{this.props.date}</Date>
+        <Date>
+          <Moment date={this.props.date} format="dd-mm-yyyy" />
+        </Date>
         <Divider />
       </GridContainer>
     );

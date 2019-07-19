@@ -317,8 +317,13 @@ class Login extends Component<any, LoginState> {
                 homeCountry,
                 favoriteFood,
               }}
+              onCompleted={(data: Data) => {
+                this.setState({ successSignUp: true, login: !this.state.login });
+                this._confirm(data);
+                this.props.history.push('/');
+              }}
             >
-              {(signUp: any, { loading, error, data }: any) => (
+              {(signUp: any, { loading, error }: any) => (
                 <RegisterButtonContainer>
                   {error && (
                     <div>
@@ -327,27 +332,11 @@ class Login extends Component<any, LoginState> {
                     </div>
                   )}
                   {loading && <p>Loading...</p>}
-                  {data && this.setState({ successSignUp: true, login: !login })}
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
                       this.setState({ successSignUp: false });
-                      signUp({
-                        variables: {
-                          email: this.state.email,
-                          password: this.state.password,
-                          firstName: this.state.firstName,
-                          lastName: this.state.lastName,
-                          phoneNumber: this.state.phoneNumber,
-                          birthday: this.state.birthday,
-                          gender: this.state.gender,
-                          description: this.state.description,
-                          profilePicture: this.state.profilePicture,
-                          homeTown: this.state.homeTown,
-                          homeCountry: this.state.homeCountry,
-                          favoriteFood: this.state.favoriteFood,
-                        },
-                      });
+                      signUp();
                     }}
                   >
                     <RegisterButton variant="contained" color="secondary" type="submit" disabled={loading}>
@@ -359,7 +348,7 @@ class Login extends Component<any, LoginState> {
             </Mutation>
             <LoginLink
               onClick={() => {
-                this.setState({ successSignUp: false, login: !login });
+                this.setState({ successSignUp: false, login: true });
               }}
             >
               Already have an account?

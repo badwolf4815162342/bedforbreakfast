@@ -1,7 +1,6 @@
 import Icon from '@material-ui/core/Icon';
 import React from 'react';
 import Moment from 'react-moment';
-import pic from '../../images/profilePic.jpeg';
 import { Section } from '../../StyledComponents/StyledBasicItems';
 import {
   Age,
@@ -31,10 +30,11 @@ interface ProfileProps {
   homeTown: string;
   homeCountry: string;
   favFood: string;
+  profilePic: string;
 }
 
 class ProfileUserDescription extends React.Component<ProfileProps, {}> {
-  profilePic = <img src={pic} style={{ width: 205, height: 205, borderRadius: 180 }} alt="Profile" />;
+  profilePic = <img src={this.props.profilePic} style={{ width: 205, height: 205, borderRadius: 180 }} alt="Profile" />;
 
   verified = this.props.verified ? (
     <Verified>

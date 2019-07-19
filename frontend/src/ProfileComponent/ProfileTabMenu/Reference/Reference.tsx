@@ -8,7 +8,7 @@ interface ReferenceProps {
   aHomeTown: string;
   aHomeCountry: string;
   role: string;
-  date: string;
+  date: Date;
   text: string;
   isPositive: boolean;
   //profile picture + report pictures

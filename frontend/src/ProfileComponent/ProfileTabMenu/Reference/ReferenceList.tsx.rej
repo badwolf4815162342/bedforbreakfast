@@ -1,0 +1,6 @@
+diff a/frontend/src/ProfileComponent/ProfileTabMenu/Reference/ReferenceList.tsx b/frontend/src/ProfileComponent/ProfileTabMenu/Reference/ReferenceList.tsx	(rejected hunks)
+@@ -4,3 +6 @@ import Reference from './Reference';
+-import gql from 'graphql-tag';
+-import { Query } from 'react-apollo';
+-import { NoReferencesLabe } from './ReferenceStyle'
++import { NoReferencesLabe } from './ReferenceStyle';
