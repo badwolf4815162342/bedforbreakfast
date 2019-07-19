@@ -4,7 +4,7 @@
 # -----------------------------------------------
 
 type Accommodation {
-  _id: ID!
+  _id: ObjectId!
   user: User!
   isActive: Boolean!
   country: String!

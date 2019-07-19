@@ -5,7 +5,7 @@ import Accommodation from './Accommodation';
 import CreateAccommodation from './CreateAccommodation';
 
 const ACCOMMODATION_BY_ID = gql`
-  query accommodationById($_id: String!) {
+  query accommodationById($_id: ObjectId!) {
     accommodationById(_id: $_id) {
       _id
       isActive
@@ -32,7 +32,7 @@ class AccommodationLoad extends React.Component<AccommodationLoadProps, Accommod
   constructor(props: any) {
     super(props);
     this.state = {
-      accommodationId: '5d2d9ef2c4615536f8829687',
+      accommodationId: '5d31cd06298ce26349f20b46',
     };
   }
 
