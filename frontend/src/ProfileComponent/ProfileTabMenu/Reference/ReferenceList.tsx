@@ -8,6 +8,7 @@ import { NoReferencesLabe } from './ReferenceStyle';
 const GET_RECEIVED_REFERENCES_BY_USER_ID = gql`
   query receivedRatings($userId: String!) {
     receivedRatings(userId: $userId) {
+      _id
       description
       receiverRole
       rating
@@ -17,6 +18,11 @@ const GET_RECEIVED_REFERENCES_BY_USER_ID = gql`
       }
       author {
         firstName
+        lastName
+        homeTown
+        homeCountry
+        verified
+        profilePicture
       }
     }
   }
@@ -24,6 +30,7 @@ const GET_RECEIVED_REFERENCES_BY_USER_ID = gql`
 
 interface ReferenceListData {
   receivedRatings: Array<{
+    _id: string;
     description: string;
     receiverRole: string;
     rating: boolean;
@@ -33,6 +40,11 @@ interface ReferenceListData {
     };
     author: {
       firstName: string;
+      lastName: string;
+      homeTown: string;
+      homeCountry: string;
+      verified: boolean;
+      profilePicture: string;
     };
   }>;
 }
@@ -62,14 +74,17 @@ class ReferenceList extends React.Component<{ userID: string }> {
               <Section>
                 {data.receivedRatings.map((reference) => (
                   <Reference
-                    authorName={reference.author.firstName}
-                    aHomeTown={'London'}
-                    aHomeCountry={'England'}
-                    // eslint-disable-next-line
-                    role={reference.receiverRole}
-                    date={reference.request.end}
+                    key={reference._id}
+                    authorFirstName={reference.author.firstName}
+                    authorLastName={reference.author.lastName}
+                    aHomeTown={reference.author.homeTown}
+                    aHomeCountry={reference.author.homeCountry}
+                    receiverRole={reference.receiverRole}
+                    dateStart={reference.request.start}
+                    dateEnd={reference.request.end}
                     isPositive={reference.rating}
                     text={reference.description}
+                    profilePicture={reference.author.profilePicture}
                   />
                 ))}
               </Section>
