@@ -77,6 +77,15 @@ export class UserResolver {
   }
 
   @ResolveProperty()
+  async accommodation(@Parent() user: User) {
+    if (user.accommodation) {
+      return await this.accommodationService.findById(user.accommodation);
+    } else {
+      return null;
+    }
+  }
+
+  @ResolveProperty()
   async likedBy(@Parent() user: User) {
     const likedBy: User[] = [];
     if (user.likedBy) {
