@@ -1,4 +1,0 @@
-diff a/frontend/src/ProfileComponent/ProfileTabMenu/Reference/ReferenceStyle.tsx b/frontend/src/ProfileComponent/ProfileTabMenu/Reference/ReferenceStyle.tsx	(rejected hunks)
-@@ -40 +40 @@ export const NoReferencesLabe = styled(SimpleLabelText)`
--  text-align: center
-+  text-align: center;

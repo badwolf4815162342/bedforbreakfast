@@ -1,9 +1,0 @@
-diff a/frontend/src/ProfileComponent/ProfileComponent.tsx b/frontend/src/ProfileComponent/ProfileComponent.tsx	(rejected hunks)
-@@ -49,2 +49,2 @@ interface UserData {
--    dislikedBy: Array<{ firstName: string; }>
--    likedBy: Array<{ firstName: string; }>;
-+    dislikedBy: Array<{ firstName: string }>;
-+    likedBy: Array<{ firstName: string }>;
-@@ -56 +56 @@ class ProfileComponent extends React.Component<{}> {
--  userID = '5d30fcd76eb6f65d1a60ebf1';//5d30fcd76eb6f65d1a60ebf1 Nuria 5d30960c9c0a43aa9f14fbee Jonathan
-+  userID = '5d30fcd76eb6f65d1a60ebf1'; //5d30fcd76eb6f65d1a60ebf1 Nuria 5d30960c9c0a43aa9f14fbee Jonathan
