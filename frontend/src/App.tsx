@@ -20,7 +20,7 @@ import Navbar from './NavigationElements/Header/Header';
 import AccommodationLoad from './ProfileComponent/CreateAccommodation/AccommodationLoad';
 import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
 import ProfileUserDescription from './ProfileComponent/ProfileComponent';
-import SearchResults from './SearchResults/SearchResults';
+import LoadSearch from './SearchResults/LoadSearch';
 import { MainThemeMaterial } from './StyledComponents/Theme';
 
 export default class App extends React.Component<any, any> {
@@ -46,7 +46,7 @@ export default class App extends React.Component<any, any> {
           exact: true,
         },
         {
-          component: SearchResults,
+          component: LoadSearch,
           path: '/searchResults',
           exact: true,
         },
