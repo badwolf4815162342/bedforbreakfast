@@ -1,6 +1,6 @@
 import { Box, Divider as divider, Paper, TextField } from '@material-ui/core';
 import styled from 'styled-components';
-import { SubText, Subtitle as Title, SubtitleSubtext } from '../../StyledComponents/StyledBasicItems';
+import { SubText, Subtitle as Title } from '../../StyledComponents/StyledBasicItems';
 import { MainThemeRGB } from '../../StyledComponents/Theme';
 
 export const RatingTitle = styled(Title)`
@@ -59,25 +59,25 @@ export const ProfilePic = styled(Box)`
   left: 1px
 
 `;
-export const Name = styled(SubtitleSubtext)`
+export const Name = styled(SubText)`
   font-size: 24px;
   line-height: 0.3;
 `;
-export const Age = styled(SubtitleSubtext)`
+export const Age = styled(SubText)`
   line-height: 0.3;
   font-size: 16px;
 `;
-export const RatingStyle = styled(SubtitleSubtext)`
+export const RatingStyle = styled(SubText)`
   letter-spacing: 4px;
 `;
-export const Status = styled(SubtitleSubtext)``;
-/** export const Description = styled(Text)`
+export const Status = styled(SubText)``;
+/* export const Description = styled(Text)`
   margin-left: 1em;
   margin-right: 1em;
   text-align: justify;
 `;*/
-export const Hometown = styled(SubtitleSubtext)``;
-export const FavoriteFood = styled(SubtitleSubtext)``;
+export const Hometown = styled(SubText)``;
+export const FavoriteFood = styled(SubText)``;
 export const IconInText = styled(SubText)``;
 
 export const Verified = styled(SubText)`

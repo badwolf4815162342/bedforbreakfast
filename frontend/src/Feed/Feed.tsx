@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import React from 'react';
 import { Query } from 'react-apollo';
 
@@ -7,14 +7,14 @@ import { FeedItem } from './FeedItem/FeedItem';
 const ALL_ACCOMMODATIONS_QUERY = gql`
   query accommodations {
     accommodations {
-      name
       city
+      country
     }
   }
 `;
 
 interface Data {
-  accommodations: Array<{ name: string; city: string }>;
+  accommodations: Array<{ country: string; city: string }>;
 }
 
 export const Feed = () => (
