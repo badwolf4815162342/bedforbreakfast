@@ -4,6 +4,7 @@ import { ProfileBackgroundPaper, ProfileBox, StyledTabMenu, StyledUserDescriptio
 
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import { USER_ID } from '../constants';
 
 const GET_USER_BY_ID = gql`
   query user($userId: String!) {
@@ -53,7 +54,7 @@ interface UserData {
 }
 
 class ProfileComponent extends React.Component<{}> {
-  userID = '5d30fcd76eb6f65d1a60ebf1'; //5d30fcd76eb6f65d1a60ebf1 Nuria 5d30960c9c0a43aa9f14fbee Jonathan
+  userID = localStorage.getItem(USER_ID);
 
   fullGenderLabel(gender: string) {
     switch (gender) {
@@ -78,7 +79,7 @@ class ProfileComponent extends React.Component<{}> {
             return <p>Loading...</p>;
           }
           if (error) {
-            return <p>Error :( Fix me {error.message}</p>;
+            return <p>Error :( Fix me! {error.message}</p>;
           }
           if (!data) {
             return <p>No Data :(</p>;
