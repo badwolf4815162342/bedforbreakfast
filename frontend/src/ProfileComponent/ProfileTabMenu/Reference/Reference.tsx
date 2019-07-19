@@ -4,13 +4,16 @@ import CardHeader from '../CardElements/CardHeader';
 import { IconInText, ReferenceCard, ReferenceReportPaper, Report } from './ReferenceStyle';
 
 interface ReferenceProps {
-  authorName: string;
+  authorFirstName: string;
+  authorLastName: string;
   aHomeTown: string;
   aHomeCountry: string;
-  role: string;
-  date: string;
+  receiverRole: string;
+  dateStart: Date;
+  dateEnd: Date;
   text: string;
   isPositive: boolean;
+  profilePicture: string;
   //profile picture + report pictures
 }
 
@@ -22,11 +25,14 @@ class Reference extends React.Component<ReferenceProps, {}> {
     return (
       <ReferenceCard>
         <CardHeader
-          role={this.props.role}
-          authorName={this.props.authorName}
+          receiverRole={this.props.receiverRole}
+          authorFirstName={this.props.authorFirstName}
+          authorLastName={this.props.authorLastName}
           aHomeTown={this.props.aHomeTown}
           aHomeCountry={this.props.aHomeCountry}
-          date={this.props.date}
+          dateStart={this.props.dateStart}
+          dateEnd={this.props.dateEnd}
+          profilePicture={this.props.profilePicture}
         />
         <ReferenceReportPaper>
           <IconInText>

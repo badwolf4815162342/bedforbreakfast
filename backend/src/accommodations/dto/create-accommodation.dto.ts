@@ -1,5 +1,8 @@
+import { GraphQLUpload } from 'graphql-upload';
 import { ObjectId } from 'mongodb';
 import { Field, InputType } from 'type-graphql';
+
+import { Upload } from '../../common/types/Upload';
 
 @InputType()
 export class AccommodationDto {
@@ -33,8 +36,8 @@ export class AccommodationDto {
   @Field()
   numberOfBeds!: number;
 
-  @Field((type) => [String], { nullable: 'itemsAndList' })
-  pictures?: string[];
+  @Field((type) => [GraphQLUpload], { nullable: 'itemsAndList' })
+  pictures?: Upload[];
 
   user!: ObjectId;
 }

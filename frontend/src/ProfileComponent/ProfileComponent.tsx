@@ -4,6 +4,7 @@ import { ProfileBackgroundPaper, ProfileBox, StyledTabMenu, StyledUserDescriptio
 
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import { USER_ID } from '../constants';
 
 const GET_USER_BY_ID = gql`
   query user($userId: String!) {
@@ -18,8 +19,13 @@ const GET_USER_BY_ID = gql`
       homeTown
       homeCountry
       favoriteFood
-      likedBy
-      dislikedBy
+      profilePicture
+      dislikedBy {
+        firstName
+      }
+      likedBy {
+        firstName
+      }
       accommodation {
         isActive
       }
@@ -40,18 +46,21 @@ interface UserData {
     homeTown: string;
     homeCountry: string;
     favoriteFood: string;
-    likedBy: string[];
-    dislikedBy: string[];
+    profilePicture: string;
+    dislikedBy: Array<{ firstName: string }>;
+    likedBy: Array<{ firstName: string }>;
     isActive: boolean;
   };
 }
 
 class ProfileComponent extends React.Component<{}> {
-  userID = '5d2f2c78ac366f42ed527388';
+  userID = localStorage.getItem(USER_ID);
 
   fullGenderLabel(gender: string) {
     switch (gender) {
       case 'm':
+        return 'male';
+      case 'male':
         return 'male';
       case 'f':
         return 'female';
@@ -70,7 +79,7 @@ class ProfileComponent extends React.Component<{}> {
             return <p>Loading...</p>;
           }
           if (error) {
-            return <p>Error :( Fix me</p>;
+            return <p>Error :( Fix me! {error.message}</p>;
           }
           if (!data) {
             return <p>No Data :(</p>;
@@ -100,8 +109,9 @@ class ProfileComponent extends React.Component<{}> {
                   homeTown={user.homeTown}
                   homeCountry={user.homeCountry}
                   favFood={user.favoriteFood}
+                  profilePic={user.profilePicture}
                 />
-                <StyledTabMenu />
+                <StyledTabMenu userID={user._id} />
               </ProfileBox>
             </Section>
           );

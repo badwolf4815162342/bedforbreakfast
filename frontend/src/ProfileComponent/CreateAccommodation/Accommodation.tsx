@@ -1,5 +1,5 @@
 class Accommodation {
-  _id: string; //tslint:disable-line
+  _id: string | undefined; //tslint:disable-line
   isActive: boolean;
   country: string;
   streetName: string;
@@ -9,9 +9,9 @@ class Accommodation {
   description: string;
   district: string;
   numberOfBeds: number;
-  pictures: string[];
+  pictures: File[];
   constructor(
-    _id: string, //tslint:disable-line
+    _id: string | undefined, //tslint:disable-line
     isActive: boolean,
     country: string,
     streetName: string,
@@ -21,7 +21,7 @@ class Accommodation {
     description: string,
     district: string,
     numberOfBeds: number,
-    pictures: string[],
+    pictures: File[],
   ) {
     this._id = _id;
     this.isActive = isActive;
