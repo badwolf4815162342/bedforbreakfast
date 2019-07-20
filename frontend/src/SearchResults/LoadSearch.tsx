@@ -3,6 +3,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { SearchResults } from './SearchResults';
+import { Title } from './SearchResultsStyle';
 
 const ACCOMMODATIONS_QUERY = gql`
   query accommodationsByCity($city: String!) {
@@ -28,6 +29,7 @@ const ACCOMMODATIONS_QUERY = gql`
         homeCountry
         profilePicture
         gender
+        birthday
         likedBy {
           _id
         }
@@ -40,10 +42,10 @@ const ACCOMMODATIONS_QUERY = gql`
   }
 `;
 
-interface LoadSearchProps {}
-interface LoadSearchState {
-  city: string;
+interface LoadSearchProps {
+  match: { params: { city: string } };
 }
+interface LoadSearchState {}
 
 interface DataAccommodation {
   accommodationsByCity: Accommodation[];
@@ -62,6 +64,7 @@ export interface User {
   dislikedBy: User[];
   verified: boolean;
   gender: string;
+  birthday: string;
 }
 
 export interface Accommodation {
@@ -82,28 +85,34 @@ export interface Accommodation {
 class LoadSearch extends React.Component<LoadSearchProps, LoadSearchState> {
   constructor(props: any) {
     super(props);
-    this.state = {
-      city: 'Munich',
-    };
+    this.state = {};
   }
 
   render() {
     return (
-      <Query<DataAccommodation, {}> query={ACCOMMODATIONS_QUERY} variables={{ city: this.state.city }}>
-        {({ loading, error, data }) => {
-          if (loading) {
-            return <p>Loading...</p>;
-          }
-          if (error) {
-            return <p>Error :(</p>;
-          }
-          if (!data) {
-            return <p>No Data :(</p>;
-          }
-          console.log(data.accommodationsByCity);
-          return <SearchResults accommodations={data.accommodationsByCity} city={this.state.city}></SearchResults>;
-        }}
-      </Query>
+      <div>
+        {!this.props.match.params.city && <Title>Please enter a city name</Title>}
+        <Query<DataAccommodation, {}> query={ACCOMMODATIONS_QUERY} variables={{ city: this.props.match.params.city }}>
+          {({ loading, error, data }) => {
+            if (loading) {
+              return <p>Loading...</p>;
+            }
+            if (error) {
+              return <p>Error :(</p>;
+            }
+            if (!data) {
+              return <p>No Data :(</p>;
+            }
+            console.log(data.accommodationsByCity);
+            return (
+              <SearchResults
+                accommodations={data.accommodationsByCity}
+                city={this.props.match.params.city}
+              ></SearchResults>
+            );
+          }}
+        </Query>
+      </div>
     );
   }
 }

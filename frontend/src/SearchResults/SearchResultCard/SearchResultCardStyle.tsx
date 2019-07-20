@@ -12,6 +12,7 @@ export const CardResult = styled.div`
   grid-gap: 10px;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto;
+  border-radius: 15px;
 `;
 
 export const AccommodationImageContainer = styled.div`
@@ -26,6 +27,7 @@ export const AccommodationImage = styled.img`
   width: 100%;
   height: 244px;
   object-fit: cover;
+  border-radius: 15px;
 `;
 
 export const AccommodationTitle = styled.h3`

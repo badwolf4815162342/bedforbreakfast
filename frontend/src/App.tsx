@@ -16,7 +16,7 @@ import { Feed } from './Feed/Feed';
 import LandingPage from './LandingPage/LandingPage';
 import Login from './Login/Login';
 import Footer from './NavigationElements/Footer/Footer';
-import Navbar from './NavigationElements/Header/Header';
+import { Navbar } from './NavigationElements/Header/Header';
 import AccommodationLoad from './ProfileComponent/CreateAccommodation/AccommodationLoad';
 import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
 import ProfileComponent from './ProfileComponent/ProfileComponent';
@@ -48,7 +48,7 @@ export default class App extends React.Component<any, any> {
         },
         {
           component: LoadSearch,
-          path: '/searchResults',
+          path: '/searchResults/:city',
           exact: true,
         },
         {
