@@ -124,7 +124,16 @@ export class SearchResults extends React.Component<SearchResultsProps, SearchRes
   };
 
   reset() {
-    this.setState({ accommodations: this.props.accommodations, applied: false });
+    this.setState({
+      hasRatings: false,
+      isVerified: false,
+      gender: 'a',
+      isLoaded: false,
+      applied: false,
+      accommodations: this.props.accommodations,
+      minNrBeds: 0,
+      districts: this.getDistricts(),
+    });
   }
 
   render() {
@@ -149,7 +158,7 @@ export class SearchResults extends React.Component<SearchResultsProps, SearchRes
           />
           <SelectContainer>
             Gender:
-            <select onChange={(e) => this.setState({ gender: e.target.value })}>
+            <select value={this.state.gender} onChange={(e) => this.setState({ gender: e.target.value })}>
               <option value="a">Any</option>
               <option value="m">Male</option>
               <option value="f">Female</option>
@@ -157,7 +166,7 @@ export class SearchResults extends React.Component<SearchResultsProps, SearchRes
             </select>
           </SelectContainer>
           <NumberOfBedsArea>Min. Nr. Beds</NumberOfBedsArea>
-          <NumberOfBedsField type="number" defaultValue={this.state.minNrBeds} onChange={this.changMinNrBeds} />
+          <NumberOfBedsField type="number" value={this.state.minNrBeds} onChange={this.changMinNrBeds} />
           <DistrictArea>
             <p>Districts:</p>
             <Districts>
