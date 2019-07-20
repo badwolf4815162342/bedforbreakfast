@@ -186,3 +186,71 @@ query {
   }
 }
 ```
+
+## Notifications:
+
+### Received requests
+
+Requests send to you which not have been updated as DENIED, CANCELED or ACCEPTED
+
+```
+query {
+  receivedRequestedRequests {
+    _id
+    start
+    end
+    description
+    requestStatus
+    receiver {
+      _id
+    }
+    proposer {
+      _id
+    }
+    ratings {
+      description
+      request {
+        _id
+        description
+      }
+      receiverRole
+      rating
+      author {
+        firstName
+      }
+    }
+  }
+}
+```
+
+### Accepted requests/upcoming trips
+
+```
+query {
+  acceptedRequests {
+    _id
+    start
+    end
+    description
+    requestStatus
+    receiver {
+      _id
+    }
+    proposer {
+      _id
+    }
+    ratings {
+      description
+      request {
+        _id
+        description
+      }
+      receiverRole
+      rating
+      author {
+        firstName
+      }
+    }
+  }
+}
+```
