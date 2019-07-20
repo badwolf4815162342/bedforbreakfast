@@ -17,6 +17,7 @@ const GET_RECEIVED_REFERENCES_BY_USER_ID = gql`
         end
       }
       author {
+        _id
         firstName
         lastName
         homeTown
@@ -39,6 +40,7 @@ interface ReferenceListData {
       end: Date;
     };
     author: {
+      _id: string;
       firstName: string;
       lastName: string;
       homeTown: string;
@@ -49,13 +51,13 @@ interface ReferenceListData {
   }>;
 }
 
-class ReferenceList extends React.Component<{ userID: string }> {
+class ReferenceList extends React.Component<{ userId: string }> {
   render() {
     return (
       <Section>
         <Query<ReferenceListData, {}>
           query={GET_RECEIVED_REFERENCES_BY_USER_ID}
-          variables={{ userId: this.props.userID }}
+          variables={{ userId: this.props.userId }}
         >
           {({ loading, error, data }) => {
             if (loading) {
@@ -75,7 +77,7 @@ class ReferenceList extends React.Component<{ userID: string }> {
                 {data.receivedRatings.map((reference) => (
                   <Reference
                     key={reference._id}
-                    authorID={reference._id}
+                    authorId={reference.author._id}
                     authorFirstName={reference.author.firstName}
                     authorLastName={reference.author.lastName}
                     aHomeTown={reference.author.homeTown}

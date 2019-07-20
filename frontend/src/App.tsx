@@ -62,12 +62,11 @@ export default class App extends React.Component<any, any> {
         },
         {
           component: ProfileComponent,
-          path: '/profile',
+          path: '/profile/:userId',
           exact: true,
         },
       ],
     };
-
     this.componentDidMount();
   }
 

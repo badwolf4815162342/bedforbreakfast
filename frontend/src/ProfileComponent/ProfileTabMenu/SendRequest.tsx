@@ -38,25 +38,10 @@ const SEND_REQUEST_MUTATION = gql`
   }
 `;
 
-// interface Data {
-//   createRequest: {
-//     start: Date;
-//     end: Date;
-//     description: string;
-//     requestStatus: boolean;
-//     receiver: {
-//       email: string;
-//     };
-//     proposer: {
-//       firstName: string;
-//       email: string;
-//     };
-//   };
-// }
-
 interface SendRequestState {
   open: boolean;
   sentOpen: boolean;
+  isLoaded: boolean;
   canRequest: boolean;
   from: Date;
   to: Date;
@@ -64,12 +49,13 @@ interface SendRequestState {
   receiver: string;
 }
 
-class SendRequest extends Component<{ userID: string }, SendRequestState> {
+class SendRequest extends Component<{ userId: string; userName: string }, SendRequestState> {
   constructor(props: any) {
     super(props);
     this.state = {
       open: false,
       sentOpen: false,
+      isLoaded: false,
       canRequest: true,
       from: new Date(),
       to: new Date(),
@@ -77,22 +63,6 @@ class SendRequest extends Component<{ userID: string }, SendRequestState> {
       receiver: '',
     };
   }
-
-  // handleOpen() {
-  //   this.setState({open: true})
-  // }
-
-  // handleClose() {
-  //   this.setState({open: false})
-  // }
-
-  // handleSent() {
-  //   this.setState({open: false, sentOpen:true, canRequest:false})
-  // }
-
-  // handleSentClose(){
-  //   this.setState({sentOpen: false})
-  // }
 
   render() {
     const { receiver, from, to, description } = this.state;
@@ -117,7 +87,9 @@ class SendRequest extends Component<{ userID: string }, SendRequestState> {
           fullWidth
         >
           <RequestDialogBox>
-            <RequestDialogTitle id="form-dialog-title">Send a request to stay with </RequestDialogTitle>
+            <RequestDialogTitle id="form-dialog-title">
+              Send a request to stay with {this.props.userName}
+            </RequestDialogTitle>
             <DialogContent>
               <DateBox>
                 <InputDate
@@ -163,19 +135,18 @@ class SendRequest extends Component<{ userID: string }, SendRequestState> {
                   to,
                   description,
                 }}
+                onCompleted={() => this.setState({ open: false, sentOpen: true, canRequest: false })}
               >
                 {(createRequest: any, { loading, error, data }: any) => (
                   <RequestMutation>
-                    {error && <Error>{error.message}</Error>}
+                    {error && <Error>{error.message.replace('GraphQL error: ', '')}</Error>}
                     {loading && <p>Loading...</p>}
-                    {data && this.setState({ sentOpen: true })}
                     <RequestDialogForm
                       onSubmit={(e) => {
                         e.preventDefault();
-                        this.setState({ sentOpen: true });
                         createRequest({
                           variables: {
-                            receiver: this.props.userID,
+                            receiver: this.props.userId,
                             from: this.state.from,
                             to: this.state.to,
                             description: this.state.description,

@@ -4,7 +4,7 @@ import CardHeader from '../CardElements/CardHeader';
 import { IconInText, ReferenceCard, ReferenceReportPaper, Report } from './ReferenceStyle';
 
 interface ReferenceProps {
-  authorID: string;
+  authorId: string;
   authorFirstName: string;
   authorLastName: string;
   aHomeTown: string;
@@ -26,7 +26,7 @@ class Reference extends React.Component<ReferenceProps, {}> {
     return (
       <ReferenceCard>
         <CardHeader
-          authorID={this.props.authorID}
+          authorId={this.props.authorId}
           receiverRole={this.props.receiverRole}
           authorFirstName={this.props.authorFirstName}
           authorLastName={this.props.authorLastName}
@@ -41,7 +41,10 @@ class Reference extends React.Component<ReferenceProps, {}> {
             <Icon>{this.rate}</Icon>
             {this.rateLabel}
           </IconInText>
-          <Report>{this.props.text}</Report>
+          <Report>
+            {this.props.authorId}
+            {this.props.text}
+          </Report>
         </ReferenceReportPaper>
       </ReferenceCard>
     );

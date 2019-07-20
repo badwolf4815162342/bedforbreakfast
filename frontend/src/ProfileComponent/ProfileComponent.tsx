@@ -1,9 +1,9 @@
+import gql from 'graphql-tag';
 import React from 'react';
+import { Query } from 'react-apollo';
+import { USER_ID } from '../constants';
 import { Section } from '../StyledComponents/StyledBasicItems';
 import { ProfileBackgroundPaper, ProfileBox, StyledTabMenu, StyledUserDescription } from './ProfileComponentStyle';
-
-import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
 
 const GET_USER_BY_ID = gql`
   query user($userId: String!) {
@@ -52,15 +52,19 @@ interface UserData {
   };
 }
 
-class ProfileComponent extends React.Component<{}> {
-  // userID = localStorage.getItem(USER_ID);
-  userID = '5d30fcd76eb6f65d1a60ebf1';
+class ProfileComponent extends React.Component<{ match: { params: any } }, { userId: string }> {
+  loggedUserID = localStorage.getItem(USER_ID);
+
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      userId: '',
+    };
+  }
 
   fullGenderLabel(gender: string) {
     switch (gender) {
       case 'm':
-        return 'male';
-      case 'male':
         return 'male';
       case 'f':
         return 'female';
@@ -71,9 +75,22 @@ class ProfileComponent extends React.Component<{}> {
     }
   }
 
+  componentDidMount() {
+    const {
+      match: { params },
+    } = this.props;
+    console.log(params);
+
+    this.setState({ userId: params.userId });
+  }
+
   render() {
+    const {
+      match: { params: userId },
+    } = this.props;
+    console.log(userId);
     return (
-      <Query<UserData, {}> query={GET_USER_BY_ID} variables={{ userId: this.userID }}>
+      <Query<UserData, {}> query={GET_USER_BY_ID} variables={userId} fetchPolicy="network-only">
         {({ loading, error, data }) => {
           if (loading) {
             return <p>Loading...</p>;
@@ -111,7 +128,7 @@ class ProfileComponent extends React.Component<{}> {
                   favFood={user.favoriteFood}
                   profilePic={user.profilePicture}
                 />
-                <StyledTabMenu userID={user._id} />
+                <StyledTabMenu userId={user._id} userName={user.firstName} />
               </ProfileBox>
             </Section>
           );

@@ -1,10 +1,20 @@
 import React from 'react';
 import Moment from 'react-moment';
 import { GridContainerR as GridContainer } from '../../../StyledComponents/StyledBasicItems';
-import { Date, Divider, HomeInfo, Name, ProfilePic, ProfilePicBox, Role, UserInfo } from './CardHeaderStyle';
+import {
+  Date,
+  Divider,
+  HeaderLink,
+  HomeInfo,
+  Name,
+  ProfilePic,
+  ProfilePicBox,
+  Role,
+  UserInfo,
+} from './CardHeaderStyle';
 
 interface CardHeaderProps {
-  authorID: string;
+  authorId: string;
   authorFirstName: string;
   authorLastName: string;
   aHomeTown: string;
@@ -26,17 +36,23 @@ class CardHeader extends React.Component<CardHeaderProps, {}> {
     return (
       <GridContainer>
         <Role>{receiverRole}</Role>
+
         <ProfilePicBox>
-          <ProfilePic>{authorPicture}</ProfilePic>
+          <HeaderLink to={`/profile/${this.props.authorId}`}>
+            <ProfilePic>{authorPicture}</ProfilePic>
+          </HeaderLink>
         </ProfilePicBox>
         <UserInfo>
-          <Name>
-            {this.props.authorFirstName} {this.props.authorLastName}{' '}
-          </Name>
-          <HomeInfo>
-            From: {this.props.aHomeTown}, {this.props.aHomeCountry}
-          </HomeInfo>
+          <HeaderLink to={`/profile/${this.props.authorId}`}>
+            <Name>
+              {this.props.authorFirstName} {this.props.authorLastName}{' '}
+            </Name>
+            <HomeInfo>
+              From: {this.props.aHomeTown}, {this.props.aHomeCountry}
+            </HomeInfo>
+          </HeaderLink>
         </UserInfo>
+
         <Date>
           <Moment date={this.props.dateEnd} format="MMMM, YYYY, " />
           <Moment from={this.props.dateEnd} ago>
