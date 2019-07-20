@@ -1,4 +1,4 @@
-import { Button, Checkbox } from '@material-ui/core';
+import { Button, Checkbox, TextField } from '@material-ui/core';
 import styled from 'styled-components';
 import { Section } from '../StyledComponents/StyledBasicItems';
 import { MainTheme } from '../StyledComponents/Theme';
@@ -22,6 +22,7 @@ export const Results = styled(Section)`
 `;
 
 export const Title = styled.h2`
+  margin: 0;
   grid-column: 1/13;
 `;
 
@@ -31,7 +32,7 @@ export const FilterArea = styled.div`
   display: grid;
   grid-gap: 10px;
   grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: 5vh 5vh 5vh 10vh 5vh 5vh 5vh 5vh 5vh 5vh 5vh;
+  grid-template-rows: 5vh 5vh 5vh 7vh 5vh 5vh 5vh 5vh 5vh 5vh 5vh 3vh;
   padding: 20px;
 `;
 
@@ -51,9 +52,21 @@ export const IsVerifiedArea = styled.p`
   align-self: center;
 `;
 
+export const NumberOfBedsArea = styled.p`
+  grid-column: 1/5;
+  grid-row: 5/5;
+  align-self: center;
+`;
+
+export const NumberOfBedsField = styled(TextField)`
+  grid-column: 5/7;
+  grid-row: 5/5;
+  align-self: center;
+`;
+
 export const DistrictArea = styled.div`
   grid-column: 1/7;
-  grid-row: 5/9;
+  grid-row: 6/10;
 `;
 
 export const Districts = styled.div`
@@ -77,12 +90,12 @@ export const DistrictCheckbox = styled(Checkbox)`
 
 export const ApplyButton = styled(Button)`
   grid-column: 1/7;
-  grid-row: 10/10;
+  grid-row: 11/11;
 `;
 
 export const ResetButton = styled(Button)`
   grid-column: 1/7;
-  grid-row: 11/11;
+  grid-row: 12/12;
 `;
 
 export const SelectContainer = styled.div`
@@ -109,5 +122,5 @@ export const CheckboxRight = styled(Checkbox)`
 export const ResultContainer = styled.div`
   grid-column: 3/13;
   overflow: scroll;
-  max-height: 76vh;
+  max-height: 77vh;
 `;

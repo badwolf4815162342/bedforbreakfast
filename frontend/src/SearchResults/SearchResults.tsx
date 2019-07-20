@@ -12,6 +12,8 @@ import {
   FilterHeader,
   HasRatingsArea,
   IsVerifiedArea,
+  NumberOfBedsArea,
+  NumberOfBedsField,
   ResetButton,
   ResultContainer,
   Results,
@@ -31,6 +33,7 @@ interface SearchResultsState {
   isLoaded: boolean;
   applied: boolean;
   accommodations: Accommodation[];
+  minNrBeds: number;
   districts: Array<{ val: string; flag: boolean }>;
 }
 
@@ -44,6 +47,7 @@ export class SearchResults extends React.Component<SearchResultsProps, SearchRes
       isLoaded: false,
       applied: false,
       accommodations: props.accommodations,
+      minNrBeds: 0,
       districts: this.getDistricts(),
     };
   }
@@ -80,24 +84,41 @@ export class SearchResults extends React.Component<SearchResultsProps, SearchRes
     if (this.state.gender !== 'a') {
       newList = newList.filter((accommodation: Accommodation) => accommodation.user.gender === this.state.gender);
     }
-    if (this.state.gender !== 'a') {
-      newList = newList.filter((accommodation: Accommodation) => accommodation.user.gender === this.state.gender);
-    }
     let districtList: Accommodation[] = [];
+    let districtCounter = 0;
     this.state.districts.forEach((district) => {
       if (district.flag) {
         const tempList: Accommodation[] = newList.filter(
           (accommodation: Accommodation) => accommodation.district === district.val,
         );
-        console.log(district.val);
-        console.log(tempList);
         districtList = [...districtList, ...tempList];
-        console.log(districtList);
+        districtCounter++;
       }
     });
     newList = districtList;
+    newList = newList.filter((accommodation: Accommodation) => accommodation.numberOfBeds >= this.state.minNrBeds);
     this.setState({ accommodations: newList, applied: true });
+    if (
+      districtCounter === this.state.districts.length &&
+      this.state.gender === 'a' &&
+      !this.state.isVerified &&
+      !this.state.hasRatings &&
+      this.state.minNrBeds <= 0
+    ) {
+      this.setState({ applied: false });
+    }
   }
+
+  changMinNrBeds = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value.length > 0) {
+      try {
+        const nrBeds = parseInt(event.target.value, 10);
+        this.setState({ minNrBeds: nrBeds });
+      } catch (error) {
+        console.log('Number of beds was not a number');
+      }
+    }
+  };
 
   reset() {
     this.setState({ accommodations: this.props.accommodations, applied: false });
@@ -132,6 +153,8 @@ export class SearchResults extends React.Component<SearchResultsProps, SearchRes
               <option value="d">Diverse</option>
             </select>
           </SelectContainer>
+          <NumberOfBedsArea>Min. Nr. Beds</NumberOfBedsArea>
+          <NumberOfBedsField type="number" defaultValue={this.state.minNrBeds} onChange={this.changMinNrBeds} />
           <DistrictArea>
             <p>Districts:</p>
             <Districts>

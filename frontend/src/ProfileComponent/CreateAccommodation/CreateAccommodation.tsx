@@ -109,7 +109,7 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
             accommodation: { ...this.state.accommodation, [name]: isActive },
           });
         } catch (error) {
-          console.log('Number of beds was not a number');
+          console.log(error);
         }
       }
     } else if (name === 'numberOfBeds') {
