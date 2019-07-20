@@ -78,8 +78,8 @@ mutation {
 ### Request possible 
 
 Query that has user id , id of host he wants to request, REQUESTED field
-=> if this query returns a value you cant request this accomodation again
-=> ) I'm creating a request that return true/false (true is can still be requested)
+=> if this query returns true you cant request this accomodation again
+=> one user cant request another user:host if he has requested him already and host has not yet answered (set the requestStatus to DENIED, CANCELED or ACCEPTED)
 
 ```
 query {
@@ -96,7 +96,7 @@ canBeRequested(
 
 ### Submit Rating:
 
-Is it possible that one person has to positive ratings from the same person because the person rated to trips with this host positive?
+It is possible that one person has to positive ratings from the same person because the person rated to trips with this host positive!
 
 ```
 mutation {
