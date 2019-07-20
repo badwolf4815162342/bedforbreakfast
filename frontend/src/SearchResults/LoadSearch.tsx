@@ -2,8 +2,9 @@ import React from 'react';
 
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import { Section } from '../StyledComponents/StyledBasicItems';
 import { SearchResults } from './SearchResults';
-import { Title } from './SearchResultsStyle';
+import { Results, Title } from './SearchResultsStyle';
 
 const ACCOMMODATIONS_QUERY = gql`
   query accommodationsByCity($city: String!) {
@@ -91,7 +92,6 @@ class LoadSearch extends React.Component<LoadSearchProps, LoadSearchState> {
   render() {
     return (
       <div>
-        {!this.props.match.params.city && <Title>Please enter a city name</Title>}
         <Query<DataAccommodation, {}> query={ACCOMMODATIONS_QUERY} variables={{ city: this.props.match.params.city }}>
           {({ loading, error, data }) => {
             if (loading) {
@@ -105,10 +105,21 @@ class LoadSearch extends React.Component<LoadSearchProps, LoadSearchState> {
             }
             console.log(data.accommodationsByCity);
             return (
-              <SearchResults
-                accommodations={data.accommodationsByCity}
-                city={this.props.match.params.city}
-              ></SearchResults>
+              <div>
+                {data.accommodationsByCity.length !== 0 && (
+                  <SearchResults
+                    accommodations={data.accommodationsByCity}
+                    city={this.props.match.params.city}
+                  ></SearchResults>
+                )}
+                {data.accommodationsByCity.length === 0 && (
+                  <Section>
+                    <Results>
+                      <Title>No search results for : {this.props.match.params.city}</Title>
+                    </Results>
+                  </Section>
+                )}
+              </div>
             );
           }}
         </Query>

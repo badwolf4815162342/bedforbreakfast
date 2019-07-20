@@ -1,4 +1,5 @@
 import { Box } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { SimpleLabelText, SubText } from './../../StyledComponents/StyledBasicItems';
 import { MainTheme, MainThemeRGB } from './../../StyledComponents/Theme';
@@ -136,4 +137,9 @@ export const RatingContainer = styled(SimpleLabelText)`
 export const Rating = styled.div`
   margin: auto;
   width: fit-content;
+`;
+
+export const LinkCard = styled(Link)`
+  color: inherit;
+  text-decoration: none;
 `;

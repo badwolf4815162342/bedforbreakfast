@@ -22,7 +22,9 @@ export class AccommodationsService {
   }
 
   async findByCity(cityName: string): Promise<Accommodation[]> {
-    return await this.accommodationModel.find({ city: cityName }).exec();
+    return await this.accommodationModel
+      .find({ city: { $regex: new RegExp('^' + cityName.toLowerCase(), 'i') } })
+      .exec();
   }
 
   async findById(id: ObjectId): Promise<Accommodation | null> {

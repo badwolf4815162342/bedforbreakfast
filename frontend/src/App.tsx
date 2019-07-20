@@ -20,7 +20,6 @@ import { Navbar } from './NavigationElements/Header/Header';
 import AccommodationLoad from './ProfileComponent/CreateAccommodation/AccommodationLoad';
 import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
 import ProfileComponent from './ProfileComponent/ProfileComponent';
-import SearchResults from './SearchResults/SearchResults';
 import LoadSearch from './SearchResults/LoadSearch';
 import { MainThemeMaterial } from './StyledComponents/Theme';
 
