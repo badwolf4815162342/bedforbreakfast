@@ -1,8 +1,11 @@
 import Tooltip from '@material-ui/core/Tooltip';
 import React from 'react';
 
-import { GridContainerXS, Section } from '../../StyledComponents/StyledBasicItems';
+import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo';
+import { GridContainerXS, Section, SubmitButton } from '../../StyledComponents/StyledBasicItems';
 import { MainTheme } from '../../StyledComponents/Theme';
+import Accommodation from './Accommodation';
 import {
   AccommodationTitle,
   AddressSubtitle,
@@ -12,6 +15,7 @@ import {
   CountryIcon,
   Description,
   DescriptionIcon,
+  District,
   Divider,
   EnableSelector,
   EnableText,
@@ -22,15 +26,71 @@ import {
   StreetName,
   StreetNumber,
   StreetNumberIcon,
+  SubmitArea,
   ZipCode,
 } from './CreateAccommodationStyle';
 
-class CreateAccommodation extends React.Component<{}, { isEnabled: boolean; accommodation: Accommodation }> {
+const ALTER_ACCOMMODATION_MUTATION = gql`
+  mutation alterAccommodation(
+    $_id: String!
+    $isActive: Boolean!
+    $country: String!
+    $city: String!
+    $streetName: String!
+    $streetNumber: String!
+    $zipCode: String!
+    $description: String
+    $district: String
+    $numberOfBeds: Float!
+    $pictures: [String]
+  ) {
+    alterAccommodation(
+      accommodationDto: {
+        _id: $_id
+        isActive: $isActive
+        country: $country
+        city: $city
+        streetName: $streetName
+        streetNumber: $streetNumber
+        zipCode: $zipCode
+        description: $description
+        district: $district
+        numberOfBeds: $numberOfBeds
+        pictures: $pictures
+      }
+    ) {
+      _id
+      isActive
+      country
+      city
+      streetName
+      streetNumber
+      zipCode
+      description
+      district
+      numberOfBeds
+      pictures
+    }
+  }
+`;
+
+interface CreateAccommodationProps {
+  accommodation: Accommodation;
+}
+
+interface CreateAccommodationState {
+  accommodation: Accommodation;
+}
+class CreateAccommodation extends React.Component<CreateAccommodationProps, CreateAccommodationState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      isEnabled: false,
-      accommodation: new Accommodation('Germany', 'Boltzmannstraße', '3', '85748', 'Garching', '', 2),
+      accommodation:
+        props.accommodation != null
+          ? props.accommodation
+          : new Accommodation('', false, '', '', '', '', '', '', '', 0, [
+              'https://miro.medium.com/max/244/1*JVFm_pqNLKi4sobJzicbww.png',
+            ]),
     };
   }
 
@@ -39,7 +99,33 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean; acco
   };
 
   handleChangeAccommodation = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ ...this.state, accommodation: { ...this.state.accommodation, [name]: event.target.value } });
+    if (name === 'isActive') {
+      if (event.target.value.length > 0) {
+        try {
+          const isActive = !this.state.accommodation.isActive;
+          this.setState({
+            ...this.state,
+            accommodation: { ...this.state.accommodation, [name]: isActive },
+          });
+        } catch (error) {
+          console.log('Number of beds was not a number');
+        }
+      }
+    } else if (name === 'numberOfBeds') {
+      if (event.target.value.length > 0) {
+        try {
+          const nrBeds = parseInt(event.target.value, 10);
+          this.setState({
+            ...this.state,
+            accommodation: { ...this.state.accommodation, [name]: nrBeds },
+          });
+        } catch (error) {
+          console.log('Number of beds was not a number');
+        }
+      }
+    } else {
+      this.setState({ ...this.state, accommodation: { ...this.state.accommodation, [name]: event.target.value } });
+    }
   };
 
   render() {
@@ -56,13 +142,14 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean; acco
             <EnableText>Make your apartment visible for others</EnableText>
           </Tooltip>
           <EnableSelector
-            checked={this.state.isEnabled}
-            onChange={this.handleChange('isEnabled')}
-            value="isEnabled"
+            checked={this.state.accommodation.isActive}
+            onChange={this.handleChangeAccommodation('isActive')}
+            value="isActive"
             inputProps={{ 'aria-label': 'secondary checkbox' }}
           />
           <NrBedsText>Specify how many beds are available for guests</NrBedsText>
           <NrBedsSelector
+            type="number"
             required
             id="standard-required"
             label="Nr. beds"
@@ -134,6 +221,12 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean; acco
             defaultValue={this.state.accommodation.zipCode}
             onChange={this.handleChangeAccommodation('zipCode')}
           />
+          <District
+            id="standard-required"
+            label="District"
+            defaultValue={this.state.accommodation.district}
+            onChange={this.handleChangeAccommodation('district')}
+          />
           <CityName
             required
             id="standard-required"
@@ -169,38 +262,59 @@ class CreateAccommodation extends React.Component<{}, { isEnabled: boolean; acco
             <path fill="none" d="M0 0h24v24H0z"></path>
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"></path>
           </CountryIcon>
+          <SubmitArea>
+            <Mutation mutation={ALTER_ACCOMMODATION_MUTATION}>
+              {(
+                createAccommodation: (arg0: {
+                  variables: {
+                    _id: string;
+                    isActive: boolean;
+                    country: string;
+                    city: string;
+                    streetName: string;
+                    streetNumber: string;
+                    zipCode: string;
+                    description: string;
+                    district: string;
+                    numberOfBeds: number;
+                    pictures: string[];
+                  };
+                }) => void,
+                { data }: any,
+              ) => (
+                <div>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      console.log(this.state.accommodation);
+                      createAccommodation({
+                        variables: {
+                          _id: this.state.accommodation._id,
+                          isActive: this.state.accommodation.isActive,
+                          country: this.state.accommodation.country,
+                          city: this.state.accommodation.city,
+                          streetName: this.state.accommodation.streetName,
+                          streetNumber: this.state.accommodation.streetNumber,
+                          zipCode: this.state.accommodation.zipCode,
+                          description: this.state.accommodation.description,
+                          district: this.state.accommodation.district,
+                          numberOfBeds: this.state.accommodation.numberOfBeds,
+                          pictures: this.state.accommodation.pictures,
+                        },
+                      });
+                    }}
+                  >
+                    <SubmitButton variant="contained" color="primary" type="submit">
+                      Submit
+                    </SubmitButton>
+                  </form>
+                </div>
+              )}
+            </Mutation>
+          </SubmitArea>
         </GridContainerXS>
       </Section>
     );
-  }
-}
-
-class Accommodation {
-  country: string;
-  streetName: string;
-  streetNumber: string;
-  zipCode: string;
-  city: string;
-  description: string;
-  numberOfBeds: number;
-  constructor(
-    country: string,
-    streetName: string,
-    streetNumber: string,
-    zipCode: string,
-    city: string,
-    description: string,
-    numberOfBeds: number,
-  ) {
-    this.country = country;
-    this.streetName = streetName;
-    this.streetNumber = streetNumber;
-    this.zipCode = zipCode;
-    this.city = city;
-    //TODO: longitude and latitude
-    this.description = description;
-    this.numberOfBeds = numberOfBeds;
-    //TODO: pictures
   }
 }
 

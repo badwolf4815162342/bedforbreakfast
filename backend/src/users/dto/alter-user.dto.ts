@@ -1,8 +1,12 @@
 import { IsEmail, IsNotEmpty, IsPhoneNumber } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
+import { GenderType } from '../models/User';
 
 @InputType()
-export class CreateUserDto {
+export class AlterUserDto {
+  @Field({ nullable: true })
+  _id?: string; //tslint:disable-line
+
   @Field()
   @IsEmail()
   email!: string;
@@ -13,12 +17,6 @@ export class CreateUserDto {
   @Field()
   @IsPhoneNumber('ZZ')
   phoneNumber!: string;
-
-  @Field()
-  isHost!: boolean;
-
-  @Field()
-  isGuest!: boolean;
 
   @Field()
   @IsNotEmpty()
@@ -32,7 +30,7 @@ export class CreateUserDto {
   birthday!: Date;
 
   @Field()
-  gender!: string;
+  gender!: GenderType;
 
   @Field()
   @IsNotEmpty()
@@ -40,9 +38,6 @@ export class CreateUserDto {
 
   @Field()
   profilePicture!: string;
-
-  @Field()
-  verified!: boolean;
 
   @Field()
   @IsNotEmpty()

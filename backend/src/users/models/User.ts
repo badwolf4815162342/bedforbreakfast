@@ -1,27 +1,25 @@
-import { Field, ObjectType } from 'type-graphql';
-import { prop, Typegoose } from 'typegoose';
+import { ObjectId } from 'mongodb';
+import { Field, ID, ObjectType } from 'type-graphql';
+import { arrayProp, prop, Ref, Typegoose } from 'typegoose';
+
+import { Accommodation } from '../../accommodations/models/Accommodation';
+import { Meal } from '../../meal/models/Meal';
 
 @ObjectType()
 export class User extends Typegoose {
-  @Field((type) => String)
-  @prop({ required: true })
-  email!: string;
+  @Field((type) => ID)
+  readonly _id!: ObjectId; // tslint:disable-line variable-name
 
   @Field((type) => String)
+  @prop({ required: true, unique: true })
+  email!: string;
+
   @prop({ required: true })
   password!: string;
 
   @Field((type) => String)
   @prop({ required: true })
   phoneNumber!: string;
-
-  @Field((type) => Boolean)
-  @prop({ required: true })
-  isHost!: boolean;
-
-  @Field((type) => Boolean)
-  @prop({ required: true })
-  isGuest!: boolean;
 
   @Field((type) => String)
   @prop({ required: true })
@@ -48,7 +46,7 @@ export class User extends Typegoose {
   profilePicture!: string;
 
   @Field((type) => Boolean)
-  @prop({ required: true })
+  @prop({ required: true, default: false })
   verified!: boolean;
 
   @Field((type) => String)
@@ -62,6 +60,22 @@ export class User extends Typegoose {
   @Field((type) => String)
   @prop({ required: true })
   favoriteFood!: string;
+
+  @Field((type) => [User])
+  @arrayProp({ itemsRef: 'User' })
+  likedBy?: Array<Ref<ObjectId>>;
+
+  @Field((type) => [User])
+  @arrayProp({ itemsRef: 'User' })
+  dislikedBy?: Array<Ref<ObjectId>>;
+
+  @Field((type) => Accommodation, { nullable: true })
+  @prop({ ref: User })
+  accommodation?: Ref<ObjectId>;
+
+  @Field((type) => [Meal])
+  @arrayProp({ itemsRef: 'Meal' })
+  meals?: Array<Ref<ObjectId>>;
 }
 
-type GenderType = 'm' | 'w' | 'd';
+export type GenderType = 'm' | 'w' | 'd';
