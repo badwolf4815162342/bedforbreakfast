@@ -83,7 +83,7 @@ export class RequestResolver {
     @Args('createRequestDto') createRequestDto: CreateRequestDto,
     @CurrentUser() proposer: User,
   ): Promise<Request> {
-    if (!(await this.requestPossible)) {
+    if (!this.requestPossible) {
       throw new Error('Requesting not possible');
     }
     // Date check
