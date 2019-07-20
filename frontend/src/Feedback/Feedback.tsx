@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { Section } from '../StyledComponents/StyledBasicItems';
-import { ReferenceTitle } from './ReferenceStyle';
-import ReferenceTrip from './ReferenceTrip/ReferenceTrip';
-import WriteRating from './WriteRating/WriteRating';
+import { ReferenceTitle } from './FeedbackStyle';
+import Reference from './Reference/Reference';
+// import WriteRating from './WriteRating/WriteRating';
 
-class Reference extends React.Component<{}, { isEnabled: boolean }> {
+class Feedback extends React.Component<{}, {}> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -21,11 +21,11 @@ class Reference extends React.Component<{}, { isEnabled: boolean }> {
     return (
       <Section>
         <ReferenceTitle>How was your trip to xxx from x to x?</ReferenceTitle>
-        <WriteRating />
-        <ReferenceTrip />
+        {/* <WriteRating /> */}
+        <Reference />
       </Section>
     );
   }
 }
 
-export default Reference;
+export default Feedback;
