@@ -35,7 +35,6 @@ input AccommodationDto {
 input CanBeRequestedDto {
   _id: String
   hostId: String!
-  requestId: String!
 }
 
 input CreateMealDto {

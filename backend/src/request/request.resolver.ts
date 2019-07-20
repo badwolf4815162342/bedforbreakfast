@@ -43,11 +43,7 @@ export class RequestResolver {
     return this.requestService.findByProposerAndAnsweredFromNow(user._id);
   }
 
-  async requestPossible(requestId: string, hostId: string, currentUserId: ObjectId): Promise<boolean> {
-    const request = await this.requestService.findById(requestId);
-    if (!request) {
-      throw new Error('Invalid request ID');
-    }
+  async requestPossible(hostId: string, currentUserId: ObjectId): Promise<boolean> {
     // check if receiver exists
     const receiver = await this.usersService.findById(hostId);
     if (!receiver) {
@@ -83,7 +79,7 @@ export class RequestResolver {
     @Args('createRequestDto') createRequestDto: CreateRequestDto,
     @CurrentUser() proposer: User,
   ): Promise<Request> {
-    if (!this.requestPossible) {
+    if (!(await this.requestPossible(createRequestDto.receiver, proposer._id))) {
       throw new Error('Requesting not possible');
     }
     // Date check
@@ -206,7 +202,7 @@ export class RequestResolver {
     @CurrentUser() user: User,
     // tslint:disable-next-line: ban-types
   ): Promise<Boolean> {
-    return await this.requestPossible(canBeRequestedDto.requestId, canBeRequestedDto.hostId, user._id);
+    return await this.requestPossible(canBeRequestedDto.hostId, user._id);
   }
 
   @ResolveProperty()
