@@ -88,6 +88,7 @@ type Mutation {
   login(loginDto: LoginDto!): LoginResponseTo!
   addProfilePicture(picture: Upload!): String!
   createMeal(createMealDto: CreateMealDto!): Meal!
+  createTestMeals: User!
   alterAccommodation(accommodationDto: AccommodationDto!): Accommodation!
   createAccommodation(createAccommodationDto: AccommodationDto!): Accommodation!
   createRequest(createRequestDto: CreateRequestDto!): Request!
