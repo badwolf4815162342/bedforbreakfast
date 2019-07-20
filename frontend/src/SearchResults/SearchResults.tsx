@@ -1,7 +1,13 @@
-import { Checkbox } from '@material-ui/core';
 import React from 'react';
+import { Accommodation } from './LoadSearch';
 import {
   ApplyButton,
+  CheckboxRight,
+  District,
+  DistrictArea,
+  DistrictCheckbox,
+  DistrictName,
+  Districts,
   FilterArea,
   FilterHeader,
   HasRatingsArea,
@@ -26,32 +32,7 @@ interface SearchResultsState {
   isLoaded: boolean;
   applied: boolean;
   accommodations: Accommodation[];
-  districts: string[];
-}
-
-export interface User {
-  firstName: string;
-  lastName: string;
-  description: string;
-  favoriteFood: string;
-  homeTown: string;
-  homeCountry: string;
-  profilePicture: string;
-}
-
-export interface Accommodation {
-  _id: string;
-  isActive: boolean;
-  country: string;
-  city: string;
-  streetName: string;
-  streetNumber: string;
-  zipCode: string;
-  description: string;
-  district: string;
-  numberOfBeds: number;
-  pictures: [string];
-  user: User;
+  districts: Array<{ val: string; flag: boolean }>;
 }
 
 export class SearchResults extends React.Component<SearchResultsProps, SearchResultsState> {
@@ -66,17 +47,40 @@ export class SearchResults extends React.Component<SearchResultsProps, SearchRes
       accommodations: props.accommodations,
       districts: this.getDistricts(),
     };
-    console.log(this.state.districts);
+  }
+
+  onUpdateItem(i: number) {
+    const newDistrict = this.state.districts;
+    newDistrict.map((district, index) => {
+      if (i === index) {
+        district.flag = !district.flag;
+      }
+      return null;
+    });
+    this.setState({ districts: newDistrict });
   }
 
   getDistricts() {
-    return Array.from(new Set(this.props.accommodations.map((i) => i.district)));
+    const districtArray = new Array<{ val: string; flag: boolean }>();
+    const districtNames = Array.from(new Set(this.props.accommodations.map((i) => i.district)));
+    districtNames.map((i) => districtArray.push({ val: i, flag: true }));
+    return districtArray;
   }
 
   apply() {
-    const newList = this.state.accommodations.filter(
-      (accommodation: Accommodation) => accommodation.zipCode === '8923',
-    );
+    let newList: Accommodation[] = this.props.accommodations;
+    if (this.state.hasRatings) {
+      newList = newList.filter(
+        (accommodation: Accommodation) =>
+          !(accommodation.user.dislikedBy.length === 0 && accommodation.user.likedBy.length === 0),
+      );
+    }
+    if (this.state.isVerified) {
+      newList = newList.filter((accommodation: Accommodation) => accommodation.user.verified === true);
+    }
+    if (this.state.gender !== 'a') {
+      newList = newList.filter((accommodation: Accommodation) => accommodation.user.gender === this.state.gender);
+    }
     this.setState({ accommodations: newList, applied: true });
   }
 
@@ -90,24 +94,20 @@ export class SearchResults extends React.Component<SearchResultsProps, SearchRes
         <Title>Results for {this.props.city}</Title>
         <FilterArea>
           <FilterHeader>Filter</FilterHeader>
-          <HasRatingsArea>
-            Host has Ratings:
-            <Checkbox
-              checked={this.state.hasRatings}
-              onChange={(e) => this.setState({ hasRatings: e.target.checked })}
-              value="hasRatings"
-              color="primary"
-            />
-          </HasRatingsArea>
-          <IsVerifiedArea>
-            Host is Verified:
-            <Checkbox
-              checked={this.state.isVerified}
-              onChange={(e) => this.setState({ isVerified: e.target.checked })}
-              value="isVerified"
-              color="primary"
-            />
-          </IsVerifiedArea>
+          <HasRatingsArea>Host has Ratings:</HasRatingsArea>
+          <CheckboxRight
+            checked={this.state.hasRatings}
+            onChange={(e) => this.setState({ hasRatings: e.target.checked })}
+            value="hasRatings"
+            color="primary"
+          />
+          <IsVerifiedArea>Host is Verified:</IsVerifiedArea>
+          <CheckboxRight
+            checked={this.state.isVerified}
+            onChange={(e) => this.setState({ isVerified: e.target.checked })}
+            value="isVerified"
+            color="primary"
+          />
           <SelectContainer>
             Gender:
             <select onChange={(e) => this.setState({ gender: e.target.value })}>
@@ -117,6 +117,25 @@ export class SearchResults extends React.Component<SearchResultsProps, SearchRes
               <option value="d">Diverse</option>
             </select>
           </SelectContainer>
+          <DistrictArea>
+            <p>Districts:</p>
+            <Districts>
+              {this.state.districts &&
+                this.state.districts.map((district, index) => (
+                  <div key={district.val}>
+                    <District>
+                      <DistrictName>{district.val}</DistrictName>
+                      <DistrictCheckbox
+                        checked={district.flag}
+                        onChange={(e) => this.onUpdateItem(index)}
+                        value="{district.val}"
+                        color="primary"
+                      />
+                    </District>
+                  </div>
+                ))}
+            </Districts>
+          </DistrictArea>
           <ApplyButton
             variant="contained"
             color="secondary"

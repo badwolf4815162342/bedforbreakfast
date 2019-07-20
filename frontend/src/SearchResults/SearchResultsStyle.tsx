@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Button, Checkbox } from '@material-ui/core';
 import styled from 'styled-components';
 import { Section } from '../StyledComponents/StyledBasicItems';
 import { MainTheme } from '../StyledComponents/Theme';
@@ -30,7 +30,7 @@ export const FilterArea = styled.div`
   grid-column: 1/3;
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   grid-template-rows: 5vh 5vh 5vh 10vh 5vh 5vh 5vh 5vh 5vh 5vh 5vh;
   padding: 20px;
 `;
@@ -39,14 +39,40 @@ export const FilterHeader = styled.h2`
   grid-column: 1/7;
   grid-row: 1/1;
 `;
-export const HasRatingsArea = styled.div`
-  grid-column: 1/7;
+export const HasRatingsArea = styled.p`
+  grid-column: 1/5;
   grid-row: 2/2;
+  align-self: center;
 `;
 
-export const IsVerifiedArea = styled.div`
-  grid-column: 1/7;
+export const IsVerifiedArea = styled.p`
+  grid-column: 1/5;
   grid-row: 3/3;
+  align-self: center;
+`;
+
+export const DistrictArea = styled.div`
+  grid-column: 1/7;
+  grid-row: 5/9;
+`;
+
+export const Districts = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  border: 1px solid ${MainTheme.grey.main};
+`;
+
+export const District = styled.div`
+  display: grid;
+`;
+
+export const DistrictName = styled.p`
+  grid-column: 1/3;
+`;
+
+export const DistrictCheckbox = styled(Checkbox)`
+  grid-column: 3/4;
 `;
 
 export const ApplyButton = styled(Button)`
@@ -74,6 +100,10 @@ export const SelectContainer = styled.div`
       border: 1px solid ${MainTheme.primary.main};
     }
   }
+`;
+
+export const CheckboxRight = styled(Checkbox)`
+  grid-column: 5/7;
 `;
 
 export const ResultContainer = styled.div`

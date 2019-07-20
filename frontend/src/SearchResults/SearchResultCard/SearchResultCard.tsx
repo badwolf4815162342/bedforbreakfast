@@ -1,40 +1,31 @@
+import { Icon } from '@material-ui/core';
 import React from 'react';
-import { Accommodation } from './../SearchResults';
+import { Accommodation } from './../LoadSearch';
 import {
   AccommodationDescription,
-  AccommodationNumberOfBeds,
+  AccommodationImage,
+  AccommodationImageContainer,
   AccommodationTitle,
-  BorderBox,
-  BorderLessBox,
-  CardAccommodation,
-  FavoriteFood,
-  ImageAccommodation,
-  ImageContainerAccommodation,
-  ImageContainerHost,
-  ProfilePic,
-  ProfilePicBox,
-  UserDescription,
-  UserName,
+  AccommodationTreats,
+  BorderNoSeparator,
+  BoxSeparatorRight,
+  CardResult,
+  HostDescription,
+  HostImage,
+  HostImageBox,
+  HostImageContainer,
+  HostName,
+  HostTreats,
+  IconInText,
+  Rating,
+  RatingContainer,
 } from './SearchResultCardStyle';
 
 interface CardProps {
   accommodation: Accommodation;
 }
 
-interface CardState {
-  imageApartment: [string];
-  descriptionApartment: string;
-  /* numberOfBeds: number;
-  district: string;
-  name: string;
-  descriptionHost: string;
-  hometown: string;
-  favoriteFood: string;
-  positiveReviews: number;
-  negativeReviews: number; */
-}
-
-export let flag = false;
+interface CardState {}
 class SearchResultCard extends React.Component<CardProps, CardState> {
   profilePic = (
     <img
@@ -46,28 +37,25 @@ class SearchResultCard extends React.Component<CardProps, CardState> {
 
   constructor(props: any) {
     super(props);
-    this.state = {
-      imageApartment: props.imageApartment,
-      descriptionApartment: props.descriptionApartment,
-    };
+    this.state = {};
   }
 
   render() {
     return (
-      <CardAccommodation>
-        <ImageContainerAccommodation>
-          <ImageAccommodation
+      <CardResult>
+        <AccommodationImageContainer>
+          <AccommodationImage
             src={
-              this.state.imageApartment
-                ? this.state.imageApartment[0]
+              this.props.accommodation.pictures
+                ? this.props.accommodation.pictures[0]
                 : 'https://techcrunch.com/wp-content/uploads/2019/03/blueground-apartment-2-2-2.jpg?w=730&crop=1'
             }
           />
-        </ImageContainerAccommodation>
-        <BorderBox>
+        </AccommodationImageContainer>
+        <BoxSeparatorRight>
           <AccommodationTitle>Description:</AccommodationTitle>
           <AccommodationDescription>{this.props.accommodation.description}</AccommodationDescription>
-          <AccommodationNumberOfBeds>
+          <AccommodationTreats>
             <p>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 14">
                 <path d="M0 0h24v24H0z" fill="none" />
@@ -82,25 +70,39 @@ class SearchResultCard extends React.Component<CardProps, CardState> {
               </svg>{' '}
               {this.props.accommodation.district}
             </p>
-          </AccommodationNumberOfBeds>
-        </BorderBox>
-        <ImageContainerHost>
-          <ProfilePicBox>
-            <ProfilePic>{this.profilePic}</ProfilePic>
-          </ProfilePicBox>
-        </ImageContainerHost>
-        <BorderLessBox>
-          <UserName>
+          </AccommodationTreats>
+        </BoxSeparatorRight>
+        <HostImageContainer>
+          <HostImageBox>
+            <HostImage>{this.profilePic}</HostImage>
+          </HostImageBox>
+          <RatingContainer>
+            <Rating>
+              <IconInText>
+                {' '}
+                <Icon>thumb_up</Icon>{' '}
+              </IconInText>{' '}
+              {this.props.accommodation.user.likedBy.length}
+              <IconInText>
+                {' '}
+                <Icon>thumb_down</Icon>{' '}
+              </IconInText>{' '}
+              {this.props.accommodation.user.dislikedBy.length}
+            </Rating>
+          </RatingContainer>
+        </HostImageContainer>
+        <BorderNoSeparator>
+          <HostName>
             {this.props.accommodation.user.firstName} {this.props.accommodation.user.lastName}
-          </UserName>
-          <UserDescription>{this.props.accommodation.user.description}</UserDescription>
-          <FavoriteFood>
+          </HostName>
+          <HostDescription>{this.props.accommodation.user.description}</HostDescription>
+          <HostTreats>
             <p>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 14">
                 <path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z" />
                 <path fill="none" d="M0 0h24v24H0z" />
               </svg>{' '}
-              Favorite food: {this.props.accommodation.user.favoriteFood}
+              {this.props.accommodation.user.favoriteFood}
             </p>
             <p>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 20">
@@ -109,9 +111,9 @@ class SearchResultCard extends React.Component<CardProps, CardState> {
               </svg>{' '}
               {this.props.accommodation.user.homeCountry}, {this.props.accommodation.user.homeCountry}
             </p>
-          </FavoriteFood>
-        </BorderLessBox>
-      </CardAccommodation>
+          </HostTreats>
+        </BorderNoSeparator>
+      </CardResult>
     );
   }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import { SearchResults, User } from './SearchResults';
+import { SearchResults } from './SearchResults';
 
 const ACCOMMODATIONS_QUERY = gql`
   query accommodationsByCity($city: String!) {
@@ -19,6 +19,7 @@ const ACCOMMODATIONS_QUERY = gql`
       numberOfBeds
       pictures
       user {
+        _id
         firstName
         lastName
         description
@@ -26,6 +27,14 @@ const ACCOMMODATIONS_QUERY = gql`
         homeTown
         homeCountry
         profilePicture
+        gender
+        likedBy {
+          _id
+        }
+        dislikedBy {
+          _id
+        }
+        verified
       }
     }
   }
@@ -37,20 +46,37 @@ interface LoadSearchState {
 }
 
 interface DataAccommodation {
-  accommodationsByCity: Array<{
-    _id: string;
-    isActive: boolean;
-    country: string;
-    city: string;
-    streetName: string;
-    streetNumber: string;
-    zipCode: string;
-    description: string;
-    district: string;
-    numberOfBeds: number;
-    pictures: [string];
-    user: User;
-  }>;
+  accommodationsByCity: Accommodation[];
+}
+
+export interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  description: string;
+  favoriteFood: string;
+  homeTown: string;
+  homeCountry: string;
+  profilePicture: string;
+  likedBy: User[];
+  dislikedBy: User[];
+  verified: boolean;
+  gender: string;
+}
+
+export interface Accommodation {
+  _id: string;
+  isActive: boolean;
+  country: string;
+  city: string;
+  streetName: string;
+  streetNumber: string;
+  zipCode: string;
+  description: string;
+  district: string;
+  numberOfBeds: number;
+  pictures: [string];
+  user: User;
 }
 
 class LoadSearch extends React.Component<LoadSearchProps, LoadSearchState> {
