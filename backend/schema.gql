@@ -101,11 +101,12 @@ scalar ObjectId
 type Query {
   meals: [Meal!]!
   users: [User!]!
-  user(userId: String!): User
+  user(userId: String!): User!
   accommodations: [Accommodation!]!
   accommodationsByCity(city: String!): [Accommodation!]!
   accommodationById(_id: ObjectId!): Accommodation!
   requests: [Request!]!
+  request(requestId: String!): Request!
   canBeRequested(canBeRequestedDto: CanBeRequestedDto!): Boolean!
   ratings: [Rating!]!
   receivedRatings(userId: String!): [Rating!]!

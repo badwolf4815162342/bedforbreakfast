@@ -1,14 +1,17 @@
 import React from 'react';
 
-class TripReport extends React.Component<{}, { isEnabled: boolean; tripReport: TripReport }> {
+class TripReport extends React.Component<{}, {}> {
   constructor(props: any) {
     super(props);
     this.state = {
-      isEnabled: false,
-      tripReport: new TripReport('some description'),
+      // isEnabled: false,
+      // tripReport: new TripReport('some description'),
     };
   }
 
+  render() {
+    return <p>Trip report</p>;
+  }
   // handleChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
   //   this.setState({ ...this.state, [name]: event.target.checked });
   // };

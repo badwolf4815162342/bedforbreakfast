@@ -52,7 +52,7 @@ export class UserResolver {
     return this.imageUploadService.singleFileUpload(picture);
   }
 
-  @Query((returns) => User, { nullable: true })
+  @Query((returns) => User)
   async user(@Args('userId') id: string): Promise<User> {
     const user = await this.userService.findById(id);
     if (!user) {
