@@ -5,13 +5,13 @@ import TripReportList from './ProfileTripReports/TripReport/TripReportList';
 import ReferenceList from './Reference/ReferenceList';
 import SendRequest from './SendRequest';
 
-export default function ProfileTabMenu(props: { userID: string }) {
+export default function ProfileTabMenu(props: { userId: string; userName: string }) {
   const [value, setValue] = React.useState(0);
 
   const tripReportSection = <TripReportList />;
-  const referenceSection = <ReferenceList userID={props.userID} />;
+  const referenceSection = <ReferenceList userId={props.userId} />;
   const accommodationSection = <Button>accommodation</Button>;
-  const foodSection = <Button>{props.userID}</Button>;
+  const foodSection = <Button>{props.userId}</Button>;
 
   const [section, setSection] = React.useState(tripReportSection);
 
@@ -44,7 +44,7 @@ export default function ProfileTabMenu(props: { userID: string }) {
         <Tab label="References" />
         <Tab label="Accommodation" />
         <Tab label="Food" />
-        <SendRequest userID={props.userID} />
+        <SendRequest userId={props.userId} userName={props.userName} />
       </ProfileTabs>
       {section}
     </ProfileTabMenuBox>

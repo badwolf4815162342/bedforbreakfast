@@ -34,8 +34,6 @@ interface ProfileProps {
 }
 
 class ProfileUserDescription extends React.Component<ProfileProps, {}> {
-  profilePic = <img src={this.props.profilePic} style={{ width: 205, height: 205, borderRadius: 180 }} alt="Profile" />;
-
   verified = this.props.verified ? (
     <Verified>
       {' '}
@@ -46,11 +44,14 @@ class ProfileUserDescription extends React.Component<ProfileProps, {}> {
   );
 
   render() {
+    const profilePic = (
+      <img src={this.props.profilePic} style={{ width: 205, height: 205, borderRadius: 180 }} alt="Profile" />
+    );
     return (
       <Section>
         <ProfileDescription>
           <ProfilePicBox>
-            <ProfilePic> {this.profilePic} </ProfilePic>
+            <ProfilePic> {profilePic} </ProfilePic>
           </ProfilePicBox>
           <Name>
             {this.props.firstName} {this.props.lastName}
