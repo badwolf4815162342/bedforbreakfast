@@ -75,6 +75,7 @@ class ReferenceList extends React.Component<{ userID: string }> {
                 {data.receivedRatings.map((reference) => (
                   <Reference
                     key={reference._id}
+                    authorID={reference._id}
                     authorFirstName={reference.author.firstName}
                     authorLastName={reference.author.lastName}
                     aHomeTown={reference.author.homeTown}

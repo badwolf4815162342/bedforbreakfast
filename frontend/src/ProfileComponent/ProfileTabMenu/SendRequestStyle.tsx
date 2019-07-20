@@ -1,4 +1,4 @@
-import { Box, Dialog, DialogTitle, TextField } from '@material-ui/core';
+import { Box, Button, Dialog, DialogActions, DialogTitle, TextField } from '@material-ui/core';
 import { DatePicker } from '@material-ui/pickers';
 import styled from 'styled-components';
 
@@ -37,3 +37,20 @@ export const DateBox = styled(Box)`
     padding: 25px;
 
 `;
+
+export const Error = styled.div`
+  color: red;
+  text-align: left;
+  margin-top: 15px;
+  margin-bottom: 15px;
+`;
+
+export const RequestDialogButton = styled(Button)``;
+
+export const RequestDialogActions = styled(DialogActions)``;
+
+export const RequestDialogForm = styled.form`
+  text-align: right;
+`;
+
+export const RequestMutation = styled.div``;

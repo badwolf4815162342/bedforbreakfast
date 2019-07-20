@@ -2,21 +2,26 @@ import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import gql from 'graphql-tag';
-import React from 'react';
+import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 
 import {
   DateBox,
+  Error,
   InputDate,
   RequestButtonBox,
   RequestDialog,
+  RequestDialogActions,
   RequestDialogBox,
+  RequestDialogButton,
+  RequestDialogForm,
   RequestDialogTitle,
   RequestMessage,
+  RequestMutation,
 } from './SendRequestStyle';
 
 const SEND_REQUEST_MUTATION = gql`
-  mutation SendRequestMutation($receiver: String!, $from: Date!, $to: Date!, $description: String!) {
+  mutation SendRequestMutation($receiver: String!, $from: DateTime!, $to: DateTime!, $description: String!) {
     createRequest(createRequestDto: { start: $from, end: $to, description: $description, receiver: $receiver }) {
       start
       end
@@ -33,154 +38,198 @@ const SEND_REQUEST_MUTATION = gql`
   }
 `;
 
-interface Data {
-  createRequest: {
-    start: Date;
-    end: Date;
-    description: string;
-    requestStatus: boolean;
-    receiver: {
-      email: string;
-    };
-    proposer: {
-      firstName: string;
-      email: string;
-    };
-  };
+// interface Data {
+//   createRequest: {
+//     start: Date;
+//     end: Date;
+//     description: string;
+//     requestStatus: boolean;
+//     receiver: {
+//       email: string;
+//     };
+//     proposer: {
+//       firstName: string;
+//       email: string;
+//     };
+//   };
+// }
+
+interface SendRequestState {
+  open: boolean;
+  sentOpen: boolean;
+  canRequest: boolean;
+  from: Date;
+  to: Date;
+  description: string;
+  receiver: string;
 }
 
-export default function SendRequest(props: { userID: string }) {
-  const [open, setOpen] = React.useState(false);
-  const [sentOpen, setSentOpen] = React.useState(false);
-  const [canRequest, setCanRequest] = React.useState(true);
-  const [from, setFrom] = React.useState(new Date());
-  const [to, setTo] = React.useState(new Date());
-  const [description, setDescription] = React.useState('');
-  const receiver = props.userID;
-  function handleClickOpen() {
-    setOpen(true);
+class SendRequest extends Component<{ userID: string }, SendRequestState> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      open: false,
+      sentOpen: false,
+      canRequest: true,
+      from: new Date(),
+      to: new Date(),
+      description: '',
+      receiver: '',
+    };
   }
 
-  function handleClose() {
-    setOpen(false);
-  }
+  // handleOpen() {
+  //   this.setState({open: true})
+  // }
 
-  function handleSend() {
-    setOpen(false);
-    setCanRequest(false);
-    setSentOpen(true);
-  }
+  // handleClose() {
+  //   this.setState({open: false})
+  // }
 
-  function handleSentClose() {
-    setSentOpen(false);
-  }
+  // handleSent() {
+  //   this.setState({open: false, sentOpen:true, canRequest:false})
+  // }
 
-  return (
-    <RequestButtonBox>
-      <Button variant="contained" color="secondary" onClick={handleClickOpen} disabled={!canRequest}>
-        request
-      </Button>
-      <RequestDialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth>
-        <RequestDialogBox>
-          <RequestDialogTitle id="form-dialog-title">Send a request to stay with </RequestDialogTitle>
-          <DialogContent>
-            <DateBox>
-              <InputDate
-                value={from}
-                onChange={(date) => {
-                  if (date) {
-                    setFrom(date.toDate());
-                  }
-                }}
-                format="DD.MM.YYYY"
-                disablePast
-                label="From"
+  // handleSentClose(){
+  //   this.setState({sentOpen: false})
+  // }
+
+  render() {
+    const { receiver, from, to, description } = this.state;
+    return (
+      <RequestButtonBox>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => {
+            this.setState({ open: true });
+          }}
+          disabled={!this.state.canRequest}
+        >
+          request
+        </Button>
+        <RequestDialog
+          open={this.state.open}
+          onClose={() => {
+            this.setState({ open: false });
+          }}
+          aria-labelledby="form-dialog-title"
+          fullWidth
+        >
+          <RequestDialogBox>
+            <RequestDialogTitle id="form-dialog-title">Send a request to stay with </RequestDialogTitle>
+            <DialogContent>
+              <DateBox>
+                <InputDate
+                  value={this.state.from}
+                  onChange={(date) => {
+                    if (date) {
+                      this.setState({ from: date.toDate() });
+                    }
+                  }}
+                  format="DD.MM.YYYY"
+                  disablePast
+                  label="From"
+                />
+                <InputDate
+                  value={this.state.to}
+                  onChange={(date) => {
+                    if (date) {
+                      this.setState({ to: date.toDate() });
+                    }
+                  }}
+                  format="DD.MM.YYYY"
+                  disablePast
+                  label="To"
+                />
+              </DateBox>
+              <RequestMessage
+                value={this.state.description}
+                onChange={(e) => this.setState({ description: e.target.value })}
+                id="message"
+                label="Describe the purpose your trip"
+                color="secondary"
+                multiline={true}
+                rowsMax="15"
+                fullWidth
               />
-              <InputDate
-                value={to}
-                onChange={(date) => {
-                  if (date) {
-                    setTo(date.toDate());
-                  }
+            </DialogContent>
+            <RequestDialogActions>
+              <Mutation
+                mutation={SEND_REQUEST_MUTATION}
+                variables={{
+                  receiver,
+                  from,
+                  to,
+                  description,
                 }}
-                format="DD.MM.YYYY"
-                disablePast
-                label="To"
-              />
-            </DateBox>
-            <RequestMessage
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              id="message"
-              label="Describe the purpose your trip"
-              color="secondary"
-              multiline={true}
-              rowsMax="15"
-              fullWidth
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="secondary">
-              Cancel
-            </Button>
-            <Mutation
-              mutation={SEND_REQUEST_MUTATION}
-              variables={{
-                receiver,
-                from,
-                to,
-                description,
-              }}
-              onCompleted={(data: Data) => {
-                setCanRequest(false);
-              }}
-            >
-              {(createRequest: any, { loading, error, data }: any) => (
-                <div>
-                  {error && (
-                    <div>
-                      <RequestDialogTitle>Error occurred.</RequestDialogTitle>
-                      <RequestDialogTitle> Please provide all Information needed.</RequestDialogTitle>
-                    </div>
-                  )}
-                  {loading && <p>Loading...</p>}
-                  {data && setCanRequest(false)}
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      createRequest({
-                        variables: {
-                          receiver: { receiver },
-                          from: { from },
-                          to: { to },
-                          description: { description },
-                        },
-                      });
-                    }}
-                  ></form>
-                  <Button variant="contained" onClick={handleSend} color="secondary" type="submit">
-                    Send
-                  </Button>
-                </div>
-              )}
-            </Mutation>
-          </DialogActions>
-        </RequestDialogBox>
-      </RequestDialog>
-      <RequestDialog open={sentOpen} onClose={handleSentClose} aria-labelledby="form-dialog-title" fullWidth>
-        <RequestDialogBox>
-          <RequestDialogTitle id="form-dialog-title">Your request has been sent!</RequestDialogTitle>
-          <DialogContent>Now you can look for tickets for these dates on our partner's website!</DialogContent>
-          <DialogActions>
-            <Button onClick={handleSentClose} color="secondary">
-              Close
-            </Button>
-            <Button variant="contained" onClick={handleSentClose} color="secondary">
-              Look for tickets
-            </Button>
-          </DialogActions>
-        </RequestDialogBox>
-      </RequestDialog>
-    </RequestButtonBox>
-  );
+              >
+                {(createRequest: any, { loading, error, data }: any) => (
+                  <RequestMutation>
+                    {error && <Error>{error.message}</Error>}
+                    {loading && <p>Loading...</p>}
+                    {data && this.setState({ sentOpen: true })}
+                    <RequestDialogForm
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        this.setState({ sentOpen: true });
+                        createRequest({
+                          variables: {
+                            receiver: this.props.userID,
+                            from: this.state.from,
+                            to: this.state.to,
+                            description: this.state.description,
+                          },
+                        });
+                      }}
+                    >
+                      <RequestButtonBox>
+                        <RequestDialogButton
+                          onClick={() => {
+                            this.setState({ open: false });
+                          }}
+                          color="secondary"
+                        >
+                          Cancel
+                        </RequestDialogButton>
+                        <RequestDialogButton variant="contained" color="secondary" type="submit">
+                          Send
+                        </RequestDialogButton>
+                      </RequestButtonBox>
+                    </RequestDialogForm>
+                  </RequestMutation>
+                )}
+              </Mutation>
+            </RequestDialogActions>
+          </RequestDialogBox>
+        </RequestDialog>
+        <RequestDialog open={this.state.sentOpen} aria-labelledby="form-dialog-title" fullWidth>
+          <RequestDialogBox>
+            <RequestDialogTitle id="form-dialog-title">Your request has been sent!</RequestDialogTitle>
+            <DialogContent>Now you can look for tickets for these dates on our partner's website!</DialogContent>
+            <DialogActions>
+              <Button
+                onClick={() => {
+                  this.setState({ sentOpen: false });
+                }}
+                color="secondary"
+              >
+                Close
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  this.setState({ sentOpen: false });
+                }}
+                color="secondary"
+              >
+                Look for tickets
+              </Button>
+            </DialogActions>
+          </RequestDialogBox>
+        </RequestDialog>
+      </RequestButtonBox>
+    );
+  }
 }
+export default SendRequest;

@@ -4,6 +4,7 @@ import { GridContainerR as GridContainer } from '../../../StyledComponents/Style
 import { Date, Divider, HomeInfo, Name, ProfilePic, ProfilePicBox, Role, UserInfo } from './CardHeaderStyle';
 
 interface CardHeaderProps {
+  authorID: string;
   authorFirstName: string;
   authorLastName: string;
   aHomeTown: string;
