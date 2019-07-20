@@ -9,6 +9,7 @@ import { CreateRequestDto } from './dto/create-request.dto';
 import { Request, RequestStatus } from './models/Request';
 import { RequestService } from './request.service';
 
+import { ObjectId } from 'mongodb';
 import { AccommodationsService } from '../accommodations/accommodations.service';
 import { UsersService } from '../users/users.service';
 import { CanBeRequestedDto } from './dto/can-be-requested.dto';
@@ -31,33 +32,55 @@ export class RequestResolver {
   }
 
   @UseGuards(GqlAuthGuard)
+  @Query((returns) => [Request])
+  async receivedRequestedRequests(@CurrentUser() user: User): Promise<Request[]> {
+    return this.requestService.findByReceiverAndRequestedFromNow(user._id);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Query((returns) => [Request])
+  async proposedAnsweredRequests(@CurrentUser() user: User): Promise<Request[]> {
+    return this.requestService.findByProposerAndAnsweredFromNow(user._id);
+  }
+
+  async requestPossible(hostId: string, currentUserId: ObjectId): Promise<boolean> {
+    // check if receiver exists
+    const receiver = await this.usersService.findById(hostId);
+    if (!receiver) {
+      throw new Error('Invalid receiver ID');
+    }
+    // receiver is host
+    if (!receiver.accommodation) {
+      return false;
+    }
+    // receiver is active
+    const accommodation = await this.accommodationsService.findById(receiver.accommodation);
+    if (accommodation) {
+      if (!accommodation.isActive) {
+        return false;
+      }
+    }
+    // check if you are not rating yourself
+    if (receiver._id.equals(currentUserId)) {
+      return false;
+    }
+    // check if you only rate once until receiver reacts on your last request
+    if (
+      (await this.requestService.findByReceiverAndProposerAndRequestedFromNow(receiver._id, currentUserId)).length > 0
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  @UseGuards(GqlAuthGuard)
   @Mutation((returns) => Request)
   async createRequest(
     @Args('createRequestDto') createRequestDto: CreateRequestDto,
     @CurrentUser() proposer: User,
   ): Promise<Request> {
-    // check if receiver exists
-    const receiver = await this.usersService.findById(createRequestDto.receiver);
-    if (!receiver) {
-      throw new Error('Invalid receiver ID');
-    }
-    if (!receiver.accommodation) {
-      throw new Error('Receiver has no Accommodation, so he is not a Host and you want to rate him as a guest!');
-    }
-    const accommodation = await this.accommodationsService.findById(receiver.accommodation);
-    if (accommodation) {
-      if (!accommodation.isActive) {
-        throw new Error('Receiver is not active at the moment!');
-      }
-    }
-
-    // check if you are not rating yourself
-    if (receiver._id.equals(proposer._id)) {
-      throw new Error('Receiver can not be same person as proposer of the request!');
-    }
-    // check if you only rate once
-    if ((await this.requestService.findByReceiverAndProposer(receiver._id, proposer._id)).length > 0) {
-      throw new Error('You already requested this accommodation!');
+    if (!(await this.requestPossible(createRequestDto.receiver, proposer._id))) {
+      throw new Error('Requesting not possible');
     }
     // Date check
     const today = new Date();
@@ -133,7 +156,7 @@ export class RequestResolver {
     const today = new Date();
     const endDate: Date = request.end;
     if (endDate > today) {
-      throw new Error('You can not rate a request for a trip that has not happend yet!');
+      throw new Error('You can not rate a request for a trip that has not happened yet!');
     }
 
     const newRate = await this.ratingService.create({ ...createRatingDto, author, receiver });
@@ -179,32 +202,7 @@ export class RequestResolver {
     @CurrentUser() user: User,
     // tslint:disable-next-line: ban-types
   ): Promise<Boolean> {
-    const request = await this.requestService.findById(canBeRequestedDto.requestId);
-    if (!request) {
-      throw new Error('Invalid request ID');
-    }
-    const receiver = await this.usersService.findById(canBeRequestedDto.hostId);
-    if (!receiver) {
-      throw new Error('Invalid receiver ID');
-    }
-    if (!receiver.accommodation) {
-      return false;
-    }
-    const accommodation = await this.accommodationsService.findById(receiver.accommodation);
-    if (accommodation) {
-      if (!accommodation.isActive) {
-        return false;
-      }
-    }
-    // check if you are not rating yourself
-    if (receiver._id.equals(user._id)) {
-      return false;
-    }
-    // check if you only rate once
-    if ((await this.requestService.findByReceiverAndProposerAndOpen(receiver._id, user._id)).length > 0) {
-      return false;
-    }
-    return true;
+    return await this.requestPossible(canBeRequestedDto.hostId, user._id);
   }
 
   @ResolveProperty()
