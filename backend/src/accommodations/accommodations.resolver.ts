@@ -1,7 +1,6 @@
-import { NotFoundException, UseGuards } from '@nestjs/common';
+import { HttpException, HttpStatus, NotFoundException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveProperty, Resolver } from '@nestjs/graphql';
-import { ObjectId } from 'mongodb';
-import { Arg } from 'type-graphql';
+import { ObjectId, ObjectID } from 'mongodb';
 
 import { GqlAuthGuard, User as CurrentUser } from '../authentication/guards/jwt.auth.guard';
 import { ObjectIdScalar } from '../common/scalars/object-id.scalar';
@@ -23,7 +22,6 @@ export class AccommodationResolver {
     return await this.usersService.findById(accommodation.user);
   }
 
-  @UseGuards(GqlAuthGuard)
   @Query((returns) => [Accommodation])
   async accommodations(): Promise<Accommodation[]> {
     return await this.accommodationsService.findAll();
@@ -35,7 +33,7 @@ export class AccommodationResolver {
   }
 
   @Query((returns) => Accommodation)
-  async accommodationById(@Arg('_id', (type) => ObjectIdScalar) id: ObjectId): Promise<Accommodation> {
+  async accommodationById(@Args({ name: '_id', type: () => ObjectIdScalar }) id: ObjectId): Promise<Accommodation> {
     const accommodation = await this.accommodationsService.findById(id);
     if (!accommodation) {
       throw new NotFoundException(id);
@@ -43,16 +41,33 @@ export class AccommodationResolver {
     return accommodation;
   }
 
+  @UseGuards(GqlAuthGuard)
   @Mutation((returns) => Accommodation)
   async alterAccommodation(
     @Args('accommodationDto')
     accommodationDto: AccommodationDto,
+    @CurrentUser() user: User,
   ): Promise<Accommodation> {
-    const accommodation = await this.accommodationsService.alter(accommodationDto);
-    if (!accommodation) {
-      throw new NotFoundException(accommodationDto._id);
+    let existingAccommodation: Accommodation | null;
+    if (!accommodationDto._id) {
+      return await this.accommodationsService.create({ ...accommodationDto, user: user._id });
+    } else {
+      existingAccommodation = await this.accommodationsService.findById(new ObjectID(accommodationDto._id));
+
+      if (existingAccommodation) {
+        if (
+          existingAccommodation.user.equals(user._id) &&
+          user.accommodation &&
+          user.accommodation.equals(existingAccommodation._id)
+        ) {
+          return await this.accommodationsService.alter(accommodationDto);
+        } else {
+          throw new HttpException('User can only update their own accommodation.', HttpStatus.FORBIDDEN);
+        }
+      } else {
+        return await this.accommodationsService.create({ ...accommodationDto, user: user._id });
+      }
     }
-    return accommodation;
   }
 
   @UseGuards(GqlAuthGuard)

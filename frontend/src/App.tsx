@@ -21,6 +21,7 @@ import AccommodationLoad from './ProfileComponent/CreateAccommodation/Accommodat
 import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
 import ProfileComponent from './ProfileComponent/ProfileComponent';
 import SearchResults from './SearchResults/SearchResults';
+import LoadSearch from './SearchResults/LoadSearch';
 import { MainThemeMaterial } from './StyledComponents/Theme';
 
 export default class App extends React.Component<any, any> {
@@ -46,7 +47,7 @@ export default class App extends React.Component<any, any> {
           exact: true,
         },
         {
-          component: SearchResults,
+          component: LoadSearch,
           path: '/searchResults',
           exact: true,
         },

@@ -99,6 +99,15 @@ export const UploadContainer = styled.div`
   }
 `;
 
+export const SelectedPicture = styled.p`
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  grid-column: 2/6;
+  grid-row: 9;
+`;
+
 export const GenderLabel = styled.p`
   margin: 2px;
   color: rgba(0, 0, 0, 0.54);
@@ -108,7 +117,7 @@ export const GenderLabel = styled.p`
 
 export const SelectContainer = styled.div`
   grid-column: 2/6;
-  grid-row: 9/9;
+  grid-row: 10;
   padding: 6px 0 7px;
   select {
     font: inherit;
@@ -125,32 +134,32 @@ export const SelectContainer = styled.div`
 
 export const InputHometown = styled(TextField)`
   grid-column: 2/6;
-  grid-row: 10/10;
+  grid-row: 11;
 `;
 
 export const InputCountry = styled(TextField)`
   grid-column: 2/6;
-  grid-row: 11/11;
+  grid-row: 12;
 `;
 
 export const InputPhone = styled(TextField)`
   grid-column: 2/6;
-  grid-row: 12/12;
+  grid-row: 13;
 `;
 
 export const InputFavoriteFood = styled(TextField)`
   grid-column: 2/6;
-  grid-row: 13/13;
+  grid-row: 14;
 `;
 
 export const InputDescription = styled(TextField)`
   grid-column: 2/6;
-  grid-row: 14/14;
+  grid-row: 15;
 `;
 
 export const RegisterButtonContainer = styled.div`
   grid-column: 2/6;
-  grid-row: 15/15;
+  grid-row: 16;
   text-align: center;
 `;
 
@@ -164,7 +173,7 @@ export const Error = styled.p`
 
 export const LoginLink = styled.a`
   grid-column: 1/7;
-  grid-row: 16/16;
+  grid-row: 17;
   text-align: center;
   :hover {
     color: ${MainTheme.primary.main};

@@ -49,8 +49,8 @@ export class UsersService {
 
     const imageUrl = await this.imageUploadService.singleFileUpload(signUpDto.profilePicture, {
       folder: 'profile_pictures',
-      width: 200,
-      height: 200,
+      width: 300,
+      height: 300,
       crop: 'fill',
       gravity: 'faces',
     });

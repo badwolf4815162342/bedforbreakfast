@@ -104,8 +104,6 @@ export const AccommodationList: FunctionComponent<CardProps> = ({ title, id, chi
         if (!data) {
           return <p>No Data :(</p>;
         }
-
-        console.log(data);
         const accommodation = data.accommodationById;
         // {_id, streetName} = data.accommidationById;
         return (
