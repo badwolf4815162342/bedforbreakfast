@@ -64,6 +64,9 @@ export class SearchResults extends React.Component<SearchResultsProps, SearchRes
   }
 
   getDistricts() {
+    if (!this.props.accommodations) {
+      return [];
+    }
     const districtArray = new Array<{ val: string; flag: boolean }>();
     const districtNames = Array.from(new Set(this.props.accommodations.map((i) => i.district)));
     districtNames.map((i) => districtArray.push({ val: i, flag: true }));

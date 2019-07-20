@@ -11,6 +11,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import SearchIcon from '@material-ui/icons/Search';
+import { Link } from 'react-router-dom';
 import {
   ContainerSearchIcon,
   Grow,
@@ -22,9 +23,10 @@ import {
   Title,
 } from './HeaderStyle';
 
-export default function Navbar() {
+export function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [searchString, setSearchString] = React.useState('');
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -115,10 +117,22 @@ export default function Navbar() {
             <HeaderLink to={'/'}>BedForBreakfast</HeaderLink>
           </Title>
           <Search>
-            <ContainerSearchIcon>
-              <SearchIcon />
-            </ContainerSearchIcon>
-            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'Search' }} />
+            <Link
+              to={{
+                pathname: `/searchResults/${searchString}`,
+              }}
+            >
+              <ContainerSearchIcon>
+                <SearchIcon />
+              </ContainerSearchIcon>
+            </Link>
+            <StyledInputBase
+              placeholder="Search…"
+              onChange={(e) => {
+                setSearchString(e.target.value);
+                console.log(searchString);
+              }}
+            />
           </Search>
           <Grow />
           <SectionDesktop>

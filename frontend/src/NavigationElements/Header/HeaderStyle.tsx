@@ -1,4 +1,4 @@
-import { InputBase } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ScreenSizes } from '../../StyledComponents/Screensizes';
@@ -53,7 +53,7 @@ export const ContainerSearchIcon = styled.div`
   margin-left: ${MarginLeftSmall};
 `;
 
-export const StyledInputBase = styled(InputBase)`
+export const StyledInputBase = styled(TextField)`
   color: 'inherit';
   padding: auto;
   width: '100%';
