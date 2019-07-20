@@ -189,6 +189,8 @@ query {
 
 ## Notifications:
 
+All queries return only reuquests where start is in the future!!
+
 ### Received requests
 
 Requests send to you which not have been updated as DENIED, CANCELED or ACCEPTED
@@ -227,7 +229,7 @@ query {
 
 ```
 query {
-  acceptedRequests {
+  proposedAnsweredRequests {
     _id
     start
     end
