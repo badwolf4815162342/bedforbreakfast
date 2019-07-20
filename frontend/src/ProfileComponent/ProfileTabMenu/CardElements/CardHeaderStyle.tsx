@@ -1,4 +1,5 @@
 import { Box, Divider as divider } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { SubText, Text } from '../../../StyledComponents/StyledBasicItems';
 import { MainThemeRGB } from '../../../StyledComponents/Theme';
@@ -87,4 +88,9 @@ export const IconInText = styled(SubText)`
   grid-row: 1;
   align-self: center;
   color: rgba(${MainThemeRGB.secondary.main.r}, ${MainThemeRGB.secondary.main.g}, ${MainThemeRGB.secondary.main.b}, 1);
+`;
+
+export const HeaderLink = styled(Link)`
+  color: inherit;
+  text-decoration: none;
 `;

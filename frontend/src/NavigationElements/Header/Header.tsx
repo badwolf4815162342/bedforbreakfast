@@ -59,12 +59,16 @@ export function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose} href="/profile">
-        <HeaderLink to="/profile">Profile</HeaderLink>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose} href="/createAccommodation">
-        <HeaderLink to="/createAccommodation">Create an accommodation here</HeaderLink>
-      </MenuItem>
+      <HeaderLink to="/profile">
+        <MenuItem onClick={handleMenuClose} href="/profile">
+          Profile
+        </MenuItem>
+      </HeaderLink>
+      <HeaderLink to="/createAccommodation">
+        <MenuItem onClick={handleMenuClose} href="/createAccommodation">
+          Create an accommodation here
+        </MenuItem>
+      </HeaderLink>
     </Menu>
   );
 
