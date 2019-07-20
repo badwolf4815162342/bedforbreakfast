@@ -21,21 +21,34 @@ export class RequestService {
     return this.requestModel.findById(id).exec();
   }
 
-  async findByReceiverAndProposer(receiverId: ObjectId | string, proposerId: ObjectId | string): Promise<Request[]> {
-    return this.requestModel.find({ receiver: receiverId, proposer: proposerId }).exec();
-  }
-
-  async findByReceiverAndProposerAndRequested(
+  async findByReceiverAndProposerAndRequestedFromNow(
     receiverId: ObjectId | string,
     proposerId: ObjectId | string,
   ): Promise<Request[]> {
     return this.requestModel
-      .find({ receiver: receiverId, proposer: proposerId, requestStatus: RequestStatus.REQUESTED })
+      .find({
+        receiver: receiverId,
+        proposer: proposerId,
+        requestStatus: RequestStatus.REQUESTED,
+        start: { $gte: new Date() },
+      })
       .exec();
   }
 
-  async findByReceiverAndRequested(receiverId: ObjectId | string): Promise<Request[]> {
-    return this.requestModel.find({ receiver: receiverId, requestStatus: RequestStatus.REQUESTED }).exec();
+  async findByReceiverAndRequestedFromNow(receiverId: ObjectId | string): Promise<Request[]> {
+    return this.requestModel
+      .find({ receiver: receiverId, requestStatus: RequestStatus.REQUESTED, start: { $gte: new Date() } })
+      .exec();
+  }
+
+  async findByProposerAndAnsweredFromNow(proposerId: ObjectId | string): Promise<Request[]> {
+    return this.requestModel
+      .find({
+        proposer: proposerId,
+        requestStatus: { $ne: RequestStatus.REQUESTED },
+        start: { $gte: new Date() },
+      })
+      .exec();
   }
 
   async create(createRequestDto: {}): Promise<Request> {

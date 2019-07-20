@@ -4,7 +4,7 @@
 # -----------------------------------------------
 
 type Accommodation {
-  _id: ID!
+  _id: ObjectId!
   user: User!
   isActive: Boolean!
   country: String!
@@ -29,7 +29,7 @@ input AccommodationDto {
   description: String
   district: String
   numberOfBeds: Float!
-  pictures: [String]
+  pictures: [Upload]
 }
 
 input CanBeRequestedDto {
@@ -106,6 +106,8 @@ type Query {
   accommodationsByCity(city: String!): [Accommodation!]!
   accommodationById(_id: ObjectId!): Accommodation!
   requests: [Request!]!
+  receivedRequestedRequests: [Request!]!
+  proposedAnsweredRequests: [Request!]!
   canBeRequested(canBeRequestedDto: CanBeRequestedDto!): Boolean!
   ratings: [Rating!]!
   receivedRatings(userId: String!): [Rating!]!
