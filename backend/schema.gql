@@ -35,7 +35,6 @@ input AccommodationDto {
 input CanBeRequestedDto {
   _id: String
   hostId: String!
-  requestId: String!
 }
 
 input CreateMealDto {
@@ -107,6 +106,8 @@ type Query {
   accommodationsByCity(city: String!): [Accommodation!]!
   accommodationById(_id: ObjectId!): Accommodation!
   requests: [Request!]!
+  receivedRequestedRequests: [Request!]!
+  proposedAnsweredRequests: [Request!]!
   canBeRequested(canBeRequestedDto: CanBeRequestedDto!): Boolean!
   ratings: [Rating!]!
   receivedRatings(userId: String!): [Rating!]!
