@@ -20,7 +20,6 @@ import {
   StyledSearchResultCard,
   Title,
 } from './SearchResultsStyle';
-
 interface SearchResultsProps {
   accommodations: Accommodation[];
   city: string;
@@ -81,6 +80,22 @@ export class SearchResults extends React.Component<SearchResultsProps, SearchRes
     if (this.state.gender !== 'a') {
       newList = newList.filter((accommodation: Accommodation) => accommodation.user.gender === this.state.gender);
     }
+    if (this.state.gender !== 'a') {
+      newList = newList.filter((accommodation: Accommodation) => accommodation.user.gender === this.state.gender);
+    }
+    let districtList: Accommodation[] = [];
+    this.state.districts.forEach((district) => {
+      if (district.flag) {
+        const tempList: Accommodation[] = newList.filter(
+          (accommodation: Accommodation) => accommodation.district === district.val,
+        );
+        console.log(district.val);
+        console.log(tempList);
+        districtList = [...districtList, ...tempList];
+        console.log(districtList);
+      }
+    });
+    newList = districtList;
     this.setState({ accommodations: newList, applied: true });
   }
 
