@@ -25,13 +25,17 @@ export class RequestService {
     return this.requestModel.find({ receiver: receiverId, proposer: proposerId }).exec();
   }
 
-  async findByReceiverAndProposerAndOpen(
+  async findByReceiverAndProposerAndRequested(
     receiverId: ObjectId | string,
     proposerId: ObjectId | string,
   ): Promise<Request[]> {
     return this.requestModel
       .find({ receiver: receiverId, proposer: proposerId, requestStatus: RequestStatus.REQUESTED })
       .exec();
+  }
+
+  async findByReceiverAndRequested(receiverId: ObjectId | string): Promise<Request[]> {
+    return this.requestModel.find({ receiver: receiverId, requestStatus: RequestStatus.REQUESTED }).exec();
   }
 
   async create(createRequestDto: {}): Promise<Request> {

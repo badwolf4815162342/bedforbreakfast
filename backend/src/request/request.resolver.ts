@@ -31,6 +31,12 @@ export class RequestResolver {
   }
 
   @UseGuards(GqlAuthGuard)
+  @Query((returns) => [Request])
+  async receivedRequestedRequests(@CurrentUser() user: User): Promise<Request[]> {
+    return this.requestService.findByReceiverAndRequested(user);
+  }
+
+  @UseGuards(GqlAuthGuard)
   @Mutation((returns) => Request)
   async createRequest(
     @Args('createRequestDto') createRequestDto: CreateRequestDto,
@@ -201,7 +207,7 @@ export class RequestResolver {
       return false;
     }
     // check if you only rate once
-    if ((await this.requestService.findByReceiverAndProposerAndOpen(receiver._id, user._id)).length > 0) {
+    if ((await this.requestService.findByReceiverAndProposerAndRequested(receiver._id, user._id)).length > 0) {
       return false;
     }
     return true;

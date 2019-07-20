@@ -4,7 +4,7 @@
 # -----------------------------------------------
 
 type Accommodation {
-  _id: ObjectId!
+  _id: ID!
   user: User!
   isActive: Boolean!
   country: String!
@@ -29,7 +29,7 @@ input AccommodationDto {
   description: String
   district: String
   numberOfBeds: Float!
-  pictures: [Upload]
+  pictures: [String]
 }
 
 input CanBeRequestedDto {
