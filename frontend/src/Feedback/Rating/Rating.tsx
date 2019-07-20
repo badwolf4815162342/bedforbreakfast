@@ -39,6 +39,7 @@ const Rating: React.FC<{
               />{' '}
             </ProfilePic>
           </ProfilePicBox>
+
           <Name>
             {firstName} {lastName[0]}.
             {verified && (
@@ -47,6 +48,7 @@ const Rating: React.FC<{
               </Verified>
             )}
           </Name>
+
           <ThumbsUp>
             <IconButton
               color={rating === undefined ? 'default' : rating ? 'secondary' : 'default'}
@@ -64,8 +66,10 @@ const Rating: React.FC<{
             </IconButton>
           </ThumbsDown>
         </HostContainer>
+
         <RatingContainer>
           <RatingTitle>How was your host {firstName} and his guest room?</RatingTitle>
+
           <Description
             multiline
             label="Reference"

@@ -17,11 +17,11 @@ import Feedback from './Feedback/Feedback';
 import LandingPage from './LandingPage/LandingPage';
 import Login from './Login/Login';
 import Footer from './NavigationElements/Footer/Footer';
-import Navbar from './NavigationElements/Header/Header';
+import { Navbar } from './NavigationElements/Header/Header';
 import AccommodationLoad from './ProfileComponent/CreateAccommodation/AccommodationLoad';
 import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
-import ProfileUserDescription from './ProfileComponent/ProfileComponent';
-import SearchResults from './SearchResults/SearchResults';
+import ProfileComponent from './ProfileComponent/ProfileComponent';
+import LoadSearch from './SearchResults/LoadSearch';
 import { MainThemeMaterial } from './StyledComponents/Theme';
 
 export default class App extends React.Component<any, any> {
@@ -51,8 +51,8 @@ export default class App extends React.Component<any, any> {
           exact: true,
         },
         {
-          component: SearchResults,
-          path: '/searchResults',
+          component: LoadSearch,
+          path: '/searchResults/:city',
           exact: true,
         },
         {
@@ -66,13 +66,12 @@ export default class App extends React.Component<any, any> {
           exact: true,
         },
         {
-          component: ProfileUserDescription,
-          path: '/profile',
+          component: ProfileComponent,
+          path: '/profile/:userId',
           exact: true,
         },
       ],
     };
-
     this.componentDidMount();
   }
 

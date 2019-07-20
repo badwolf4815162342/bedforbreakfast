@@ -11,6 +11,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import SearchIcon from '@material-ui/icons/Search';
+import { Link, Redirect } from 'react-router-dom';
 import {
   ContainerSearchIcon,
   Grow,
@@ -22,9 +23,11 @@ import {
   Title,
 } from './HeaderStyle';
 
-export default function Navbar() {
+export function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [searchString, setSearchString] = React.useState('');
+  const [enter, setEnter] = React.useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -46,6 +49,14 @@ export default function Navbar() {
     setMobileMoreAnchorEl(event.currentTarget);
   }
 
+  function handleKeyDown(e: any) {
+    if (e.key === 'Enter') {
+      setEnter(true);
+    } else {
+      setEnter(false);
+    }
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -57,12 +68,16 @@ export default function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose} href="/profile">
-        <HeaderLink to="/profile">Profile</HeaderLink>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose} href="/createAccommodation">
-        <HeaderLink to="/createAccommodation">Create an accommodation here</HeaderLink>
-      </MenuItem>
+      <HeaderLink to="/profile">
+        <MenuItem onClick={handleMenuClose} href="/profile">
+          Profile
+        </MenuItem>
+      </HeaderLink>
+      <HeaderLink to="/createAccommodation">
+        <MenuItem onClick={handleMenuClose} href="/createAccommodation">
+          Create an accommodation here
+        </MenuItem>
+      </HeaderLink>
     </Menu>
   );
 
@@ -115,10 +130,32 @@ export default function Navbar() {
             <HeaderLink to={'/'}>BedForBreakfast</HeaderLink>
           </Title>
           <Search>
-            <ContainerSearchIcon>
-              <SearchIcon />
-            </ContainerSearchIcon>
-            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'Search' }} />
+            <Link
+              to={{
+                pathname: searchString ? `/searchResults/${searchString}` : '',
+              }}
+            >
+              <ContainerSearchIcon>
+                <SearchIcon />
+              </ContainerSearchIcon>
+            </Link>
+            {enter && (
+              <div>
+                <Redirect
+                  push
+                  to={{
+                    pathname: searchString ? `/searchResults/${searchString}` : '',
+                  }}
+                />
+              </div>
+            )}
+            <StyledInputBase
+              placeholder="Search…"
+              onChange={(e) => {
+                setSearchString(e.target.value);
+              }}
+              onKeyDown={handleKeyDown}
+            />
           </Search>
           <Grow />
           <SectionDesktop>

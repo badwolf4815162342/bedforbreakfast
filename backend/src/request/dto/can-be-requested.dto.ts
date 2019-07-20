@@ -7,7 +7,4 @@ export class CanBeRequestedDto {
 
   @Field()
   hostId!: string;
-
-  @Field()
-  requestId!: string;
 }
