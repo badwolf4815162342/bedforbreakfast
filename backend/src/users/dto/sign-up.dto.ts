@@ -1,7 +1,8 @@
 import { IsEmail, IsNotEmpty, IsPhoneNumber } from 'class-validator';
 import { GraphQLUpload } from 'graphql-upload';
-import { Upload } from 'src/common/types/Upload';
 import { Field, InputType } from 'type-graphql';
+
+import { Upload } from '../../common/types/Upload';
 import { GenderType } from '../models/User';
 
 @InputType()

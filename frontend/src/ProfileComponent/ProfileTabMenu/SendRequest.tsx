@@ -4,6 +4,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import gql from 'graphql-tag';
 import React from 'react';
 import { Mutation } from 'react-apollo';
+
 import {
   DateBox,
   InputDate,
@@ -134,10 +135,33 @@ export default function SendRequest(props: { userID: string }) {
                 setCanRequest(false);
               }}
             >
-              {(mutation: any) => (
-                <Button variant="contained" onClick={handleSend} color="secondary">
-                  Send
-                </Button>
+              {(createRequest: any, { loading, error, data }: any) => (
+                <div>
+                  {error && (
+                    <div>
+                      <RequestDialogTitle>Error occurred.</RequestDialogTitle>
+                      <RequestDialogTitle> Please provide all Information needed.</RequestDialogTitle>
+                    </div>
+                  )}
+                  {loading && <p>Loading...</p>}
+                  {data && setCanRequest(false)}
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      createRequest({
+                        variables: {
+                          receiver: { receiver },
+                          from: { from },
+                          to: { to },
+                          description: { description },
+                        },
+                      });
+                    }}
+                  ></form>
+                  <Button variant="contained" onClick={handleSend} color="secondary" type="submit">
+                    Send
+                  </Button>
+                </div>
               )}
             </Mutation>
           </DialogActions>

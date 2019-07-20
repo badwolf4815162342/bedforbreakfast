@@ -1,6 +1,0 @@
-diff a/frontend/src/ProfileComponent/ProfileTabMenu/CardElements/CardHeader.tsx b/frontend/src/ProfileComponent/ProfileTabMenu/CardElements/CardHeader.tsx	(rejected hunks)
-@@ -33 +33,3 @@ class CardHeader extends React.Component<CardHeaderProps, {}> {
--        <Date><Moment date =  {this.props.date} format = 'dd-mm-yyyy'/></Date>
-+        <Date>
-+          <Moment date={this.props.date} format="dd-mm-yyyy" />
-+        </Date>

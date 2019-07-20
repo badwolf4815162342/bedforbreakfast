@@ -28,6 +28,7 @@ import {
   RegisterButtonContainer,
   RegisterLink,
   SelectContainer,
+  SelectedPicture,
   SuccessSignUp,
   UploadContainer,
 } from './LoginStyle';
@@ -235,6 +236,9 @@ class Login extends Component<any, LoginState> {
               disableFuture
               label="Your date of birth"
             />
+            <SelectedPicture>
+              {this.state.profilePicture ? this.state.profilePicture.name : 'No file selected'}
+            </SelectedPicture>
             <UploadContainer>
               <input
                 accept="image/*"

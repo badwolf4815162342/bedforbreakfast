@@ -1,12 +1,13 @@
 import { ObjectId } from 'mongodb';
-import { Field, ID, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 import { prop, Ref, Typegoose } from 'typegoose';
 
+import { ObjectIdScalar } from '../../common/scalars/object-id.scalar';
 import { User } from '../../users/models/User';
 
 @ObjectType()
 export class Accommodation extends Typegoose {
-  @Field((type) => ID)
+  @Field((type) => ObjectIdScalar)
   readonly _id!: ObjectId; // tslint:disable-line variable-name
 
   @Field((type) => User)

@@ -110,7 +110,24 @@ export const CountryIcon = styled.svg`
   grid-row: 10;
 `;
 
+export const SelectedPictures = styled.p`
+  text-align: right
+  grid-column: 4/7;
+  grid-row: 11;
+`;
+
+export const UploadContainer = styled.div`
+  grid-column: 1/3;
+  grid-row: 11;
+  label {
+    width: 100%;
+    span {
+      width: 100%;
+    }
+  }
+`;
+
 export const SubmitArea = styled.div`
   grid-column: 1/7;
-  grid-row: 11;
+  grid-row: 12;
 `;
