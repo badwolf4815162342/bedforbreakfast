@@ -4,6 +4,7 @@ import { ModelType } from 'typegoose';
 
 import { ObjectId } from 'mongodb';
 import { Rating } from '../rating/models/Rating';
+import { TripReport } from '../tripReport/models/TripReport';
 import { Request, RequestStatus } from './models/Request';
 
 @Injectable()
@@ -45,6 +46,14 @@ export class RequestService {
       ratings: request.ratings,
     };
     (request.ratings as ObjectId[]).push(newRate._id);
+    return this.requestModel.findByIdAndUpdate(request._id, newRequest);
+  }
+
+  async addTripReport(request: Request, newReport: TripReport): Promise<Request | null> {
+    const newRequest = {
+      tripReports: request.tripReports,
+    };
+    (request.tripReports as ObjectId[]).push(newReport._id);
     return this.requestModel.findByIdAndUpdate(request._id, newRequest);
   }
 
