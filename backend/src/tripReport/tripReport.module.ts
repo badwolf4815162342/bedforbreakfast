@@ -1,6 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { TypegooseModule } from 'nestjs-typegoose';
-import { ImageUploadService } from '../image-upload/image-upload.service';
+import { ImageUploadModule } from '../image-upload/image-upload.module';
 import { RequestModule } from '../request/request.module';
 import { UsersModule } from '../users/users.module';
 import { TripReport } from './models/TripReport';
@@ -12,7 +12,7 @@ import { TripReportService } from './tripReport.service';
     TypegooseModule.forFeature([TripReport]),
     forwardRef(() => RequestModule),
     forwardRef(() => UsersModule),
-    ImageUploadService,
+    ImageUploadModule,
   ],
   providers: [TripReportService, TripReportResolver],
   exports: [TripReportService],

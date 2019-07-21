@@ -193,7 +193,7 @@ type TripReport {
   author: User!
   receiver: User!
   receiverRole: RoleType!
-  pictures: [String!]!
+  pictures: [String]
   description: String!
   likedBy: [User!]!
 }

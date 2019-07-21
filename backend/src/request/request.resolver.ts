@@ -58,7 +58,7 @@ export class RequestResolver {
     return this.requestService.findByProposerAndAnsweredAndUnseenFromNow(user._id);
   }
 
-  // TODO: add not rated to query
+  // TODO: is this one used
   @UseGuards(GqlAuthGuard)
   @Query((returns) => [Request])
   async proposedAnsweredRequests(@CurrentUser() user: User): Promise<Request[]> {
@@ -69,8 +69,44 @@ export class RequestResolver {
   @Query((returns) => [Request])
   async acceptedUnratedPastRequests(@CurrentUser() user: User): Promise<Request[]> {
     const requests = await this.requestService.findByProposerOrReceiverAndAcceptedInPast(user._id);
-    // requests.filter(request => ratingOrReportPossible);
-    return requests;
+    const requestNotYetRated: Request[] = [];
+    if (requests) {
+      await Promise.all(
+        requests.map(async (request) => {
+          // console.log(this.shouldBeRated(request, user._id));
+          if (await this.shouldBeRated(request, user._id)) {
+            requestNotYetRated.push(request);
+          }
+        }),
+      );
+    }
+    return requestNotYetRated;
+  }
+
+  async shouldBeRated(request: Request, currentUserId: ObjectId): Promise<boolean> {
+    let shouldBeRated = true;
+    const ratings = await this.getRatings(request);
+    ratings.forEach((rating) => {
+      if (rating.author.equals(currentUserId)) {
+        shouldBeRated = false;
+      }
+    });
+    return shouldBeRated;
+  }
+
+  async getRatings(request: Request): Promise<Rating[]> {
+    const ratingsOfRequest: Rating[] = [];
+    if (request.ratings) {
+      await Promise.all(
+        request.ratings.map(async (ratingId) => {
+          const rating = await this.ratingService.findById(ratingId);
+          if (rating) {
+            ratingsOfRequest.push(rating);
+          }
+        }),
+      );
+    }
+    return ratingsOfRequest;
   }
 
   async ratingOrReportPossible(request: Request, currentUserId: ObjectId): Promise<boolean> {
@@ -216,17 +252,7 @@ export class RequestResolver {
     if (!(await this.ratingOrReportPossible(request, author._id))) {
       throw new Error('Rating not possible');
     }
-    const ratingsOfRequest: Rating[] = [];
-    if (request.ratings) {
-      await Promise.all(
-        request.ratings.map(async (ratingId) => {
-          const rating = await this.ratingService.findById(ratingId);
-          if (rating) {
-            ratingsOfRequest.push(rating);
-          }
-        }),
-      );
-    }
+    const ratingsOfRequest: Rating[] = await this.getRatings(request);
     // only to ratings per request, one for host, one for guest
     if (request.ratings) {
       if (ratingsOfRequest.length > 1) {
