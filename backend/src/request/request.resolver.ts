@@ -1,4 +1,4 @@
-import { forwardRef, Inject, NotFoundException, UseGuards } from '@nestjs/common';
+import { forwardRef, HttpException, HttpStatus, Inject, NotFoundException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveProperty, Resolver } from '@nestjs/graphql';
 import { GqlAuthGuard, User as CurrentUser } from '../authentication/guards/jwt.auth.guard';
 import { CreateRatingDto } from '../rating/dto/create-rating.dto';
@@ -26,6 +26,7 @@ export class RequestResolver {
     private readonly accommodationsService: AccommodationsService,
   ) {}
 
+  // TODO: should not be callable from normal user
   @Query((returns) => [Request])
   async requests(): Promise<Request[]> {
     return this.requestService.findAll();
@@ -47,28 +48,59 @@ export class RequestResolver {
     // check if receiver exists
     const receiver = await this.usersService.findById(hostId);
     if (!receiver) {
-      throw new Error('Invalid receiver ID');
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Receiver id not found.',
+        },
+        404,
+      );
     }
     // receiver is host
     if (!receiver.accommodation) {
-      return false;
+      throw new HttpException(
+        {
+          status: HttpStatus.CONFLICT,
+          error: 'It is not possible to request a host who has no accommodation.',
+        },
+        409,
+      );
     }
     // receiver is active
     const accommodation = await this.accommodationsService.findById(receiver.accommodation);
     if (accommodation) {
       if (!accommodation.isActive) {
-        return false;
+        throw new HttpException(
+          {
+            status: HttpStatus.CONFLICT,
+            error: 'It is not possible to request a host who s accommodation is not active.',
+          },
+          409,
+        );
       }
     }
-    // check if you are not rating yourself
+    // check if you are not request yourself
     if (receiver._id.equals(currentUserId)) {
-      return false;
+      throw new HttpException(
+        {
+          status: HttpStatus.CONFLICT,
+          error: 'It is not possible to request yourself.',
+        },
+        409,
+      );
     }
     // check if you only rate once until receiver reacts on your last request
     if (
       (await this.requestService.findByReceiverAndProposerAndRequestedFromNow(receiver._id, currentUserId)).length > 0
     ) {
-      return false;
+      throw new HttpException(
+        {
+          status: HttpStatus.CONFLICT,
+          error:
+            'It is not possible to request again until the host has react on your last request or your las request has expired.',
+        },
+        409,
+      );
     }
     return true;
   }
@@ -87,10 +119,22 @@ export class RequestResolver {
     const startDate: Date = createRequestDto.start;
     const endDate: Date = createRequestDto.end;
     if (startDate < today) {
-      throw new Error('You can not request for a start date in the past!');
+      throw new HttpException(
+        {
+          status: HttpStatus.CONFLICT,
+          error: 'It is not possible to request a host for start date in the past.',
+        },
+        409,
+      );
     }
     if (endDate < startDate) {
-      throw new Error('Start date has to be before end date!');
+      throw new HttpException(
+        {
+          status: HttpStatus.CONFLICT,
+          error: 'It is not possible to request a trip with for start date after end date.',
+        },
+        409,
+      );
     }
     return await this.requestService.create({ ...createRequestDto, proposer });
   }
@@ -106,11 +150,23 @@ export class RequestResolver {
     // find the request
     const request = await this.requestService.findById(createRatingDto.request);
     if (!request) {
-      throw new Error('Invalid request ID');
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Request id not found.',
+        },
+        404,
+      );
     }
     // ony accepted requests can be rated
     if (!(request.requestStatus === RequestStatus.ACCEPTED)) {
-      throw new Error('Only accepted requests can be rated!');
+      throw new HttpException(
+        {
+          status: HttpStatus.CONFLICT,
+          error: 'It is not possible to rate unaccepted requests.',
+        },
+        409,
+      );
     }
     const ratingsOfRequest: Rating[] = [];
     if (request.ratings) {
@@ -126,19 +182,38 @@ export class RequestResolver {
     // only to ratings per request, one for host, one for guest
     if (request.ratings) {
       if (ratingsOfRequest.length > 1) {
-        throw new Error('This requests trip has already been rated by guest and host!');
+        throw new HttpException(
+          {
+            status: HttpStatus.CONFLICT,
+            error: 'It is not possible to rate this request because it is already rated by guest and host.',
+          },
+          409,
+        );
       }
     }
     // if you already rated
     if (ratingsOfRequest.length > 0 && ratingsOfRequest[0].author.equals(author._id)) {
-      throw new Error('You already rated this request!');
+      throw new HttpException(
+        {
+          status: HttpStatus.CONFLICT,
+          error: 'It is not possible to rate this request again.',
+        },
+        409,
+      );
     }
     let receiver: User | null = null;
     // You want to rate the host
     if (createRatingDto.receiverRole === RoleType.ACCOMMODATION) {
       // you should have proposed the request
       if (!request.proposer.equals(author._id)) {
-        throw new Error('You are not the proposer of this request so you can not rate in role of guest!');
+        throw new HttpException(
+          {
+            status: HttpStatus.FORBIDDEN,
+            error:
+              'It is not possible to rate this request in role of accommodation if one is not the proposer of the corresponding request.',
+          },
+          403,
+        );
       }
       // you as guest create a rating for host(receiver of request)
       receiver = await this.usersService.findById(request.receiver);
@@ -147,7 +222,14 @@ export class RequestResolver {
     if (createRatingDto.receiverRole === RoleType.MEAL) {
       // you should have received+accepted the request
       if (!request.receiver.equals(author._id)) {
-        throw new Error('You are not the receiver of this request so you can not rate in role of host!');
+        throw new HttpException(
+          {
+            status: HttpStatus.FORBIDDEN,
+            error:
+              'It is not possible to rate this request in role of meal if one is not the receiver of the corresponding request.',
+          },
+          403,
+        );
       }
       // you as host create a rating for guest(proposer of request)
       receiver = await this.usersService.findById(request.proposer);
@@ -156,7 +238,13 @@ export class RequestResolver {
     const today = new Date();
     const endDate: Date = request.end;
     if (endDate > today) {
-      throw new Error('You can not rate a request for a trip that has not happened yet!');
+      throw new HttpException(
+        {
+          status: HttpStatus.CONFLICT,
+          error: 'It is not possible to rate a request that has not happened yet.',
+        },
+        409,
+      );
     }
 
     const newRate = await this.ratingService.create({ ...createRatingDto, author, receiver });
@@ -168,7 +256,13 @@ export class RequestResolver {
     }
     // update rating value for user
     if (!receiver) {
-      throw new Error('User to update rating for not found!');
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Receiver id not found.',
+        },
+        404,
+      );
     }
     await this.usersService.alterLikes(receiver, newRate.rating, author);
     return updatedRequest;
@@ -182,15 +276,33 @@ export class RequestResolver {
   ): Promise<Request> {
     const request = await this.requestService.findById(updateRequestStatusDto._id);
     if (!request) {
-      throw new Error('Invalid request ID');
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Receiver id not found.',
+        },
+        404,
+      );
     }
     if (!request.receiver.equals(user._id)) {
-      throw new Error('You can only update requests send to you!');
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'It is not possible to update request if a user is not the receiver of this request.',
+        },
+        403,
+      );
     }
     request.requestStatus = updateRequestStatusDto.requestStatus;
     const updatedRequest = await this.requestService.changeRequestStatus(request, updateRequestStatusDto.requestStatus);
     if (!updatedRequest) {
-      throw new NotFoundException(request._id);
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Receiver id not found.',
+        },
+        404,
+      );
     }
     return request;
   }
@@ -202,7 +314,22 @@ export class RequestResolver {
     @CurrentUser() user: User,
     // tslint:disable-next-line: ban-types
   ): Promise<Boolean> {
-    return await this.requestPossible(canBeRequestedDto.hostId, user._id);
+    const receiver = await this.usersService.findById(canBeRequestedDto.hostId);
+    if (!receiver) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Receiver id not found.',
+        },
+        404,
+      );
+    }
+    try {
+      await this.requestPossible(canBeRequestedDto.hostId, user._id);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 
   @ResolveProperty()

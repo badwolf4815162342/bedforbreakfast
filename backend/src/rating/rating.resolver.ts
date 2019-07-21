@@ -15,11 +15,13 @@ export class RatingResolver {
     @Inject(forwardRef(() => UsersService)) private readonly usersService: UsersService,
   ) {}
 
+  // TODO: Should not be possible for normal users
   @Query((returns) => [Rating])
   async ratings(): Promise<Rating[]> {
     return this.ratingService.findAll();
   }
 
+  // TODO: Do you have to be logged in to see ratings of others?
   @Query((returns) => [Rating])
   async receivedRatings(@Args('userId') userId: string): Promise<Rating[]> {
     return await this.ratingService.findByReceiver(userId);
