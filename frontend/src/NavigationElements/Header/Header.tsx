@@ -12,6 +12,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import SearchIcon from '@material-ui/icons/Search';
 import { Link, Redirect } from 'react-router-dom';
+import { USER_ID } from '../../constants';
 import {
   ContainerSearchIcon,
   Grow,
@@ -28,7 +29,7 @@ export function Navbar() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [searchString, setSearchString] = React.useState('');
   const [enter, setEnter] = React.useState(false);
-
+  const loggedUserID = localStorage.getItem(USER_ID);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -68,7 +69,7 @@ export function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <HeaderLink to="/profile">
+      <HeaderLink to={`/profile/${loggedUserID}`}>
         <MenuItem onClick={handleMenuClose} href="/profile">
           Profile
         </MenuItem>
