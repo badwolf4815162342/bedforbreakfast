@@ -71,7 +71,7 @@ class AccommodationCard extends React.Component<{ userId: string }> {
           if (data && !data.user.accommodation && loggedUserID && isThisMe) {
             return (
               <CreateAccommodationBox>
-                <CreateAccommodationButton variant="contained" color="secondary">
+                <CreateAccommodationButton variant="contained" color="secondary" href="/createAccommodation">
                   create accommodation
                 </CreateAccommodationButton>
               </CreateAccommodationBox>
@@ -93,6 +93,15 @@ class AccommodationCard extends React.Component<{ userId: string }> {
               <DescriptionPaper>
                 <Description>{accommodation.description}</Description>
               </DescriptionPaper>
+              <CreateAccommodationBox>
+                <CreateAccommodationButton
+                  variant="contained"
+                  color="secondary"
+                  href={`/accommodation/${accommodation._id}`}
+                >
+                  edit accommodation
+                </CreateAccommodationButton>
+              </CreateAccommodationBox>
             </AccommodationInProfileCard>
           );
         }}

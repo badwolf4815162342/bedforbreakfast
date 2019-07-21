@@ -98,9 +98,6 @@ export const HeaderLink = styled(Link)`
 
 export const Verified = styled(SubText)`
   color: rgba(${MainThemeRGB.secondary.main.r}, ${MainThemeRGB.secondary.main.g}, ${MainThemeRGB.secondary.main.b}, 1);
-  fontsize: 8;
 `;
 
-export const VerifiedIcon = styled(Icon)`
-  fontsize: 80;
-`;
+export const VerifiedIcon = styled(Icon)``;

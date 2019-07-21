@@ -81,7 +81,11 @@ class SendRequest extends Component<{ userId: string; userName: string }, SendRe
     const isThisMe = loggedUserID === this.props.userId;
     return (
       <RequestButtonBox>
-        <Query<CanBeRequested, {}> query={CAN_BE_REQUESTED} variables={{ hostId: this.props.userId }}>
+        <Query<CanBeRequested, {}>
+          query={CAN_BE_REQUESTED}
+          variables={{ hostId: this.props.userId }}
+          fetchPolicy="network-only"
+        >
           {({ loading, error, data }) => {
             if (loading) {
               return <p></p>;
@@ -102,7 +106,7 @@ class SendRequest extends Component<{ userId: string; userName: string }, SendRe
                 onClick={() => {
                   this.setState({ open: true });
                 }}
-                disabled={!data.canBeRequested && this.state.canRequest}
+                disabled={!data.canBeRequested || !this.state.canRequest}
               >
                 request
               </Button>

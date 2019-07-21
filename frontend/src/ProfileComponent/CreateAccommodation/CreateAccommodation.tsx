@@ -1,9 +1,9 @@
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
-import React from 'react';
-
-import { Button } from '@material-ui/core';
 import gql from 'graphql-tag';
+import React from 'react';
 import { Mutation } from 'react-apollo';
+import { USER_ID } from '../../constants';
 import { GridContainerXS, Section, SubmitButton } from '../../StyledComponents/StyledBasicItems';
 import { MainTheme } from '../../StyledComponents/Theme';
 import Accommodation from './Accommodation';
@@ -20,6 +20,7 @@ import {
   Divider,
   EnableSelector,
   EnableText,
+  Error,
   GeneralSubtitle,
   NrBedsIcon,
   NrBedsSelector,
@@ -83,16 +84,22 @@ interface CreateAccommodationProps {
 
 interface CreateAccommodationState {
   accommodation: Accommodation;
+  open: boolean;
 }
 class CreateAccommodation extends React.Component<CreateAccommodationProps, CreateAccommodationState> {
   constructor(props: any) {
     super(props);
     this.state = {
+      open: false,
       accommodation:
         props.accommodation != null
           ? props.accommodation
           : new Accommodation(undefined, false, '', '', '', '', '', '', '', 0, []),
     };
+  }
+
+  handleClickOpen() {
+    this.setState({ open: true });
   }
 
   handleChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,6 +137,8 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
   };
 
   render() {
+    const loggedUserID = localStorage.getItem(USER_ID);
+
     return (
       <Section>
         <GridContainerXS>
@@ -285,7 +294,7 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
             </label>
           </UploadContainer>
           <SubmitArea>
-            <Mutation mutation={ALTER_ACCOMMODATION_MUTATION}>
+            <Mutation mutation={ALTER_ACCOMMODATION_MUTATION} onCompleted={() => this.setState({ open: true })}>
               {(
                 createAccommodation: (arg0: {
                   variables: {
@@ -302,13 +311,19 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
                     pictures: File[];
                   };
                 }) => void,
-                { data }: any,
+                { data, loading, error }: any,
               ) => (
                 <div>
+                  {error && (
+                    <div>
+                      <Error>Error occurred.</Error>
+                      <Error> Please provide all Information needed.</Error>
+                    </div>
+                  )}
+                  {loading && <p>Loading...</p>}
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-
                       createAccommodation({
                         variables: {
                           _id: this.state.accommodation._id,
@@ -335,6 +350,22 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
             </Mutation>
           </SubmitArea>
         </GridContainerXS>
+        <Dialog
+          open={this.state.open}
+          onClose={() => this.setState({ open: false })}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{'Success'}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">Your accommodation is changed!</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button href={`/profile/${loggedUserID}`} color="secondary" autoFocus>
+              ok
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Section>
     );
   }
