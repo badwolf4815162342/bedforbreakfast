@@ -1,25 +1,16 @@
 import { Box, TextField } from '@material-ui/core';
 import styled from 'styled-components';
 
-import { SubText, Subtitle as Title } from '../../StyledComponents/StyledBasicItems';
+import { SubText } from '../../StyledComponents/StyledBasicItems';
 import { MainThemeRGB } from '../../StyledComponents/Theme';
 
-export const FlexContainer = styled.div`
-  display: flex;
-  width: 86vw;
-
-  margin-left: 8vw;
-  margin-right: 8vw;
-`;
-
 export const HostContainer = styled.div`
+  grid-column: 1/7;
   display: grid;
   grid-template-columns: auto auto;
   grid-column-gap: 1vw;
   grid-row-gap: 10px;
   align-items: flex-end;
-
-  width: 30%;
 `;
 
 export const RatingContainer = styled.div`
@@ -57,9 +48,9 @@ export const ProfilePic = styled(Box)`
   `;
 
 export const Name = styled(SubText)`
-  grid-column: 1/3;
-  grid-row: 6
-
+  grid-column: 1/1;
+  grid-row: 6;
+  margin: auto;
   font-size: 24px;
   line-height: 0.3;
 `;
@@ -72,29 +63,28 @@ export const RatingStyle = styled(SubText)`
 `;
 
 export const ThumbsUp = styled(SubText)`
-  grid-column: 2;
-  grid-row: 2;
+  grid-column: 2/2;
+  grid-row: 2/2;
 `;
 
 export const ThumbsDown = styled(SubText)`
-  grid-column: 2;
-  grid-row: 3;
+  grid-column: 2/2;
+  grid-row: 3/3;
 `;
 
-export const RatingTitle = styled(Title)`
-  grid-column: 1/5;
+export const RatingTitle = styled.h3`
+  grid-column: 3/7;
   grid-row: 1;
 `;
 
 export const Description = styled(TextField)`
-  grid-column: 1/5;
-  grid-row: 3/7;
+  grid-column: 3/7;
+  grid-row: 2/7;
 `;
 
 export const DescriptionIcon = styled.svg`
-  grid-column: 4;
-  grid-row: 3/7;
-
+  grid-column: 6/6;
+  grid-row: 6/6;
   justify-self: end;
 `;
 

@@ -103,7 +103,6 @@ class LoadSearch extends React.Component<LoadSearchProps, LoadSearchState> {
             if (!data) {
               return <p>No Data :(</p>;
             }
-            console.log(data.accommodationsByCity);
             return (
               <div>
                 {data.accommodationsByCity.length !== 0 && (
