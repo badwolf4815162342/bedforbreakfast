@@ -1,11 +1,10 @@
-import { Field, InputType } from 'type-graphql';
 import { IsNotEmpty } from 'class-validator';
+import { Field, InputType } from 'type-graphql';
 import { IsRoleType } from '../../common/validators/roleTypeValidator';
-import {RoleType} from '../../rating/models/Rating';
+import { RoleType } from '../../rating/models/Rating';
 
 @InputType()
 export class CreateTripReportDto {
-
   @Field({ nullable: true })
   _id?: string; //tslint:disable-line
 
@@ -22,6 +21,4 @@ export class CreateTripReportDto {
 
   @Field((type) => [String])
   pictures!: string[];
-
 }
-

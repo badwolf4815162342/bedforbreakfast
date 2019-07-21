@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { CreateTripReportDto } from './dto/create-tripreport.dto';
+import { CreateTripReportDto } from './dto/create-trip-report.dto';
 import { TripReport } from './models/TripReport';
 import { TripReportService } from './tripReport.service';
 
