@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 // @ts-ignore
 import cloudinary from 'cloudinary';
 // @ts-ignore
@@ -22,7 +22,13 @@ export class ImageUploadService {
 
     if (reject.length) {
       reject.forEach((name: string, message: string) => {
-        throw new Error(`Failed to upload profile picture ! Err:${name}:${message}`);
+        throw new HttpException(
+          {
+            status: HttpStatus.SERVICE_UNAVAILABLE,
+            error: 'Failed to upload picture.',
+          },
+          503,
+        );
       });
     }
     return resolve;
@@ -48,7 +54,13 @@ export class ImageUploadService {
           stream.pipe(streamLoad);
         });
       } catch (err) {
-        throw new Error(`Failed to upload profile picture ! Err:${err.message}`);
+        throw new HttpException(
+          {
+            status: HttpStatus.SERVICE_UNAVAILABLE,
+            error: 'Failed to upload picture.',
+          },
+          503,
+        );
       }
     };
 

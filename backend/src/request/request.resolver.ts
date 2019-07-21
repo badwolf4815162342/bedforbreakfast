@@ -51,6 +51,7 @@ export class RequestResolver {
     return this.requestService.findByReceiverAndRequestedFromNow(user._id);
   }
 
+  // TODO: add not rated to query
   @UseGuards(GqlAuthGuard)
   @Query((returns) => [Request])
   async proposedAnsweredRequests(@CurrentUser() user: User): Promise<Request[]> {
