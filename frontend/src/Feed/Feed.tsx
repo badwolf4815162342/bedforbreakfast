@@ -37,6 +37,12 @@ const ALL_TRIP_REPORTS_QUERY = gql`
       description
       likedBy {
         _id
+        firstName
+        lastName
+        homeTown
+        homeCountry
+        profilePicture
+        verified
       }
     }
   }
@@ -50,7 +56,7 @@ export interface TripReport {
   pictures: string[];
   description: string;
   request: Request;
-  likedBy: string[];
+  likedBy: User[];
 }
 interface Data {
   tripReports: TripReport[];
@@ -92,7 +98,6 @@ export const Feed = () => (
         }
 
         data.tripReports.reverse();
-
         return data.tripReports.map((tripReport) => <FeedItem key={tripReport._id} tripReport={tripReport}></FeedItem>);
       }}
     </Query>
