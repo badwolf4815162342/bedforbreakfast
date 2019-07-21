@@ -3,7 +3,7 @@ import React from 'react';
 import { Mutation, Query } from 'react-apollo';
 import Moment from 'react-moment';
 
-import { ContinueButton, FeedbackCard, FeedbackPage, ReferenceTitle } from './FeedbackStyle';
+import { ContinueButton, FeedbackCard, FeedbackPage, ReferenceTitle, SkipButton, SubmitButton } from './FeedbackStyle';
 import Rating from './Rating/Rating';
 import TripReport from './TripReport/TripReport';
 
@@ -35,6 +35,21 @@ const CREATE_RATING = gql`
   }
 `;
 
+const CREATE_TRIP_REPORT = gql`
+  mutation createTripReport($request: String!, $receiverRole: RoleType!, $description: String!, $pictures: [Upload]!) {
+    createTripReport(
+      createTripReportDto: {
+        request: $request
+        receiverRole: $receiverRole
+        description: $description
+        pictures: $pictures
+      }
+    ) {
+      _id
+    }
+  }
+`;
+
 interface Data {
   request: {
     start: string;
@@ -50,7 +65,7 @@ interface Data {
 }
 
 class Feedback extends React.Component<
-  {},
+  { history: any },
   {
     rating: { rating: boolean | undefined; description: string | undefined };
     writingRating: boolean;
@@ -77,8 +92,8 @@ class Feedback extends React.Component<
   render() {
     const requestId = '5d33132c68706a54e547ff10'; // TODO: get from route parameter
     const {
-      rating: { rating, description },
-      tripReport: { pictures },
+      rating: { rating, description: ratingDescription },
+      tripReport: { pictures, description: tripReportDescription },
     } = this.state;
 
     return (
@@ -111,14 +126,19 @@ class Feedback extends React.Component<
                       />
                       <Mutation
                         mutation={CREATE_RATING}
-                        variables={{ request: requestId, receiverRole: 'ACCOMMODATION', description, rating }}
+                        variables={{
+                          request: requestId,
+                          receiverRole: 'ACCOMMODATION',
+                          description: ratingDescription,
+                          rating,
+                        }}
                         onCompleted={() => this.setState({ writingRating: false })}
                       >
-                        {(mutation: any, { mutationLoading, mutationError }: any) => (
+                        {(createRating: any, { mutationLoading, mutationError }: any) => (
                           <>
                             {mutationLoading && <p>Loading...</p>}
                             {mutationError && <p>Error.</p>}
-                            <ContinueButton variant="contained" color="secondary" onClick={() => mutation()}>
+                            <ContinueButton variant="contained" color="secondary" onClick={() => createRating()}>
                               Continue
                             </ContinueButton>
                           </>
@@ -128,11 +148,36 @@ class Feedback extends React.Component<
                   </div>
                 )}
                 {!this.state.writingRating && (
-                  <TripReport
-                    pictures={pictures}
-                    onPicturesChange={this.handleTripReportChange('pictures')}
-                    onDescriptionChange={this.handleTripReportChange('description')}
-                  ></TripReport>
+                  <>
+                    <TripReport
+                      pictures={pictures}
+                      onPicturesChange={this.handleTripReportChange('pictures')}
+                      onDescriptionChange={this.handleTripReportChange('description')}
+                    ></TripReport>
+                    <Mutation
+                      mutation={CREATE_TRIP_REPORT}
+                      variables={{
+                        request: requestId,
+                        receiverRole: 'ACCOMMODATION',
+                        description: tripReportDescription,
+                        pictures,
+                      }}
+                      onCompleted={() => this.props.history.push('/')} // TODO: JH navigate away
+                    >
+                      {(createTripReport: any, { mutationLoading, mutationError }: any) => (
+                        <>
+                          {mutationLoading && <p>Loading...</p>}
+                          {mutationError && <p>Error.</p>}
+                          <SkipButton variant="contained" color="default" onClick={() => this.props.history.push('/')}>
+                            Skip
+                          </SkipButton>
+                          <SubmitButton variant="contained" color="secondary" onClick={() => createTripReport()}>
+                            Submit
+                          </SubmitButton>
+                        </>
+                      )}
+                    </Mutation>
+                  </>
                 )}
               </FeedbackPage>
             );
