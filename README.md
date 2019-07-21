@@ -148,6 +148,24 @@ query {
 
 ### Submit TripReport:
 
+```
+mutation {
+  createTripReport(
+    createTripReportDto: {
+      request: "5d31cba1963a8feb6fe28184"
+      description: "It was great"
+      receiverRole: ACCOMMODATION
+      pictures: []
+      
+    }
+  ) {
+    _id
+    description
+    requestStatus
+  }
+}
+```
+
 
 ## User:
 
@@ -252,6 +270,45 @@ query {
       author {
         firstName
       }
+    }
+  }
+}
+```
+## Meals:
+
+### TestMealCreation:
+
+inserts default meals for logged in user
+
+```
+mutation {
+  createTestMeals {
+    _id
+    firstName
+    lastName
+    email
+    phoneNumber
+    firstName
+    lastName
+    birthday
+    gender
+    profilePicture
+    homeTown
+    homeCountry
+    favoriteFood
+    dislikedBy {
+      firstName
+      email
+    }
+    likedBy {
+      firstName
+      email
+    }
+    accommodation {
+      _id
+    }
+    meals {
+      description
     }
   }
 }

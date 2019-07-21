@@ -1,7 +1,7 @@
 import { Button, Checkbox, TextField } from '@material-ui/core';
 import styled from 'styled-components';
 import { Section } from '../StyledComponents/StyledBasicItems';
-import { MainTheme } from '../StyledComponents/Theme';
+import { MainTheme, MainThemeRGB } from '../StyledComponents/Theme';
 import SearchResultCard from './SearchResultCard/SearchResultCard';
 
 export const StyledSearchResultCard = styled(SearchResultCard)`
@@ -27,7 +27,9 @@ export const Title = styled.h2`
 `;
 
 export const FilterArea = styled.div`
-  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 3px 5px 14px -2px rgba(${MainThemeRGB.grey.dark.r}, ${MainThemeRGB.grey.dark.g}, ${MainThemeRGB.grey.dark.b}, 1);
+  -moz-box-shadow: 3px 5px 14px -2px rgba(${MainThemeRGB.grey.dark.r}, ${MainThemeRGB.grey.dark.g}, ${MainThemeRGB.grey.dark.b}, 1);
+  box-shadow: 3px 5px 14px -2px rgba(${MainThemeRGB.grey.dark.r}, ${MainThemeRGB.grey.dark.g}, ${MainThemeRGB.grey.dark.b}, 1);
   grid-column: 1/4;
   display: grid;
   grid-gap: 10px;

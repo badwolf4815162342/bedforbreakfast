@@ -43,7 +43,6 @@ export const Section = styled.div`
 
 export const Title = styled.h1`
   font-size: 1.5em;
-  color: ${MainTheme.secondary.main};
 `;
 
 export const Subtitle = styled.h3`

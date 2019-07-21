@@ -1,8 +1,8 @@
 import { Box, Card, Divider as divider } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 import styled from 'styled-components';
-import { SimpleLabelText, SubText, Text } from '../../../../StyledComponents/StyledBasicItems';
-import { MainThemeRGB } from '../../../../StyledComponents/Theme';
+import { SimpleLabelText, SubText, Text } from '../../../StyledComponents/StyledBasicItems';
+import { MainThemeRGB } from '../../../StyledComponents/Theme';
 
 export const TripReportCard = styled(Card)`
   margin-top: 20px

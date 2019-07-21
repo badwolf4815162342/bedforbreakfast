@@ -36,6 +36,6 @@ export const IconInText = styled(SubText)`
   color: rgba(${MainThemeRGB.secondary.main.r}, ${MainThemeRGB.secondary.main.g}, ${MainThemeRGB.secondary.main.b}, 1);
 `;
 
-export const NoReferencesLabe = styled(SimpleLabelText)`
+export const NoReferencesLabel = styled(SimpleLabelText)`
   text-align: center;
 `;
