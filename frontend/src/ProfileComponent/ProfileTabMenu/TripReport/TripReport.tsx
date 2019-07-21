@@ -1,6 +1,6 @@
 import Icon from '@material-ui/core/Icon';
 import React from 'react';
-import pic from '../../../../images/user2.jpeg';
+import pic from '../../../images/user2.jpeg';
 import { GridContainerTR as GridContainer } from '../../../StyledComponents/StyledBasicItems';
 import {
   Date,
