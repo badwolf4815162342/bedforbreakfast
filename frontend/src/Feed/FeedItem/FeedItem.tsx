@@ -83,29 +83,7 @@ export const FeedItem: React.FC<FeedItemProps> = (feedItem: FeedItemProps) => (
     </Date>
     <DividerStyled />
     <ImagesCarousel>
-      <SimpleSlider
-        height={240}
-        images={[
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-          'https://media.nomadicmatt.com/2018/accommodations_04.jpg',
-        ]}
-      />
+      <SimpleSlider height={240} images={feedItem.tripReport.pictures} />
     </ImagesCarousel>
     <DescriptionArea>{feedItem.tripReport.description}</DescriptionArea>
     <DividerStyled />
