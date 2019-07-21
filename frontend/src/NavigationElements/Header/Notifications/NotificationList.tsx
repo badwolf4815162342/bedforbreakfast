@@ -123,7 +123,12 @@ class NotificationList extends React.Component<{ onClick: () => void }, {}> {
             }
             if (data && data.proposedUnseeAnsweredRequests && data.proposedUnseeAnsweredRequests.length > 0) {
               return (
-                <Mutation mutation={UPDATE_AS_SEEN}>
+                <Mutation
+                  mutation={UPDATE_AS_SEEN}
+                  onCompleted={() => {
+                    window.location.reload();
+                  }}
+                >
                   {(
                     updateSeenMutation: (arg0: {
                       variables: {
