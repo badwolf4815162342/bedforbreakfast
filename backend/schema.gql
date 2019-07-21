@@ -64,7 +64,7 @@ input CreateTripReportDto {
   request: String!
   receiverRole: RoleType!
   description: String!
-  pictures: [String!]!
+  pictures: [Upload]
 }
 
 """

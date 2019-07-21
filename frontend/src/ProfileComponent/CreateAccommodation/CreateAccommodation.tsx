@@ -280,7 +280,7 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
             />
             <label htmlFor="raised-button-file">
               <Button variant="contained" component="span">
-                Upload Profile Picture*
+                Upload Pictures*
               </Button>
             </label>
           </UploadContainer>

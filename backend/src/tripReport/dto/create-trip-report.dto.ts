@@ -1,4 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
+import { GraphQLUpload } from 'graphql-upload';
+import { Upload } from 'src/common/types/Upload';
 import { Field, InputType } from 'type-graphql';
 import { IsRoleType } from '../../common/validators/roleTypeValidator';
 import { RoleType } from '../../rating/models/Rating';
@@ -19,6 +21,6 @@ export class CreateTripReportDto {
   @IsNotEmpty()
   description!: string;
 
-  @Field((type) => [String])
-  pictures!: string[];
+  @Field((type) => [GraphQLUpload], { nullable: 'itemsAndList' })
+  pictures?: Upload[];
 }
