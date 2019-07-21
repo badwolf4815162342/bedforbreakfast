@@ -122,6 +122,7 @@ class ProfileComponent extends React.Component<{ match: { params: any } }, { use
               <ProfileBackgroundPaper></ProfileBackgroundPaper>
               <ProfileBox>
                 <StyledUserDescription
+                  userId={user._id}
                   firstName={user.firstName}
                   lastName={user.lastName}
                   birthday={user.birthday}
@@ -136,7 +137,7 @@ class ProfileComponent extends React.Component<{ match: { params: any } }, { use
                   favFood={user.favoriteFood}
                   profilePic={user.profilePicture}
                 />
-                <StyledTabMenu userId={user._id} userName={user.firstName} accommodationId={user.accommodation._id} />
+                <StyledTabMenu userId={user._id} userName={user.firstName} />
               </ProfileBox>
             </Section>
           );

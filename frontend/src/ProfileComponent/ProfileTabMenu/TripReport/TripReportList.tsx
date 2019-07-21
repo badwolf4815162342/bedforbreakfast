@@ -70,7 +70,7 @@ class TripReportList extends React.Component<{ userId: string }> {
               return <p>No data</p>;
             }
             if (data.publishedTripReports.length === 0) {
-              return <NoReportsLabel>User has no references yet</NoReportsLabel>;
+              return <NoReportsLabel>User has no trip reports yet</NoReportsLabel>;
             }
             return (
               <Section>
