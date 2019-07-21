@@ -26,8 +26,8 @@ export class TripReport extends Typegoose {
   @prop({ required: true })
   receiverRole!: RoleType;
 
-  @Field((type) => [String])
-  @prop({ required: true })
+  @Field((type) => [String], { nullable: 'itemsAndList' })
+  @prop()
   pictures?: string[];
 
   @Field((type) => String)
