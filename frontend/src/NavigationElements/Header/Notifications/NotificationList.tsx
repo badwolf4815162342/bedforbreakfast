@@ -35,7 +35,7 @@ class NotificationList extends React.Component<{ onClick: () => void }, {}> {
           if (error) {
             return <p>Error.</p>;
           }
-          if (data) {
+          if (data && data.receivedRequestedRequests.length > 0) {
             return data.receivedRequestedRequests.map((request) => (
               <HeaderLink key={request._id} to="/requests">
                 <MenuItem onClick={this.props.onClick}>
