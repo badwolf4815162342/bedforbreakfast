@@ -1,6 +1,7 @@
 import Icon from '@material-ui/core/Icon';
 import React from 'react';
 import Moment from 'react-moment';
+import { USER_ID } from '../../constants';
 import { Section } from '../../StyledComponents/StyledBasicItems';
 import {
   Age,
@@ -15,9 +16,11 @@ import {
   Rating,
   Status,
   Verified,
+  VerifiedButton,
 } from './ProfileUserDescriptionStyle';
 
 interface ProfileProps {
+  userId: string;
   firstName: string;
   lastName: string;
   birthday: Date;
@@ -44,6 +47,16 @@ class ProfileUserDescription extends React.Component<ProfileProps, {}> {
   );
 
   render() {
+    const loggedUserID = localStorage.getItem(USER_ID);
+    const isThisMe = loggedUserID === this.props.userId;
+    const getVerified =
+      isThisMe && !this.props.verified ? (
+        <VerifiedButton variant="contained" color="secondary">
+          get verified
+        </VerifiedButton>
+      ) : (
+        ''
+      );
     const profilePic = (
       <img src={this.props.profilePic} style={{ width: 205, height: 205, borderRadius: 180 }} alt="Profile" />
     );
@@ -60,6 +73,7 @@ class ProfileUserDescription extends React.Component<ProfileProps, {}> {
           <Age>
             <Moment date={this.props.birthday} fromNow ago titleFormat="YY" /> old , {this.props.gender}
           </Age>
+          {getVerified}
           <Rating>
             <IconInText>
               {' '}

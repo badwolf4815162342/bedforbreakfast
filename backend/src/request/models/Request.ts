@@ -41,6 +41,10 @@ export class Request extends Typegoose {
   @Field((type) => [TripReport])
   @arrayProp({ itemsRef: 'TripReport' })
   tripReports?: Array<Ref<ObjectId>>;
+
+  @Field((type) => Boolean)
+  @prop({ required: true, default: false })
+  notificationSeen!: boolean;
 }
 
 export enum RequestStatus {

@@ -20,8 +20,16 @@ export class TripReportService {
     return await createdTripReport.save();
   }
 
-  async findById(id: ObjectId): Promise<TripReport | null> {
+  async findById(id: ObjectId | string): Promise<TripReport | null> {
     return this.tripReportModel.findById(id);
+  }
+
+  async addLike(tripReport: TripReport, userId: ObjectId): Promise<TripReport | null> {
+    const newTripReport = {
+      likedBy: tripReport.likedBy,
+    };
+    (newTripReport.likedBy as ObjectId[]).push(userId);
+    return this.tripReportModel.findByIdAndUpdate(tripReport._id, newTripReport);
   }
 
   async findByAuthor(authorId: ObjectId | string): Promise<TripReport[]> {

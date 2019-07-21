@@ -47,6 +47,8 @@ export const AccommodationDescription = styled.p`
   grid-row-end: 4;
   height: 12vh;
   overflow: scroll;
+  hyphens: auto;
+  text-align: justify;
 `;
 
 export const AccommodationTreats = styled.div`
@@ -87,6 +89,8 @@ export const HostDescription = styled.p`
   grid-row-end: 4;
   height: 12vh;
   overflow: scroll;
+  hyphens: auto;
+  text-align: justify;
 `;
 
 export const HostTreats = styled.div`

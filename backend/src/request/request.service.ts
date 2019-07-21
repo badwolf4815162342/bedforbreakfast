@@ -36,6 +36,24 @@ export class RequestService {
       .exec();
   }
 
+  async findByProposerOrReceiverAndAcceptedInPast(userId: ObjectId | string): Promise<Request[]> {
+    const proposer = await this.requestModel
+      .find({
+        proposer: userId,
+        requestStatus: RequestStatus.ACCEPTED,
+        start: { $lte: new Date() },
+      })
+      .exec();
+    const receiver = await this.requestModel
+      .find({
+        receiver: userId,
+        requestStatus: RequestStatus.ACCEPTED,
+        start: { $lte: new Date() },
+      })
+      .exec();
+    return [...proposer, ...receiver];
+  }
+
   async findByReceiverAndRequestedFromNow(receiverId: ObjectId | string): Promise<Request[]> {
     return this.requestModel
       .find({ receiver: receiverId, requestStatus: RequestStatus.REQUESTED, start: { $gte: new Date() } })
@@ -46,6 +64,17 @@ export class RequestService {
     return this.requestModel
       .find({
         proposer: proposerId,
+        requestStatus: { $ne: RequestStatus.REQUESTED },
+        start: { $gte: new Date() },
+      })
+      .exec();
+  }
+
+  async findByProposerAndAnsweredAndUnseenFromNow(proposerId: ObjectId | string): Promise<Request[]> {
+    return this.requestModel
+      .find({
+        proposer: proposerId,
+        notificationSeen: false,
         requestStatus: { $ne: RequestStatus.REQUESTED },
         start: { $gte: new Date() },
       })
@@ -67,16 +96,20 @@ export class RequestService {
   }
 
   async addTripReport(request: Request, newReport: TripReport): Promise<Request | null> {
-    const newRequest = {
-      tripReports: request.tripReports,
-    };
     (request.tripReports as ObjectId[]).push(newReport._id);
-    return this.requestModel.findByIdAndUpdate(request._id, newRequest);
+    return this.requestModel.findByIdAndUpdate(request._id, request);
   }
 
   async changeRequestStatus(oldRequest: Request, requestStatusNew: RequestStatus): Promise<Request | null> {
     const request = {
       requestStatus: requestStatusNew,
+    };
+    return this.requestModel.findByIdAndUpdate(oldRequest._id, request);
+  }
+
+  async changeRequestAsSeen(oldRequest: Request): Promise<Request | null> {
+    const request = {
+      notificationSeen: true,
     };
     return this.requestModel.findByIdAndUpdate(oldRequest._id, request);
   }

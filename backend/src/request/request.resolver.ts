@@ -16,6 +16,7 @@ import { TripReport } from '../tripReport/models/TripReport';
 import { TripReportService } from '../tripReport/tripReport.service';
 import { UsersService } from '../users/users.service';
 import { CanBeRequestedDto } from './dto/can-be-requested.dto';
+import { RequestSeenDto } from './dto/request-seen.dto';
 import { UpdateRequestStatusDto } from './dto/update-requestStatus.dto';
 
 @Resolver((of: any) => {
@@ -51,11 +52,25 @@ export class RequestResolver {
     return this.requestService.findByReceiverAndRequestedFromNow(user._id);
   }
 
+  @UseGuards(GqlAuthGuard)
+  @Query((returns) => [Request])
+  async proposedUnseeAnsweredRequests(@CurrentUser() user: User): Promise<Request[]> {
+    return this.requestService.findByProposerAndAnsweredAndUnseenFromNow(user._id);
+  }
+
   // TODO: add not rated to query
   @UseGuards(GqlAuthGuard)
   @Query((returns) => [Request])
   async proposedAnsweredRequests(@CurrentUser() user: User): Promise<Request[]> {
     return this.requestService.findByProposerAndAnsweredFromNow(user._id);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Query((returns) => [Request])
+  async acceptedUnratedPastRequests(@CurrentUser() user: User): Promise<Request[]> {
+    const requests = await this.requestService.findByProposerOrReceiverAndAcceptedInPast(user._id);
+    // requests.filter(request => ratingOrReportPossible);
+    return requests;
   }
 
   async ratingOrReportPossible(request: Request, currentUserId: ObjectId): Promise<boolean> {
@@ -398,7 +413,7 @@ export class RequestResolver {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: 'Receiver id not found.',
+          error: 'Request id not found.',
         },
         404,
       );
@@ -418,7 +433,46 @@ export class RequestResolver {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: 'Receiver id not found.',
+          error: 'Updated request not found.',
+        },
+        404,
+      );
+    }
+    return request;
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation((returns) => Request)
+  async updateRequestAsSeen(
+    @Args('requestSeenDto') requestSeenDto: RequestSeenDto,
+    @CurrentUser() user: User,
+  ): Promise<Request> {
+    const request = await this.requestService.findById(requestSeenDto._id);
+    if (!request) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Request id not found.',
+        },
+        404,
+      );
+    }
+    if (!request.proposer.equals(user._id)) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'It is not possible to set request as seen if a user is not the proposer of this request.',
+        },
+        403,
+      );
+    }
+    request.notificationSeen = true;
+    const updatedRequest = await this.requestService.changeRequestAsSeen(request);
+    if (!updatedRequest) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Updated request not found.',
         },
         404,
       );
