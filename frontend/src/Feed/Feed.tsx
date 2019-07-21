@@ -4,21 +4,70 @@ import { Query } from 'react-apollo';
 
 import { FeedItem } from './FeedItem/FeedItem';
 
-const ALL_ACCOMMODATIONS_QUERY = gql`
-  query accommodations {
-    accommodations {
-      city
-      country
+const ALL_TRIP_REPORTS_QUERY = gql`
+  query tripReports {
+    tripReports {
+      _id
+      request {
+        _id
+      }
+      receiver {
+        _id
+        firstName
+        lastName
+        homeTown
+        homeCountry
+        profilePicture
+        verified
+      }
+      author {
+        _id
+        firstName
+        lastName
+        homeTown
+        homeCountry
+        profilePicture
+        verified
+      }
+      receiverRole
+      pictures
+      description
+      likedBy {
+        _id
+      }
     }
   }
 `;
 
+export interface RequestItem {
+  _id: string;
+  author: User;
+  receiver: User;
+  receiverRole: RoleType;
+  pictures: string[];
+  description: string;
+}
 interface Data {
-  accommodations: Array<{ country: string; city: string }>;
+  tripReports: RequestItem[];
+}
+
+export interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  homeTown: string;
+  homeCountry: string;
+  profilePicture: string;
+  verified: boolean;
+}
+
+enum RoleType {
+  MEAL,
+  ACCOMMODATION,
 }
 
 export const Feed = () => (
-  <Query<Data, {}> query={ALL_ACCOMMODATIONS_QUERY}>
+  <Query<Data, {}> query={ALL_TRIP_REPORTS_QUERY}>
     {({ loading, error, data }) => {
       if (loading) {
         return <p>Loading...</p>;
@@ -30,7 +79,7 @@ export const Feed = () => (
         return <p>No Data :(</p>;
       }
 
-      return data.accommodations.map((accommodation) => <FeedItem {...accommodation}></FeedItem>);
+      return data.tripReports.map((tripReport) => <FeedItem key={tripReport._id} request={tripReport}></FeedItem>);
     }}
   </Query>
 );
