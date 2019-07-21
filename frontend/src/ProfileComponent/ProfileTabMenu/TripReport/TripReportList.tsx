@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Section } from '../../../StyledComponents/StyledBasicItems';
 import TripReport from './TripReport';
