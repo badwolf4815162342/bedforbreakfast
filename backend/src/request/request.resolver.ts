@@ -11,6 +11,9 @@ import { RequestService } from './request.service';
 
 import { ObjectId } from 'mongodb';
 import { AccommodationsService } from '../accommodations/accommodations.service';
+import { CreateTripReportDto } from '../tripReport/dto/create-tripReport.dto';
+import { TripReport } from '../tripReport/models/TripReport';
+import { TripReportService } from '../tripReport/tripReport.service';
 import { UsersService } from '../users/users.service';
 import { CanBeRequestedDto } from './dto/can-be-requested.dto';
 import { UpdateRequestStatusDto } from './dto/update-requestStatus.dto';
@@ -22,6 +25,7 @@ export class RequestResolver {
   constructor(
     private readonly requestService: RequestService,
     @Inject(forwardRef(() => RatingService)) private readonly ratingService: RatingService,
+    @Inject(forwardRef(() => TripReportService)) private readonly tripReportService: TripReportService,
     @Inject(forwardRef(() => UsersService)) private readonly usersService: UsersService,
     private readonly accommodationsService: AccommodationsService,
   ) {}
@@ -183,6 +187,62 @@ export class RequestResolver {
     return updatedRequest;
   }
 
+  // tslint:disable-next-line: max-line-length
+  // Conditions: logged in as request.proposer or request.receiver Trip accepted, request date is before today, only 2 ratings possible receiverOfRequest,AuthorOfRequest
+  @UseGuards(GqlAuthGuard)
+  @Mutation((returns) => Request)
+  async createTripReport(
+    @Args('createTripReportDto') createTripReportDto: CreateTripReportDto,
+    @CurrentUser() author: User,
+  ): Promise<Request> {
+    // find the request
+    const request = await this.requestService.findById(createTripReportDto.request);
+    if (!request) {
+      throw new Error('Invalid request ID');
+    }
+    // ony accepted requests can be rated
+    if (!(request.requestStatus === RequestStatus.ACCEPTED)) {
+      throw new Error('You can create report only for completed trip');
+    }
+    const reportsOfRequest: TripReport[] = [];
+    if (request.tripReports) {
+      await Promise.all(
+        request.tripReports.map(async (tripReportId) => {
+          const tripReport = await this.tripReportService.findById(tripReportId);
+          if (tripReport) {
+            reportsOfRequest.push(tripReport);
+          }
+        }),
+      );
+    }
+    // only to ratings per request, one for host, one for guest
+    if (request.tripReports) {
+      if (reportsOfRequest.length > 1) {
+        throw new Error('This requests trip has already been rated by guest and host!');
+      }
+    }
+    // if you already rated
+    if (reportsOfRequest.length > 0 && reportsOfRequest[0].author.equals(author._id)) {
+      throw new Error('You already rated this request!');
+    }
+    const receiver: User | null = null;
+    // Date check
+    const today = new Date();
+    const endDate: Date = request.end;
+    if (endDate > today) {
+      throw new Error('You can not rate a request for a trip that has not happend yet!');
+    }
+
+    const newReport = await this.tripReportService.create({ ...createTripReportDto, author, receiver });
+
+    // update the request
+    const updatedRequest = await this.requestService.addTripReport(request, newReport);
+    if (!updatedRequest) {
+      throw new NotFoundException(request._id);
+    }
+    return updatedRequest;
+  }
+
   @UseGuards(GqlAuthGuard)
   @Mutation((returns) => Request)
   async updateRequestStatus(
@@ -228,6 +288,22 @@ export class RequestResolver {
       );
     }
     return ratings;
+  }
+
+  @ResolveProperty()
+  async tripReports(@Parent() request: Request) {
+    const tripReports: TripReport[] = [];
+    if (request.tripReports) {
+      await Promise.all(
+        request.tripReports.map(async (tripReportId) => {
+          const tripReport = await this.tripReportService.findById(tripReportId);
+          if (tripReport) {
+            tripReports.push(tripReport);
+          }
+        }),
+      );
+    }
+    return tripReports;
   }
 
   @ResolveProperty()
