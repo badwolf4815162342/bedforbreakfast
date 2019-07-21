@@ -60,7 +60,7 @@ export class RequestResolver {
     if (!receiver.accommodation) {
       throw new HttpException(
         {
-          status: HttpStatus.CONFLICT,
+          status: HttpStatus.NOT_ACCEPTABLE,
           error: 'It is not possible to request a host who has no accommodation.',
         },
         409,
@@ -72,7 +72,7 @@ export class RequestResolver {
       if (!accommodation.isActive) {
         throw new HttpException(
           {
-            status: HttpStatus.CONFLICT,
+            status: HttpStatus.NOT_ACCEPTABLE,
             error: 'It is not possible to request a host who s accommodation is not active.',
           },
           409,
@@ -83,7 +83,7 @@ export class RequestResolver {
     if (receiver._id.equals(currentUserId)) {
       throw new HttpException(
         {
-          status: HttpStatus.CONFLICT,
+          status: HttpStatus.NOT_ACCEPTABLE,
           error: 'It is not possible to request yourself.',
         },
         409,
@@ -95,7 +95,7 @@ export class RequestResolver {
     ) {
       throw new HttpException(
         {
-          status: HttpStatus.CONFLICT,
+          status: HttpStatus.NOT_ACCEPTABLE,
           error:
             'It is not possible to request again until the host has react on your last request or your las request has expired.',
         },
@@ -121,7 +121,7 @@ export class RequestResolver {
     if (startDate < today) {
       throw new HttpException(
         {
-          status: HttpStatus.CONFLICT,
+          status: HttpStatus.NOT_ACCEPTABLE,
           error: 'It is not possible to request a host for start date in the past.',
         },
         409,
@@ -130,7 +130,7 @@ export class RequestResolver {
     if (endDate < startDate) {
       throw new HttpException(
         {
-          status: HttpStatus.CONFLICT,
+          status: HttpStatus.NOT_ACCEPTABLE,
           error: 'It is not possible to request a trip with for start date after end date.',
         },
         409,
@@ -162,7 +162,7 @@ export class RequestResolver {
     if (!(request.requestStatus === RequestStatus.ACCEPTED)) {
       throw new HttpException(
         {
-          status: HttpStatus.CONFLICT,
+          status: HttpStatus.NOT_ACCEPTABLE,
           error: 'It is not possible to rate unaccepted requests.',
         },
         409,
@@ -184,7 +184,7 @@ export class RequestResolver {
       if (ratingsOfRequest.length > 1) {
         throw new HttpException(
           {
-            status: HttpStatus.CONFLICT,
+            status: HttpStatus.NOT_ACCEPTABLE,
             error: 'It is not possible to rate this request because it is already rated by guest and host.',
           },
           409,
@@ -195,7 +195,7 @@ export class RequestResolver {
     if (ratingsOfRequest.length > 0 && ratingsOfRequest[0].author.equals(author._id)) {
       throw new HttpException(
         {
-          status: HttpStatus.CONFLICT,
+          status: HttpStatus.NOT_ACCEPTABLE,
           error: 'It is not possible to rate this request again.',
         },
         409,
@@ -240,7 +240,7 @@ export class RequestResolver {
     if (endDate > today) {
       throw new HttpException(
         {
-          status: HttpStatus.CONFLICT,
+          status: HttpStatus.NOT_ACCEPTABLE,
           error: 'It is not possible to rate a request that has not happened yet.',
         },
         409,

@@ -21,7 +21,6 @@ export class RatingResolver {
     return this.ratingService.findAll();
   }
 
-  // TODO: Do you have to be logged in to see ratings of others?
   @Query((returns) => [Rating])
   async receivedRatings(@Args('userId') userId: string): Promise<Rating[]> {
     return await this.ratingService.findByReceiver(userId);
