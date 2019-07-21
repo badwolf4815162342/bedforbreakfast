@@ -35,8 +35,9 @@
     "typescript": "^3.5.2"
   },
   "dependencies": {
-    "@material-ui/core": "^4.1.2",
+    "@material-ui/core": "^4.2.0",
     "@material-ui/icons": "^4.2.1",
+    "@material-ui/lab": "^4.0.0-alpha.20",
     "moment": "^2.24.0",
     "mongodb": "^3.3.0-beta2",
     "react": "^16.8.6",

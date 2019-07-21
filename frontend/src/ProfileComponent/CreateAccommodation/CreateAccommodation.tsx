@@ -1,6 +1,7 @@
 import Tooltip from '@material-ui/core/Tooltip';
 import React from 'react';
 
+import { Button } from '@material-ui/core';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import { GridContainerXS, Section, SubmitButton } from '../../StyledComponents/StyledBasicItems';
@@ -23,16 +24,18 @@ import {
   NrBedsIcon,
   NrBedsSelector,
   NrBedsText,
+  SelectedPictures,
   StreetName,
   StreetNumber,
   StreetNumberIcon,
   SubmitArea,
+  UploadContainer,
   ZipCode,
 } from './CreateAccommodationStyle';
 
 const ALTER_ACCOMMODATION_MUTATION = gql`
   mutation alterAccommodation(
-    $_id: String!
+    $_id: String
     $isActive: Boolean!
     $country: String!
     $city: String!
@@ -42,7 +45,7 @@ const ALTER_ACCOMMODATION_MUTATION = gql`
     $description: String
     $district: String
     $numberOfBeds: Float!
-    $pictures: [String]
+    $pictures: [Upload]
   ) {
     alterAccommodation(
       accommodationDto: {
@@ -88,9 +91,7 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
       accommodation:
         props.accommodation != null
           ? props.accommodation
-          : new Accommodation('', false, '', '', '', '', '', '', '', 0, [
-              'https://miro.medium.com/max/244/1*JVFm_pqNLKi4sobJzicbww.png',
-            ]),
+          : new Accommodation(undefined, false, '', '', '', '', '', '', '', 0, []),
     };
   }
 
@@ -108,7 +109,7 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
             accommodation: { ...this.state.accommodation, [name]: isActive },
           });
         } catch (error) {
-          console.log('Number of beds was not a number');
+          console.log(error);
         }
       }
     } else if (name === 'numberOfBeds') {
@@ -244,7 +245,6 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
             <path d="M15 11V5l-3-3-3 3v2H3v14h18V11h-6zm-8 8H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm6 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm6 12h-2v-2h2v2zm0-4h-2v-2h2v2z" />
             <path d="M0 0h24v24H0z" fill="none" />
           </CityNameIcon>
-
           <Country
             required
             id="standard-required"
@@ -262,12 +262,34 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
             <path fill="none" d="M0 0h24v24H0z"></path>
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"></path>
           </CountryIcon>
+          <SelectedPictures>{this.state.accommodation.pictures.length} pictures selected</SelectedPictures>
+          <UploadContainer>
+            <input
+              accept="image/*"
+              style={{ display: 'none' }}
+              id="raised-button-file"
+              multiple
+              type="file"
+              onChange={(e) => {
+                if (e.target.files) {
+                  this.setState({
+                    accommodation: { ...this.state.accommodation, pictures: Array.from(e.target.files) },
+                  });
+                }
+              }}
+            />
+            <label htmlFor="raised-button-file">
+              <Button variant="contained" component="span">
+                Upload Profile Picture*
+              </Button>
+            </label>
+          </UploadContainer>
           <SubmitArea>
             <Mutation mutation={ALTER_ACCOMMODATION_MUTATION}>
               {(
                 createAccommodation: (arg0: {
                   variables: {
-                    _id: string;
+                    _id: string | undefined;
                     isActive: boolean;
                     country: string;
                     city: string;
@@ -277,7 +299,7 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
                     description: string;
                     district: string;
                     numberOfBeds: number;
-                    pictures: string[];
+                    pictures: File[];
                   };
                 }) => void,
                 { data }: any,
@@ -286,7 +308,7 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      console.log(this.state.accommodation);
+
                       createAccommodation({
                         variables: {
                           _id: this.state.accommodation._id,

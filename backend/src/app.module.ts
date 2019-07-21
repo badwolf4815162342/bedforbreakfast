@@ -5,6 +5,7 @@ import { TypegooseModule } from 'nestjs-typegoose';
 import { AccommodationsModule } from './accommodations/accommodations.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
 import { AuthenticationModule } from './authentication/authentication.module';
 import { ImageUploadModule } from './image-upload/image-upload.module';
 import { MealModule } from './meal/meal.module';
