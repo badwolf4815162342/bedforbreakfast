@@ -1,3 +1,4 @@
+import { Icon, IconButton } from '@material-ui/core';
 import React from 'react';
 import Moment from 'react-moment';
 import SimpleSlider from '../../StyledComponents/ImageSlider/ImageSlider';
@@ -11,7 +12,9 @@ import {
   FeedCard,
   HeaderLink,
   HomeInfo,
+  IconInText,
   ImagesCarousel,
+  LikeCount,
   Name,
   ReceiverInfo,
   ReceiverPic,
@@ -106,5 +109,13 @@ export const FeedItem: React.FC<FeedItemProps> = (feedItem: FeedItemProps) => (
     </ImagesCarousel>
     <DescriptionArea>{feedItem.tripReport.description}</DescriptionArea>
     <DividerStyled />
+    <LikeCount>
+      <IconInText>
+        <IconButton color="secondary">
+          <Icon>favorite_border'</Icon>
+        </IconButton>
+      </IconInText>
+      {feedItem.tripReport.likedBy.length}
+    </LikeCount>
   </FeedCard>
 );

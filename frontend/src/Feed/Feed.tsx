@@ -50,6 +50,7 @@ export interface TripReport {
   pictures: string[];
   description: string;
   request: Request;
+  likedBy: string[];
 }
 interface Data {
   tripReports: TripReport[];
@@ -89,6 +90,8 @@ export const Feed = () => (
         if (!data) {
           return <p>No Data :(</p>;
         }
+
+        data.tripReports.reverse();
 
         return data.tripReports.map((tripReport) => <FeedItem key={tripReport._id} tripReport={tripReport}></FeedItem>);
       }}
