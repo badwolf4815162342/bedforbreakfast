@@ -1,4 +1,5 @@
 import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
 import React from 'react';
 import pic from '../../../images/user2.jpeg';
 import { GridContainerL as GridContainer } from '../../../StyledComponents/StyledBasicItems';
@@ -58,7 +59,9 @@ class TripReport extends React.Component<TripReportProps, {}> {
           <LikeCount>
             {' '}
             <IconInText>
-              <Icon>{this.liked}</Icon>
+              <IconButton color="secondary">
+                <Icon>{this.liked}</Icon>
+              </IconButton>
             </IconInText>{' '}
             {this.props.likeCount}{' '}
           </LikeCount>

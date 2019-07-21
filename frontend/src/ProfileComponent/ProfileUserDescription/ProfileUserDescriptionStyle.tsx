@@ -47,6 +47,7 @@ export const Description = styled(Text)`
   margin-right: 15px;
   margin-bottom: 20px
   text-align: justify;
+  hyphens: auto;
 `;
 export const Hometown = styled(SimpleLabelText)``;
 

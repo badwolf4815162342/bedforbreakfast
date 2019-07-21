@@ -1,16 +1,17 @@
 import { Button, Tab } from '@material-ui/core';
 import React from 'react';
+import AccommodationCard from './Accommodation/AccommodationCard';
 import { ProfileTabMenuBox, ProfileTabs } from './ProfileTabMenuStyle';
 import ReferenceList from './Reference/ReferenceList';
 import SendRequest from './SendRequest';
 import TripReportList from './TripReport/TripReportList';
 
-export default function ProfileTabMenu(props: { userId: string; userName: string }) {
+export default function ProfileTabMenu(props: { userId: string; userName: string; accommodationId: string }) {
   const [value, setValue] = React.useState(0);
 
   const tripReportSection = <TripReportList userId={props.userId} />;
   const referenceSection = <ReferenceList userId={props.userId} />;
-  const accommodationSection = <Button>accommodation</Button>;
+  const accommodationSection = <AccommodationCard userId={props.userId} accommodationId={props.accommodationId} />;
   const foodSection = <Button>{props.userId}</Button>;
 
   const [section, setSection] = React.useState(tripReportSection);
