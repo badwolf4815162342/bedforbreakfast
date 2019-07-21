@@ -120,8 +120,10 @@ export const HeaderLink = styled(Link)`
 `;
 
 export const DescriptionArea = styled.div`
-  grid-column: 1/7;
+  grid-column: 1/13;
   grid-row: 4/4;
+  hyphens: auto;
+  text-align: justify;
 `;
 
 export const ImagesCarousel = styled.div`
@@ -144,5 +146,8 @@ export const LikeCount = styled(SimpleLabelText)`
   margin-bottom: 0px
   margin-left: 25px;
   display: inline;
- 
+`;
+
+export const LikeCounter = styled.p`
+  amrgin 
 `;
