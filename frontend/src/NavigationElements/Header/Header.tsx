@@ -1,5 +1,3 @@
-import React from 'react';
-
 import AppBar from '@material-ui/core/AppBar';
 import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,8 +9,10 @@ import MailIcon from '@material-ui/icons/Mail';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import SearchIcon from '@material-ui/icons/Search';
+import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { USER_ID } from '../../constants';
+
+import { AUTH_TOKEN, USER_ID } from '../../constants';
 import {
   ContainerSearchIcon,
   Grow,
@@ -23,22 +23,29 @@ import {
   StyledInputBase,
   Title,
 } from './HeaderStyle';
+import NotificationList from './Notifications/NotificationList';
 
 export function Navbar() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [notificationAnchorEl, setNotificationAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
   const [searchString, setSearchString] = React.useState('');
   const [enter, setEnter] = React.useState(false);
   const loggedUserID = localStorage.getItem(USER_ID);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const isNotificationMenuOpen = Boolean(notificationAnchorEl);
 
-  function handleProfileMenuOpen(event: any) {
+  function handleProfileMenuOpen(event: React.MouseEvent<HTMLButtonElement | HTMLLIElement>) {
     setAnchorEl(event.currentTarget);
   }
 
-  function handleMobileMenuClose() {
-    setMobileMoreAnchorEl(null);
+  function handleMobileMenuOpen(event: React.MouseEvent<HTMLButtonElement>) {
+    setMobileMoreAnchorEl(event.currentTarget);
+  }
+
+  function handleNotificationMenuOpen(event: React.MouseEvent<HTMLButtonElement>) {
+    setNotificationAnchorEl(event.currentTarget);
   }
 
   function handleMenuClose() {
@@ -46,8 +53,12 @@ export function Navbar() {
     handleMobileMenuClose();
   }
 
-  function handleMobileMenuOpen(event: any) {
-    setMobileMoreAnchorEl(event.currentTarget);
+  function handleMobileMenuClose() {
+    setMobileMoreAnchorEl(null);
+  }
+
+  function handleNotificationMenuClose() {
+    setNotificationAnchorEl(null);
   }
 
   function handleKeyDown(e: any) {
@@ -62,23 +73,37 @@ export function Navbar() {
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      getContentAnchorEl={null}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <HeaderLink to={`/profile/${loggedUserID}`}>
-        <MenuItem onClick={handleMenuClose} href="/profile">
-          Profile
-        </MenuItem>
-      </HeaderLink>
-      <HeaderLink to="/createAccommodation">
-        <MenuItem onClick={handleMenuClose} href="/createAccommodation">
-          Create an accommodation here
-        </MenuItem>
-      </HeaderLink>
+      {loggedUserID && [
+        <HeaderLink to={`/profile/${loggedUserID}`} key="1">
+          <MenuItem onClick={handleMenuClose} href="/profile">
+            Profile
+          </MenuItem>
+        </HeaderLink>,
+        <HeaderLink to="/" key="2">
+          <MenuItem
+            onClick={() => {
+              handleMenuClose();
+              localStorage.removeItem(AUTH_TOKEN);
+              localStorage.removeItem(USER_ID);
+            }}
+          >
+            Logout
+          </MenuItem>
+        </HeaderLink>,
+      ]}
+      {!loggedUserID && (
+        <HeaderLink to="/login">
+          <MenuItem onClick={handleMenuClose}>Login</MenuItem>
+        </HeaderLink>
+      )}
     </Menu>
   );
 
@@ -86,10 +111,11 @@ export function Navbar() {
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      getContentAnchorEl={null}
       id={mobileMenuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
@@ -120,6 +146,20 @@ export function Navbar() {
         </IconButton>
         <p>Profile</p>
       </MenuItem>
+    </Menu>
+  );
+
+  const renderNotificationMenu = (
+    <Menu
+      anchorEl={notificationAnchorEl}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      getContentAnchorEl={null}
+      keepMounted
+      open={isNotificationMenuOpen}
+      onClose={handleNotificationMenuClose}
+    >
+      <NotificationList onClick={handleNotificationMenuClose}></NotificationList>
     </Menu>
   );
 
@@ -160,12 +200,7 @@ export function Navbar() {
           </Search>
           <Grow />
           <SectionDesktop>
-            <IconButton aria-label="Show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="Show 17 new notifications" color="inherit">
+            <IconButton aria-label="Show 17 new notifications" color="inherit" onClick={handleNotificationMenuOpen}>
               <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
               </Badge>
@@ -196,6 +231,7 @@ export function Navbar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      {renderNotificationMenu}
     </Grow>
   );
 }

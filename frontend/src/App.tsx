@@ -21,6 +21,7 @@ import { Navbar } from './NavigationElements/Header/Header';
 import AccommodationLoad from './ProfileComponent/CreateAccommodation/AccommodationLoad';
 import CreateAccommodation from './ProfileComponent/CreateAccommodation/CreateAccommodation';
 import ProfileComponent from './ProfileComponent/ProfileComponent';
+import Requests from './Requests/Requests';
 import LoadSearch from './SearchResults/LoadSearch';
 import { MainThemeMaterial } from './StyledComponents/Theme';
 
@@ -44,6 +45,10 @@ export default class App extends React.Component<any, any> {
         {
           component: Feedback,
           path: '/feedback',
+        },
+        {
+          component: Requests,
+          path: '/requests',
         },
         {
           component: AccommodationLoad,

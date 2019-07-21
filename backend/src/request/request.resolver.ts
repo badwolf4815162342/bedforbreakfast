@@ -329,4 +329,9 @@ export class RequestResolver {
   async receiver(@Parent() request: Request) {
     return await this.usersService.findById(request.receiver);
   }
+
+  @ResolveProperty()
+  async proposer(@Parent() request: Request) {
+    return await this.usersService.findById(request.proposer);
+  }
 }
