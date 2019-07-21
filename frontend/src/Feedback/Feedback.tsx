@@ -3,7 +3,8 @@ import React from 'react';
 import { Mutation, Query } from 'react-apollo';
 import Moment from 'react-moment';
 
-import { ContinueButton, FeedbackCard, FeedbackPage, RatingContainer, ReferenceTitle } from './FeedbackStyle';
+import { ContinueButton, FeedbackCard, FeedbackPage, ReferenceTitle } from './FeedbackStyle';
+import Rating from './Rating/Rating';
 import TripReport from './TripReport/TripReport';
 
 const REQUEST_BY_ID = gql`
@@ -94,7 +95,7 @@ class Feedback extends React.Component<
                       <Moment format="MMMM Do">{startString}</Moment> to <Moment format="MMMM Do">{endString}</Moment>?
                     </ReferenceTitle>
                     <FeedbackCard>
-                      <RatingContainer
+                      <Rating
                         receiver={data.request.receiver}
                         rating={rating}
                         onRatingChange={this.handleChange('rating')}

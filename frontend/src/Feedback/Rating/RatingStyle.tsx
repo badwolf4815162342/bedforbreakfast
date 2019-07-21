@@ -82,12 +82,6 @@ export const Description = styled(TextField)`
   grid-row: 2/7;
 `;
 
-export const DescriptionIcon = styled.svg`
-  grid-column: 6/6;
-  grid-row: 6/6;
-  justify-self: end;
-`;
-
 export const Hometown = styled(SubText)``;
 
 export const FavoriteFood = styled(SubText)``;
