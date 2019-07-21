@@ -20,19 +20,21 @@ import {
 } from './TripReportStyle';
 
 interface TripReportProps {
-  role: string;
-  name: string;
-  homeTown: string;
-  homeCountry: string;
-  date: string;
-  text: string;
+  receiverRole: string;
+  receiverFirstName: string;
+  receiverLastName: string;
+  receiverHomeTown: string;
+  receiverHomeCountry: string;
+  dateStart: Date;
+  dateEnd: Date;
+  description: string;
   likeCount: number;
   liked: boolean;
   //profile picture + report pictures
 }
 
 class TripReport extends React.Component<TripReportProps, {}> {
-  role = this.props.role === 'accommodation' ? 'hosted' : 'visited';
+  role = this.props.receiverRole === 'accommodation' ? 'visited' : 'hosted';
   liked = this.props.liked ? 'favorite' : 'favorite_border';
   profilePic = <img src={pic} style={{ width: 65, height: 65, borderRadius: 180 }} alt="Profile" />;
 
@@ -45,15 +47,17 @@ class TripReport extends React.Component<TripReportProps, {}> {
             <ProfilePic>{this.profilePic}</ProfilePic>
           </ProfilePicBox>
           <UserInfo>
-            <Name>{this.props.name}</Name>
+            <Name>
+              {this.props.receiverFirstName} {this.props.receiverLastName}
+            </Name>
             <HomeInfo>
-              From: {this.props.homeTown}, {this.props.homeCountry}
+              From: {this.props.receiverHomeTown}, {this.props.receiverHomeCountry}
             </HomeInfo>
           </UserInfo>
-          <Date>{this.props.date}</Date>
+          <Date>{this.props.dateEnd.toString}</Date>
           <Divider />
           <TripReportPaper>
-            <Report> {this.props.text} </Report>
+            <Report> {this.props.description} </Report>
           </TripReportPaper>
           <Divider />
           <LikeCount>

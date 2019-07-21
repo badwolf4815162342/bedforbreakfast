@@ -8,7 +8,7 @@ import TripReportList from './TripReport/TripReportList';
 export default function ProfileTabMenu(props: { userId: string; userName: string }) {
   const [value, setValue] = React.useState(0);
 
-  const tripReportSection = <TripReportList />;
+  const tripReportSection = <TripReportList userId={props.userId} />;
   const referenceSection = <ReferenceList userId={props.userId} />;
   const accommodationSection = <Button>accommodation</Button>;
   const foodSection = <Button>{props.userId}</Button>;
