@@ -1,9 +1,8 @@
-
 import React from 'react';
 import pic from '../../../images/user2.jpeg';
 import SimpleSlider from '../../../StyledComponents/ImageSlider/ImageSlider';
 import CardHeader from '../CardElements/CardHeader';
-import { Divider, ImagesCarousel, Report, TripReportCard, TripReportPaper } from './TripReportStyle';
+import { ImagesCarousel, Report, TripReportCard, TripReportPaper } from './TripReportStyle';
 
 interface TripReportProps {
   receiverId: string;
@@ -48,7 +47,6 @@ class TripReport extends React.Component<TripReportProps, {}> {
         <TripReportPaper>
           <Report> {this.props.description} </Report>
         </TripReportPaper>
-        <Divider />
       </TripReportCard>
     );
   }
