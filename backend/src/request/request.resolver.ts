@@ -31,7 +31,6 @@ export class RequestResolver {
     private readonly accommodationsService: AccommodationsService,
   ) {}
 
-  // TODO: should not be callable from normal user
   @Query((returns) => [Request])
   async requests(): Promise<Request[]> {
     return this.requestService.findAll();
@@ -58,7 +57,6 @@ export class RequestResolver {
     return this.requestService.findByProposerAndAnsweredAndUnseenFromNow(user._id);
   }
 
-  // TODO: is this one used
   @UseGuards(GqlAuthGuard)
   @Query((returns) => [Request])
   async proposedAnsweredRequests(@CurrentUser() user: User): Promise<Request[]> {

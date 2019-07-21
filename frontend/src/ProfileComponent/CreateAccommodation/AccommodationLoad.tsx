@@ -52,7 +52,6 @@ class AccommodationLoad extends React.Component<AccommodationLoadProps, Accommod
               return <p>No Data :(</p>;
             }
 
-            console.log(data);
             const accommodation = data.accommodationById;
             return (
               <div>

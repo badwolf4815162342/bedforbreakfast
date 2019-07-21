@@ -1,6 +1,5 @@
 import React from 'react';
 
-// import {} from './RequestStyle';
 import { Icon, IconButton, Paper } from '@material-ui/core';
 import Moment from 'react-moment';
 

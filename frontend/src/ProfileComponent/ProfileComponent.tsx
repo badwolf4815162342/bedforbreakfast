@@ -83,7 +83,6 @@ class ProfileComponent extends React.Component<{ match: { params: any } }, { use
     const {
       match: { params },
     } = this.props;
-    console.log(params);
 
     this.setState({ userId: params.userId });
   }
@@ -92,7 +91,6 @@ class ProfileComponent extends React.Component<{ match: { params: any } }, { use
     const {
       match: { params: userId },
     } = this.props;
-    console.log(userId);
     return (
       <Query<UserData, {}> query={GET_USER_BY_ID} variables={userId} fetchPolicy="network-only">
         {({ loading, error, data }) => {
