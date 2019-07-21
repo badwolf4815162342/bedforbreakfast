@@ -1,4 +1,4 @@
-import { Box, Card } from '@material-ui/core';
+import { Box, Button, Card } from '@material-ui/core';
 import styled from 'styled-components';
 import { SimpleLabelText, SubText, Text } from '../../../StyledComponents/StyledBasicItems';
 import { MainThemeRGB } from '../../../StyledComponents/Theme';
@@ -37,6 +37,7 @@ export const IconInText = styled(SubText)`
 `;
 
 export const NoAccommodationLabel = styled(SimpleLabelText)`
+  margin-top: 50px
   text-align: center;
 `;
 
@@ -48,3 +49,14 @@ export const ImagesCarousel = styled.div`
     overflow: scroll;
   }
 `;
+
+export const CreateAccommodationBox = styled(Box)`
+  display: flex;
+  padding: 20px;
+  margin-top: 50px;
+  justify-content: center
+  align-items: center
+
+`;
+
+export const CreateAccommodationButton = styled(Button)``;

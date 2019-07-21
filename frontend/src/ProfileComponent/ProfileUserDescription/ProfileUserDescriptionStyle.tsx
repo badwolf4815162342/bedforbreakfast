@@ -1,4 +1,4 @@
-import { Box, Paper } from '@material-ui/core';
+import { Box, Button, Paper } from '@material-ui/core';
 import styled from 'styled-components';
 import { SimpleLabelText, SubText, Text } from '../../StyledComponents/StyledBasicItems';
 import { MainThemeRGB } from '../../StyledComponents/Theme';
@@ -40,6 +40,7 @@ export const Name = styled(SimpleLabelText)`
 export const Age = styled(SimpleLabelText)``;
 export const Rating = styled(SimpleLabelText)`
   letter-spacing: 4px;
+  margin-top: 20px;
 `;
 export const Status = styled(SimpleLabelText)``;
 export const Description = styled(Text)`
@@ -57,4 +58,8 @@ export const IconInText = styled(SubText)``;
 
 export const Verified = styled(SubText)`
   color: rgba(${MainThemeRGB.secondary.main.r}, ${MainThemeRGB.secondary.main.g}, ${MainThemeRGB.secondary.main.b}, 1);
+`;
+
+export const VerifiedButton = styled(Button)`
+  margin-bottom: 20px;
 `;
