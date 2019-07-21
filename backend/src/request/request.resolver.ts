@@ -58,6 +58,12 @@ export class RequestResolver {
     return this.requestService.findByProposerAndAnsweredFromNow(user._id);
   }
 
+  @UseGuards(GqlAuthGuard)
+  @Query((returns) => [Request])
+  async acceptedPastRequests(@CurrentUser() user: User): Promise<Request[]> {
+    return this.requestService.findByProposerOrReceiverAndAcceptedInPast(user._id);
+  }
+
   async ratingOrReportPossible(request: Request, receiverRole: RoleType, currentUserId: ObjectId): Promise<User> {
     // ony accepted requests can be rated/trip reported
     if (!(request.requestStatus === RequestStatus.ACCEPTED)) {
