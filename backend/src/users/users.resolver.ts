@@ -155,7 +155,13 @@ export class UserResolver {
     }
     updatedUser = await this.userService.findById(updatedUser._id);
     if (!updatedUser) {
-      throw new Error('Invalid receiver ID');
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Receiver not found.',
+        },
+        404,
+      );
     }
     return updatedUser;
   }
