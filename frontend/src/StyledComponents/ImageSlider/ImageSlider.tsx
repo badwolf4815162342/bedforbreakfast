@@ -15,7 +15,7 @@ export default class SimpleSlider extends React.Component<SimpleSliderProps, {}>
     return (
       <Images>
         {this.props.images.map((image) => (
-          <img key={Math.random()} src={image} style={{ height: this.props.height }} alt="Card" />
+          <img key={Math.random()} src={image} style={{ height: this.props.height, marginLeft: '10px' }} alt="Card" />
         ))}
       </Images>
     );
