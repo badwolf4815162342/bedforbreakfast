@@ -14,7 +14,6 @@ import { Content } from './AppStyle';
 import { AUTH_TOKEN } from './constants';
 import { Feed } from './Feed/Feed';
 import Feedback from './Feedback/Feedback';
-import LandingPage from './LandingPage/LandingPage';
 import Login from './Login/Login';
 import Footer from './NavigationElements/Footer/Footer';
 import { Navbar } from './NavigationElements/Header/Header';
@@ -57,11 +56,6 @@ export default class App extends React.Component<any, any> {
         },
         {
           component: Feed,
-          path: '/feed',
-          exact: true,
-        },
-        {
-          component: LandingPage,
           path: '/',
           exact: true,
         },
