@@ -22,7 +22,9 @@ const ACCOMMODATION_BY_ID = gql`
   }
 `;
 
-interface AccommodationLoadProps {}
+interface AccommodationLoadProps {
+  match: { params: any };
+}
 
 interface AccommodationLoadState {
   accommodationId: string;
@@ -31,8 +33,11 @@ interface AccommodationLoadState {
 class AccommodationLoad extends React.Component<AccommodationLoadProps, AccommodationLoadState> {
   constructor(props: any) {
     super(props);
+    const {
+      match: { params },
+    } = this.props;
     this.state = {
-      accommodationId: '5d31cd06298ce26349f20b46',
+      accommodationId: params.id,
     };
   }
 
