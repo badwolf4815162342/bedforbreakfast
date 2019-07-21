@@ -100,6 +100,7 @@ type Mutation {
   createAccommodation(createAccommodationDto: AccommodationDto!): Accommodation!
   createRequest(createRequestDto: CreateRequestDto!): Request!
   createRating(createRatingDto: CreateRatingDto!): Request!
+  createTripReport(createTripReportDto: CreateTripReportDto!): Request!
   updateRequestStatus(updateRequestStatusDto: UpdateRequestStatusDto!): Request!
   createTripReport(createTripReportDto: CreateTripReportDto!): TripReport!
 }
@@ -114,6 +115,8 @@ type Query {
   accommodations: [Accommodation!]!
   accommodationsByCity(city: String!): [Accommodation!]!
   accommodationById(_id: ObjectId!): Accommodation!
+  ratings: [Rating!]!
+  receivedRatings(userId: String!): [Rating!]!
   requests: [Request!]!
   request(requestId: String!): Request!
   receivedRequestedRequests: [Request!]!
@@ -143,6 +146,7 @@ type Request {
   requestStatus: String!
   description: String!
   ratings: [Rating!]!
+  tripReports: [TripReport!]!
 }
 
 """The basic RequestStatus"""
