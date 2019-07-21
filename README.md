@@ -85,7 +85,6 @@ Query that has user id , id of host he wants to request, REQUESTED field
 query {
 canBeRequested(
     canBeRequestedDto: {
-      requestId: "5d30dcda17d3053ac8421bb1"
       hostId: "5d2e4f790000f5471085c4d9"
     }
   ) 
@@ -104,7 +103,6 @@ mutation {
     createRatingDto: {
       request: "5d30577180496764c0dffa6b"
       description: "myrating"
-      receiverRole: MEAL
       rating: true
     }
   ) {
@@ -154,7 +152,6 @@ mutation {
     createTripReportDto: {
       request: "5d31cba1963a8feb6fe28184"
       description: "It was great"
-      receiverRole: ACCOMMODATION
       pictures: []
       
     }
