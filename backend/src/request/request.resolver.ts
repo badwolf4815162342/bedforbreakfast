@@ -58,7 +58,7 @@ export class RequestResolver {
     return this.requestService.findByProposerAndAnsweredFromNow(user._id);
   }
 
-  async ratingOrReportPossible(request: Request, receiverRole: RoleType, currentUserId: ObjectId): Promise<User> {
+  async ratingOrReportPossible(request: Request, currentUserId: ObjectId): Promise<boolean> {
     // ony accepted requests can be rated/trip reported
     if (!(request.requestStatus === RequestStatus.ACCEPTED)) {
       throw new HttpException(
@@ -68,41 +68,6 @@ export class RequestResolver {
         },
         409,
       );
-    }
-    let receiver: User | null = null;
-    // You want to rate/write trip report the host
-    if (receiverRole === RoleType.ACCOMMODATION) {
-      // you should have proposed the request
-      if (!request.proposer.equals(currentUserId)) {
-        throw new HttpException(
-          {
-            status: HttpStatus.FORBIDDEN,
-            error:
-              // tslint:disable-next-line: max-line-length
-              'It is not possible to rate this request or write a trip report for it in role of accommodation if one is not the proposer of the corresponding request.',
-          },
-          403,
-        );
-      }
-      // you as guest create a rating for host(receiver of request)
-      receiver = await this.usersService.findById(request.receiver);
-    }
-    // You want to rate the guest/meal
-    if (receiverRole === RoleType.MEAL) {
-      // you should have received+accepted the request
-      if (!request.receiver.equals(currentUserId)) {
-        throw new HttpException(
-          {
-            status: HttpStatus.FORBIDDEN,
-            error:
-              // tslint:disable-next-line: max-line-length
-              'It is not possible to rate this request or write a trip report for it in role of meal if one is not the receiver of the corresponding request.',
-          },
-          403,
-        );
-      }
-      // you as host create a rating/trip report for guest(proposer of request)
-      receiver = await this.usersService.findById(request.proposer);
     }
     // Date check
     const today = new Date();
@@ -116,16 +81,7 @@ export class RequestResolver {
         409,
       );
     }
-    if (!receiver) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error: 'Receiver not found.',
-        },
-        404,
-      );
-    }
-    return receiver;
+    return true;
   }
 
   async requestPossible(hostId: string, currentUserId: ObjectId): Promise<boolean> {
@@ -242,8 +198,7 @@ export class RequestResolver {
         404,
       );
     }
-    const receiver = await this.ratingOrReportPossible(request, createRatingDto.receiverRole, author._id);
-    if (!receiver) {
+    if (!(await this.ratingOrReportPossible(request, author._id))) {
       throw new Error('Rating not possible');
     }
     const ratingsOfRequest: Rating[] = [];
@@ -279,8 +234,34 @@ export class RequestResolver {
         409,
       );
     }
+    let receiver: User | null = null;
+    let receiverRole: RoleType | null = null;
+    // you should have proposed the request
+    if (request.proposer.equals(author._id)) {
+      // if so you are rating in role of the guest/meal so receiver is in role of accommodation
+      receiverRole = RoleType.ACCOMMODATION;
+      // then the receiver of this rating is the receiver of the request
+      receiver = await this.usersService.findById(request.receiver);
+      // or you should have received+accepted the request
+    } else if (request.receiver.equals(author._id)) {
+      // if so you are rating in role of host/accommodation so receiver is in role of MEAL
+      receiverRole = RoleType.MEAL;
+      // you as host create a rating for guest(proposer of request)
+      receiver = await this.usersService.findById(request.proposer);
+    } else {
+      // in any other cae you are not allowed to create a rating
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error:
+            // tslint:disable-next-line: max-line-length
+            'It is not possible to rate this request if you are not the receiver or proposer of the corresponding request.',
+        },
+        403,
+      );
+    }
 
-    const newRate = await this.ratingService.create({ ...createRatingDto, author, receiver });
+    const newRate = await this.ratingService.create({ ...createRatingDto, author, receiver, receiverRole });
 
     // update the request
     const updatedRequest = await this.requestService.addRating(request, newRate);
@@ -326,8 +307,7 @@ export class RequestResolver {
         404,
       );
     }
-    const receiver = await this.ratingOrReportPossible(request, createTripReportDto.receiverRole, author._id);
-    if (!receiver) {
+    if (!(await this.ratingOrReportPossible(request, author._id))) {
       throw new Error('Trip report writing not possible.');
     }
     const reportsOfRequest: TripReport[] = [];
@@ -365,7 +345,33 @@ export class RequestResolver {
       );
     }
 
-    const newReport = await this.tripReportService.create({ ...createTripReportDto, author, receiver });
+    let receiver: User | null = null;
+    let receiverRole: RoleType | null = null;
+    // you should have proposed the request
+    if (request.proposer.equals(author._id)) {
+      // if so you are trip reporting  in role of the guest/meal so receiver is in role of accommodation
+      receiverRole = RoleType.ACCOMMODATION;
+      // then the receiver of this Trip report is the receiver of the request
+      receiver = await this.usersService.findById(request.receiver);
+      // or you should have received+accepted the request
+    } else if (request.receiver.equals(author._id)) {
+      // if so you are trip reporting in role of host/accommodation so receiver is in role of MEAL
+      receiverRole = RoleType.MEAL;
+      // you as host create a trip reporting for guest(proposer of request)
+      receiver = await this.usersService.findById(request.proposer);
+    } else {
+      // in any other cae you are not allowed to create a trip report
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error:
+            // tslint:disable-next-line: max-line-length
+            'It is not possible to write a trip report for this request if you are not the receiver or proposer of the corresponding request.',
+        },
+        403,
+      );
+    }
+    const newReport = await this.tripReportService.create({ ...createTripReportDto, author, receiver, receiverRole });
 
     // update the request
     const updatedRequest = await this.requestService.addTripReport(request, newReport);

@@ -46,7 +46,6 @@ input CreateMealDto {
 input CreateRatingDto {
   _id: String
   request: String!
-  receiverRole: RoleType!
   description: String!
   rating: Boolean!
 }
@@ -62,7 +61,6 @@ input CreateRequestDto {
 input CreateTripReportDto {
   _id: String
   request: String!
-  receiverRole: RoleType!
   description: String!
   pictures: [Upload]
 }
