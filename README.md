@@ -166,6 +166,21 @@ mutation {
 }
 ```
 
+### like trip report:
+only possible as logged in user
+
+```
+mutation {
+  likeTripReport (likeTripReportDto: {_id: "5d349300548bc52864de1f39"}) {
+     _id
+    likedBy {_id}
+    description
+  	pictures
+  }
+}
+```
+
+
 
 ## User:
 

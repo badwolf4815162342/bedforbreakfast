@@ -72,6 +72,10 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+input LikeTripReportDto {
+  _id: String
+}
+
 input LoginDto {
   email: String!
   password: String!
@@ -98,6 +102,7 @@ type Mutation {
   createTestMeals: User!
   alterAccommodation(accommodationDto: AccommodationDto!): Accommodation!
   createAccommodation(createAccommodationDto: AccommodationDto!): Accommodation!
+  likeTripReport(likeTripReportDto: LikeTripReportDto!): TripReport!
   createRequest(createRequestDto: CreateRequestDto!): Request!
   createRating(createRatingDto: CreateRatingDto!): Request!
   createTripReport(createTripReportDto: CreateTripReportDto!): Request!
