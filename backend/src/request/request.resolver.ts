@@ -386,10 +386,28 @@ export class RequestResolver {
         403,
       );
     }
-    const newReport = await this.tripReportService.create({ ...createTripReportDto, author, receiver, receiverRole });
+    let newReport: TripReport | null = await this.tripReportService.create({
+      ...createTripReportDto,
+      author,
+      receiver,
+      receiverRole,
+    });
 
+    if (createTripReportDto.pictures) {
+      newReport = await this.tripReportService.addPictures(newReport, createTripReportDto.pictures);
+    }
+    if (!newReport) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Updated trip report not found.',
+        },
+        404,
+      );
+    }
     // update the request
     const updatedRequest = await this.requestService.addTripReport(request, newReport);
+
     if (!updatedRequest) {
       throw new HttpException(
         {
