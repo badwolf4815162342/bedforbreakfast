@@ -100,6 +100,7 @@ class ProfileComponent extends React.Component<{ match: { params: any } }, { use
             return <p>Loading...</p>;
           }
           if (error) {
+            window.location.reload();
             return <p>Error :( Fix me! {error.message}</p>;
           }
           if (!data) {
