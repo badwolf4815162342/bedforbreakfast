@@ -79,12 +79,17 @@ export const StreetNumberIcon = styled.svg`
 `;
 
 export const ZipCode = styled(TextField)`
-  grid-column: 1/3;
+  grid-column: 1/2;
+  grid-row: 9;
+`;
+
+export const District = styled(TextField)`
+  grid-column: 2/4;
   grid-row: 9;
 `;
 
 export const CityName = styled(TextField)`
-  grid-column: 3/7;
+  grid-column: 4/7;
   grid-row: 9;
 `;
 
@@ -103,4 +108,26 @@ export const CountryIcon = styled.svg`
   grid-column: 6/6;
   justify-self: end;
   grid-row: 10;
+`;
+
+export const SelectedPictures = styled.p`
+  text-align: right
+  grid-column: 4/7;
+  grid-row: 11;
+`;
+
+export const UploadContainer = styled.div`
+  grid-column: 1/3;
+  grid-row: 11;
+  label {
+    width: 100%;
+    span {
+      width: 100%;
+    }
+  }
+`;
+
+export const SubmitArea = styled.div`
+  grid-column: 1/7;
+  grid-row: 12;
 `;

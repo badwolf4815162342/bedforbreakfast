@@ -1,12 +1,12 @@
 import React from 'react';
 
 interface FeedItemProps {
-  name: string;
+  country: string;
   city: string;
 }
 
-export const FeedItem: React.FC<FeedItemProps> = ({ name, city }) => (
+export const FeedItem: React.FC<FeedItemProps> = ({ country, city }) => (
   <div>
-    {name}: {city}
+    {country}: {city}
   </div>
 );
