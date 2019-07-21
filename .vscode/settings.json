@@ -1,7 +1,9 @@
 {
     "debug.node.autoAttach": "on",
     "cSpell.words": [
+        "cloudinary",
         "paramtypes",
-        "returntype"
+        "returntype",
+        "uploader"
     ]
 }

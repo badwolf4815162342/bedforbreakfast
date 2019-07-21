@@ -28,3 +28,13 @@ export const ContinueButton = styled(Button)`
   grid-column: 1/7;
   grid-row: 2/2;
 `;
+
+export const SubmitButton = styled(Button)`
+  grid-column: 4/7;
+  grid-row: 2/2;
+`;
+
+export const SkipButton = styled(Button)`
+  grid-column: 1/4;
+  grid-row: 2/2;
+`;
