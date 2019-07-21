@@ -11,7 +11,7 @@ import { RequestService } from './request.service';
 
 import { ObjectId } from 'mongodb';
 import { AccommodationsService } from '../accommodations/accommodations.service';
-import { CreateTripReportDto } from '../tripReport/dto/create-tripReport.dto';
+import { CreateTripReportDto } from '../tripReport/dto/create-trip-report.dto';
 import { TripReport } from '../tripReport/models/TripReport';
 import { TripReportService } from '../tripReport/tripReport.service';
 import { UsersService } from '../users/users.service';
@@ -225,7 +225,27 @@ export class RequestResolver {
     if (reportsOfRequest.length > 0 && reportsOfRequest[0].author.equals(author._id)) {
       throw new Error('You already rated this request!');
     }
-    const receiver: User | null = null;
+    //const receiver = await this.usersService.findById(request.receiver);
+    let receiver: User | null = null;
+    // You want to rate the host
+    if (createTripReportDto.receiverRole === RoleType.ACCOMMODATION) {
+      // you should have proposed the request
+      if (!request.proposer.equals(author._id)) {
+        throw new Error('You are not the proposer of this request so you can not rate in role of guest!');
+      }
+      // you as guest create a rating for host(receiver of request)
+      receiver = await this.usersService.findById(request.receiver);
+    }
+    // You want to rate the guest/meal
+    if (createTripReportDto.receiverRole === RoleType.MEAL) {
+      // you should have received+accepted the request
+      if (!request.receiver.equals(author._id)) {
+        throw new Error('You are not the receiver of this request so you can not rate in role of host!');
+      }
+      // you as host create a rating for guest(proposer of request)
+      receiver = await this.usersService.findById(request.proposer);
+    }
+
     // Date check
     const today = new Date();
     const endDate: Date = request.end;

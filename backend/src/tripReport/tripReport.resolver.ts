@@ -3,6 +3,7 @@ import { Args, Parent, Query, ResolveProperty, Resolver } from '@nestjs/graphql'
 import { RequestService } from '../request/request.service';
 import { User } from '../users/models/User';
 import { UsersService } from '../users/users.service';
+
 import { TripReport } from './models/TripReport';
 import { TripReportService } from './tripReport.service';
 
