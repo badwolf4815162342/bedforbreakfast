@@ -28,9 +28,11 @@ export const GridContainerXS = styled(GridContainer)`
   }
 `;
 
-export const GridContainerTR = styled(GridContainer)`
-  grid-template-columns: 100px 100px auto;
-  grid-template-rows: 60px 10px auto 10px 60px;
+export const GridContainerL = styled.div`
+  display: grid;
+  grid-column-gap: 1vw;
+  grid-template-columns: auto auto auto ;
+  padding 10px;
 `;
 
 export const GridContainerR = styled(GridContainer)`

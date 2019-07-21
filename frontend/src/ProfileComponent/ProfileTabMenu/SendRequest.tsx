@@ -3,7 +3,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import gql from 'graphql-tag';
 import React, { Component } from 'react';
-import { Mutation } from 'react-apollo';
+import { Mutation, Query } from 'react-apollo';
 
 import {
   DateBox,
@@ -38,6 +38,16 @@ const SEND_REQUEST_MUTATION = gql`
   }
 `;
 
+const CAN_BE_REQUESTED = gql`
+  query canBeRequested($hostId: String!) {
+    canBeRequested(canBeRequestedDto: { hostId: $hostId })
+  }
+`;
+
+interface CanBeRequested {
+  canBeRequested: boolean;
+}
+
 interface SendRequestState {
   open: boolean;
   sentOpen: boolean;
@@ -68,16 +78,31 @@ class SendRequest extends Component<{ userId: string; userName: string }, SendRe
     const { receiver, from, to, description } = this.state;
     return (
       <RequestButtonBox>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => {
-            this.setState({ open: true });
+        <Query<CanBeRequested, {}> query={CAN_BE_REQUESTED} variables={{ hostId: this.props.userId }}>
+          {({ loading, error, data }) => {
+            if (loading) {
+              return <p></p>;
+            }
+            if (error) {
+              return <p>Error</p>;
+            }
+            if (!data) {
+              return <p></p>;
+            }
+            return (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                  this.setState({ open: true });
+                }}
+                disabled={!data.canBeRequested}
+              >
+                request
+              </Button>
+            );
           }}
-          disabled={!this.state.canRequest}
-        >
-          request
-        </Button>
+        </Query>
         <RequestDialog
           open={this.state.open}
           onClose={() => {

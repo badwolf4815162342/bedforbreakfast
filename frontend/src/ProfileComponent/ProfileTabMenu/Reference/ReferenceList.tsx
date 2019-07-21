@@ -80,6 +80,7 @@ class ReferenceList extends React.Component<{ userId: string }> {
                     authorId={reference.author._id}
                     authorFirstName={reference.author.firstName}
                     authorLastName={reference.author.lastName}
+                    authorVerified={reference.author.verified}
                     aHomeTown={reference.author.homeTown}
                     aHomeCountry={reference.author.homeCountry}
                     receiverRole={reference.receiverRole}
