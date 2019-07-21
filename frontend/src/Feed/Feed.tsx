@@ -3,6 +3,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 
 import { FeedItem } from './FeedItem/FeedItem';
+import { FeedPage, FeedTitle } from './FeedStyle';
 
 const ALL_TRIP_REPORTS_QUERY = gql`
   query tripReports {
@@ -10,6 +11,8 @@ const ALL_TRIP_REPORTS_QUERY = gql`
       _id
       request {
         _id
+        start
+        end
       }
       receiver {
         _id
@@ -39,16 +42,17 @@ const ALL_TRIP_REPORTS_QUERY = gql`
   }
 `;
 
-export interface RequestItem {
+export interface TripReport {
   _id: string;
   author: User;
   receiver: User;
   receiverRole: RoleType;
   pictures: string[];
   description: string;
+  request: Request;
 }
 interface Data {
-  tripReports: RequestItem[];
+  tripReports: TripReport[];
 }
 
 export interface User {
@@ -61,25 +65,33 @@ export interface User {
   verified: boolean;
 }
 
-enum RoleType {
+interface Request {
+  start: Date;
+  end: Date;
+}
+
+export enum RoleType {
   MEAL,
   ACCOMMODATION,
 }
 
 export const Feed = () => (
-  <Query<Data, {}> query={ALL_TRIP_REPORTS_QUERY}>
-    {({ loading, error, data }) => {
-      if (loading) {
-        return <p>Loading...</p>;
-      }
-      if (error) {
-        return <p>Error :(</p>;
-      }
-      if (!data) {
-        return <p>No Data :(</p>;
-      }
+  <FeedPage>
+    <FeedTitle>Explore the experiences of others:</FeedTitle>
+    <Query<Data, {}> query={ALL_TRIP_REPORTS_QUERY}>
+      {({ loading, error, data }) => {
+        if (loading) {
+          return <p>Loading...</p>;
+        }
+        if (error) {
+          return <p>Error :(</p>;
+        }
+        if (!data) {
+          return <p>No Data :(</p>;
+        }
 
-      return data.tripReports.map((tripReport) => <FeedItem key={tripReport._id} request={tripReport}></FeedItem>);
-    }}
-  </Query>
+        return data.tripReports.map((tripReport) => <FeedItem key={tripReport._id} tripReport={tripReport}></FeedItem>);
+      }}
+    </Query>
+  </FeedPage>
 );
