@@ -15,6 +15,7 @@ export class RatingResolver {
     @Inject(forwardRef(() => UsersService)) private readonly usersService: UsersService,
   ) {}
 
+  // TODO: Should not be possible for normal users
   @Query((returns) => [Rating])
   async ratings(): Promise<Rating[]> {
     return this.ratingService.findAll();

@@ -1,36 +1,34 @@
 import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
 import React from 'react';
 import pic from '../../../images/user2.jpeg';
-import { GridContainerTR as GridContainer } from '../../../StyledComponents/StyledBasicItems';
+import { GridContainerL as GridContainer } from '../../../StyledComponents/StyledBasicItems';
+import CardHeader from '../CardElements/CardHeader';
 import {
-  Date,
   Divider,
-  HomeInfo,
   IconInText,
   LikeCount,
-  Name,
-  ProfilePic,
-  ProfilePicBox,
   Report,
-  Role,
   SeeMoreButton,
   TripReportCard,
   TripReportPaper,
-  UserInfo,
 } from './TripReportStyle';
 
 interface TripReportProps {
+  receiverId: string;
   receiverRole: string;
   receiverFirstName: string;
   receiverLastName: string;
   receiverHomeTown: string;
   receiverHomeCountry: string;
+  receiverVerified: boolean;
+  profilePicture: string;
   dateStart: Date;
   dateEnd: Date;
   description: string;
   likeCount: number;
   liked: boolean;
-  //profile picture + report pictures
+  reportPictures: string[];
 }
 
 class TripReport extends React.Component<TripReportProps, {}> {
@@ -41,35 +39,34 @@ class TripReport extends React.Component<TripReportProps, {}> {
   render() {
     return (
       <TripReportCard>
+        <CardHeader
+          authorId={this.props.receiverId}
+          receiverRole={this.props.receiverRole}
+          authorFirstName={this.props.receiverFirstName}
+          authorLastName={this.props.receiverLastName}
+          aHomeTown={this.props.receiverHomeTown}
+          aHomeCountry={this.props.receiverHomeCountry}
+          dateStart={this.props.dateStart}
+          dateEnd={this.props.dateEnd}
+          profilePicture={this.props.profilePicture}
+          verified={this.props.receiverVerified}
+        />
+        <TripReportPaper>
+          <Report> {this.props.description} </Report>
+        </TripReportPaper>
+        <Divider />
         <GridContainer>
-          <Role>{this.role}</Role>
-          <ProfilePicBox>
-            <ProfilePic>{this.profilePic}</ProfilePic>
-          </ProfilePicBox>
-          <UserInfo>
-            <Name>
-              {this.props.receiverFirstName} {this.props.receiverLastName}
-            </Name>
-            <HomeInfo>
-              From: {this.props.receiverHomeTown}, {this.props.receiverHomeCountry}
-            </HomeInfo>
-          </UserInfo>
-          <Date>{this.props.dateEnd.toString}</Date>
-          <Divider />
-          <TripReportPaper>
-            <Report> {this.props.description} </Report>
-          </TripReportPaper>
-          <Divider />
           <LikeCount>
             {' '}
             <IconInText>
-              <Icon>{this.liked}</Icon>
+              <IconButton color="secondary">
+                <Icon>{this.liked}</Icon>
+              </IconButton>
             </IconInText>{' '}
             {this.props.likeCount}{' '}
           </LikeCount>
           <SeeMoreButton variant="text" color="secondary">
-            {' '}
-            see more{' '}
+            see more
           </SeeMoreButton>
         </GridContainer>
       </TripReportCard>

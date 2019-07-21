@@ -26,6 +26,7 @@ const GET_USER_BY_ID = gql`
         firstName
       }
       accommodation {
+        _id
         isActive
       }
     }
@@ -48,7 +49,10 @@ interface UserData {
     profilePicture: string;
     dislikedBy: Array<{ firstName: string }>;
     likedBy: Array<{ firstName: string }>;
-    isActive: boolean;
+    accommodation: {
+      _id: string;
+      isActive: boolean;
+    };
   };
 }
 
@@ -107,13 +111,18 @@ class ProfileComponent extends React.Component<{ match: { params: any } }, { use
           const gender = this.fullGenderLabel(user.gender);
           const pRating = user.likedBy.length;
           const nRating = user.dislikedBy.length;
-          const status = user.isActive ? 'Accepting guests' : 'Not accepting guests';
+          const status = user.accommodation
+            ? user.accommodation.isActive
+              ? 'Accepting guests'
+              : 'Not accepting guests'
+            : 'Not accepting guests';
 
           return (
             <Section>
               <ProfileBackgroundPaper></ProfileBackgroundPaper>
               <ProfileBox>
                 <StyledUserDescription
+                  userId={user._id}
                   firstName={user.firstName}
                   lastName={user.lastName}
                   birthday={user.birthday}

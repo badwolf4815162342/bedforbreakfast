@@ -3,7 +3,16 @@ import React from 'react';
 import { Mutation, Query } from 'react-apollo';
 import Moment from 'react-moment';
 
-import { ContinueButton, FeedbackCard, FeedbackPage, ReferenceTitle, SkipButton, SubmitButton } from './FeedbackStyle';
+import {
+  ButtonContainer,
+  ContinueButton,
+  FeedbackCard,
+  FeedbackPage,
+  ReferenceTitle,
+  SkipButton,
+  SubmitButton,
+  TripReportCard,
+} from './FeedbackStyle';
 import Rating from './Rating/Rating';
 import TripReport from './TripReport/TripReport';
 
@@ -76,7 +85,7 @@ class Feedback extends React.Component<
     super(props);
     this.state = {
       rating: { rating: undefined, description: undefined },
-      writingRating: false,
+      writingRating: true,
       tripReport: { pictures: [], description: undefined },
     };
   }
@@ -90,7 +99,7 @@ class Feedback extends React.Component<
   };
 
   render() {
-    const requestId = '5d33132c68706a54e547ff10'; // TODO: get from route parameter
+    const requestId = '5d3445cf718e68162ca8b62d'; // TODO: get from route parameter
     const {
       rating: { rating, description: ratingDescription },
       tripReport: { pictures, description: tripReportDescription },
@@ -148,7 +157,7 @@ class Feedback extends React.Component<
                   </div>
                 )}
                 {!this.state.writingRating && (
-                  <>
+                  <TripReportCard>
                     <TripReport
                       pictures={pictures}
                       onPicturesChange={this.handleTripReportChange('pictures')}
@@ -165,19 +174,19 @@ class Feedback extends React.Component<
                       onCompleted={() => this.props.history.push('/')} // TODO: JH navigate away
                     >
                       {(createTripReport: any, { mutationLoading, mutationError }: any) => (
-                        <>
+                        <ButtonContainer>
                           {mutationLoading && <p>Loading...</p>}
                           {mutationError && <p>Error.</p>}
-                          <SkipButton variant="contained" color="default" onClick={() => this.props.history.push('/')}>
-                            Skip
-                          </SkipButton>
                           <SubmitButton variant="contained" color="secondary" onClick={() => createTripReport()}>
                             Submit
                           </SubmitButton>
-                        </>
+                          <SkipButton color="default" onClick={() => this.props.history.push('/')}>
+                            Skip
+                          </SkipButton>
+                        </ButtonContainer>
                       )}
                     </Mutation>
-                  </>
+                  </TripReportCard>
                 )}
               </FeedbackPage>
             );

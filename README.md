@@ -92,6 +92,9 @@ canBeRequested(
 }
 ```
 
+
+
+
 ## Rating and Reference:
 
 ### Submit Rating:
@@ -115,7 +118,7 @@ mutation {
 }
 ```
 
-### Get ratings rating user x: POTENTIAL BROKEN
+### Get ratings rating user x: 
 
 receivedRatings query needs userId of user x as a field
 ```
@@ -166,6 +169,21 @@ mutation {
 }
 ```
 
+### like trip report:
+only possible as logged in user
+
+```
+mutation {
+  likeTripReport (likeTripReportDto: {_id: "5d349300548bc52864de1f39"}) {
+     _id
+    likedBy {_id}
+    description
+  	pictures
+  }
+}
+```
+
+
 
 ## User:
 
@@ -207,11 +225,53 @@ query {
 
 ## Notifications:
 
-All queries return only reuquests where start is in the future!!
+### Get unseen requests you send:
+
+- request should be answered
+- unseen
+- in the future
+- proposed by logged in user
+
+```
+query {
+  proposedUnseeAnsweredRequests {
+    _id
+    start
+    end
+    description
+    requestStatus
+    receiver {
+      _id
+      email
+    }
+  }
+}
+```
+
+### update it as seen:
+
+```
+mutation {
+  updateRequestAsSeen (requestSeenDto: {_id: "5d349dc40a654235b815b18a"}){
+    _id
+    start
+    end
+    description
+    requestStatus
+    receiver {
+      _id
+      email
+    }
+    notificationSeen
+  }
+}
+```
+
 
 ### Received requests
 
 Requests send to you which not have been updated as DENIED, CANCELED or ACCEPTED
+- current user is receiver
 
 ```
 query {
@@ -243,11 +303,18 @@ query {
 }
 ```
 
-### Accepted requests/upcoming trips
 
+
+### requests to rate:
+
+- in the past
+- you are receiver/proposer
+- you have not yet rated
+- the request was accepted by host
+- 
 ```
 query {
-  proposedAnsweredRequests {
+  acceptedUnratedPastRequests {
     _id
     start
     end
@@ -255,25 +322,12 @@ query {
     requestStatus
     receiver {
       _id
-    }
-    proposer {
-      _id
-    }
-    ratings {
-      description
-      request {
-        _id
-        description
-      }
-      receiverRole
-      rating
-      author {
-        firstName
-      }
+      email
     }
   }
 }
 ```
+
 ## Meals:
 
 ### TestMealCreation:

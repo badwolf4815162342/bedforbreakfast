@@ -1,4 +1,5 @@
 import { Box, Divider as divider } from '@material-ui/core';
+import Icon from '@material-ui/core/Icon';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { SubText, Text } from '../../../StyledComponents/StyledBasicItems';
@@ -93,4 +94,13 @@ export const IconInText = styled(SubText)`
 export const HeaderLink = styled(Link)`
   color: inherit;
   text-decoration: none;
+`;
+
+export const Verified = styled(SubText)`
+  color: rgba(${MainThemeRGB.secondary.main.r}, ${MainThemeRGB.secondary.main.g}, ${MainThemeRGB.secondary.main.b}, 1);
+  fontsize: 8;
+`;
+
+export const VerifiedIcon = styled(Icon)`
+  fontsize: 80;
 `;
