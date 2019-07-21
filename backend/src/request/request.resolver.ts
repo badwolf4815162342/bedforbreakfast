@@ -31,6 +31,15 @@ export class RequestResolver {
     return this.requestService.findAll();
   }
 
+  @Query((returns) => Request)
+  async request(@Args('requestId') id: string): Promise<Request> {
+    const request = await this.requestService.findById(id);
+    if (!request) {
+      throw new NotFoundException(id);
+    }
+    return request;
+  }
+
   @UseGuards(GqlAuthGuard)
   @Query((returns) => [Request])
   async receivedRequestedRequests(@CurrentUser() user: User): Promise<Request[]> {
