@@ -201,9 +201,7 @@ export function Navbar() {
           <Grow />
           <SectionDesktop>
             <IconButton aria-label="Show 17 new notifications" color="inherit" onClick={handleNotificationMenuOpen}>
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
+              <NotificationsIcon />
             </IconButton>
             <IconButton
               edge="end"
