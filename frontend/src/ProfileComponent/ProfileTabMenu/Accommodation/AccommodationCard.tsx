@@ -5,6 +5,8 @@ import { USER_ID } from '../../../constants';
 import SimpleSlider from '../../../StyledComponents/ImageSlider/ImageSlider';
 import {
   AccommodationInProfileCard,
+  CreateAccommodationBox,
+  CreateAccommodationButton,
   Description,
   DescriptionPaper,
   ImagesCarousel,
@@ -13,47 +15,52 @@ import {
   NoAccommodationLabel,
 } from './AccommodationCardStyle';
 
-const ACCOMMODATION_BY_ID = gql`
-  query accommodationById($_id: ObjectId!) {
-    accommodationById(_id: $_id) {
+const GET_ACCOMMODATION_BY_USER_ID = gql`
+  query user($userId: String!) {
+    user(userId: $userId) {
       _id
-      isActive
-      country
-      city
-      streetName
-      streetNumber
-      zipCode
-      description
-      district
-      numberOfBeds
-      pictures
+      accommodation {
+        _id
+        isActive
+        country
+        city
+        streetName
+        streetNumber
+        zipCode
+        description
+        district
+        numberOfBeds
+        pictures
+      }
     }
   }
 `;
 
 interface AccommodationData {
-  accommodationById: {
+  user: {
     _id: string;
-    isActive: boolean;
-    country: string;
-    city: string;
-    streetName: string;
-    streetNumber: string;
-    zipCode: string;
-    description: string;
-    district: string;
-    numberOfBeds: number;
-    pictures: string[];
+    accommodation: {
+      _id: string;
+      isActive: boolean;
+      country: string;
+      city: string;
+      streetName: string;
+      streetNumber: string;
+      zipCode: string;
+      description: string;
+      district: string;
+      numberOfBeds: number;
+      pictures: string[];
+    };
   };
 }
 
-class AccommodationCard extends React.Component<{ userId: string; accommodationId: string }> {
+class AccommodationCard extends React.Component<{ userId: string }> {
   render() {
     const loggedUserID = localStorage.getItem(USER_ID);
     const isThisMe = loggedUserID === this.props.userId;
-
     return (
-      <Query<AccommodationData, {}> query={ACCOMMODATION_BY_ID} variables={{ _id: this.props.accommodationId }}>
+      <Query<AccommodationData, {}> query={GET_ACCOMMODATION_BY_USER_ID} variables={{ userId: this.props.userId }}>
         {({ loading, error, data }) => {
           if (loading) {
             return <p>Loading...</p>;
@@ -61,13 +68,19 @@ class AccommodationCard extends React.Component<{ userId: string; accommodationI
           if (error) {
             return <p>Error :( Fix me {error.message}</p>;
           }
-          if (!data && loggedUserID && isThisMe) {
-            return <NoAccommodationLabel>Create accommodation </NoAccommodationLabel>;
+          if (data && !data.user.accommodation && loggedUserID && isThisMe) {
+            return (
+              <CreateAccommodationBox>
+                <CreateAccommodationButton variant="contained" color="secondary">
+                  create accommodation
+                </CreateAccommodationButton>
+              </CreateAccommodationBox>
+            );
           }
-          if (!data) {
+          if (!data || !data.user.accommodation) {
             return <NoAccommodationLabel>User doesn't offer accommodation </NoAccommodationLabel>;
           }
-          const accommodation = data.accommodationById;
+          const accommodation = data.user.accommodation;
           return (
             <AccommodationInProfileCard>
               <Location>

@@ -4,6 +4,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Mutation, Query } from 'react-apollo';
+import { USER_ID } from '../../constants';
 
 import {
   DateBox,
@@ -76,6 +77,8 @@ class SendRequest extends Component<{ userId: string; userName: string }, SendRe
 
   render() {
     const { receiver, from, to, description } = this.state;
+    const loggedUserID = localStorage.getItem(USER_ID);
+    const isThisMe = loggedUserID === this.props.userId;
     return (
       <RequestButtonBox>
         <Query<CanBeRequested, {}> query={CAN_BE_REQUESTED} variables={{ hostId: this.props.userId }}>
@@ -89,6 +92,9 @@ class SendRequest extends Component<{ userId: string; userName: string }, SendRe
             if (!data) {
               return <p></p>;
             }
+            if (isThisMe) {
+              return <p></p>;
+            }
             return (
               <Button
                 variant="contained"
@@ -96,7 +102,7 @@ class SendRequest extends Component<{ userId: string; userName: string }, SendRe
                 onClick={() => {
                   this.setState({ open: true });
                 }}
-                disabled={!data.canBeRequested}
+                disabled={!data.canBeRequested && this.state.canRequest}
               >
                 request
               </Button>

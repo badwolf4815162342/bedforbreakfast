@@ -125,6 +125,7 @@ type Query {
   request(requestId: String!): Request!
   receivedRequestedRequests: [Request!]!
   proposedAnsweredRequests: [Request!]!
+  acceptedPastRequests: [Request!]!
   canBeRequested(canBeRequestedDto: CanBeRequestedDto!): Boolean!
   ratings: [Rating!]!
   receivedRatings(userId: String!): [Rating!]!

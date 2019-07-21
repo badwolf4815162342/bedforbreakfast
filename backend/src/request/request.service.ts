@@ -36,6 +36,24 @@ export class RequestService {
       .exec();
   }
 
+  async findByProposerOrReceiverAndAcceptedInPast(userId: ObjectId | string): Promise<Request[]> {
+    const proposer = await this.requestModel
+      .find({
+        proposer: userId,
+        requestStatus: RequestStatus.ACCEPTED,
+        start: { $lte: new Date() },
+      })
+      .exec();
+    const receiver = await this.requestModel
+      .find({
+        receiver: userId,
+        requestStatus: RequestStatus.ACCEPTED,
+        start: { $lte: new Date() },
+      })
+      .exec();
+    return [...proposer, ...receiver];
+  }
+
   async findByReceiverAndRequestedFromNow(receiverId: ObjectId | string): Promise<Request[]> {
     return this.requestModel
       .find({ receiver: receiverId, requestStatus: RequestStatus.REQUESTED, start: { $gte: new Date() } })
