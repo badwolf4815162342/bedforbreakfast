@@ -20,15 +20,15 @@ export class TripReport extends Typegoose {
 
   @Field((type) => User)
   @prop({ ref: User, required: true })
-  recipient!: Ref<ObjectId>;
+  receiver!: Ref<ObjectId>;
 
   @Field((type) => RoleType)
   @prop({ required: true })
-  authorRole!: RoleType;
+  receiverRole!: RoleType;
 
   @Field((type) => [String])
   @prop({ required: true })
-  pictures!: string[];
+  pictures?: string[];
 
   @Field((type) => String)
   @prop({ required: true })

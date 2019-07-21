@@ -284,6 +284,22 @@ export class RequestResolver {
   }
 
   @ResolveProperty()
+  async tripReports(@Parent() request: Request) {
+    const tripReports: TripReport[] = [];
+    if (request.tripReports) {
+      await Promise.all(
+        request.tripReports.map(async (tripReportId) => {
+          const tripReport = await this.tripReportService.findById(tripReportId);
+          if (tripReport) {
+            tripReports.push(tripReport);
+          }
+        }),
+      );
+    }
+    return tripReports;
+  }
+
+  @ResolveProperty()
   async receiver(@Parent() request: Request) {
     return await this.usersService.findById(request.receiver);
   }

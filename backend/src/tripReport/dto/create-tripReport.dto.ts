@@ -20,5 +20,5 @@ export class CreateTripReportDto {
   description!: string;
 
   @Field((type) => [String])
-  pictures!: string[];
+  pictures?: string[];
 }

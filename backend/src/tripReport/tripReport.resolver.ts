@@ -23,14 +23,9 @@ export class TripReportResolver {
   }
 
   @Query((returns) => [TripReport])
-  async receivedRatings(@Args('userId') userId: string): Promise<TripReport[]> {
-    return await this.tripReportService.findByReceiver(userId);
+  async publishedTripReports(@Args('userId') userId: string): Promise<TripReport[]> {
+    return await this.tripReportService.findByAuthor(userId);
   }
-
-  // @Mutation((returns) => TripReport)
-  // async createTripReport(@Args('createTripReportDto') createTripReportDto: CreateTripReportDto): Promise<TripReport> {
-  //   return await this.tripReportService.create(createTripReportDto);
-  // }
 
   @ResolveProperty()
   async author(@Parent() tripReport: TripReport) {
@@ -38,8 +33,8 @@ export class TripReportResolver {
   }
 
   @ResolveProperty()
-  async recipient(@Parent() tripReport: TripReport) {
-    return await this.usersService.findById(tripReport.recipient);
+  async receiver(@Parent() tripReport: TripReport) {
+    return await this.usersService.findById(tripReport.receiver);
   }
 
   @ResolveProperty()

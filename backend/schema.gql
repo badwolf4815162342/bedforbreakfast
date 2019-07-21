@@ -61,12 +61,11 @@ input CreateRequestDto {
 }
 
 input CreateTripReportDto {
-  authorRole: String!
+  _id: String
+  request: String!
+  receiverRole: RoleType!
+  description: String!
   pictures: [String!]!
-  text: String!
-  likedBy: [String!]!
-  start: DateTime!
-  end: DateTime!
 }
 
 """
@@ -115,11 +114,12 @@ type Query {
   accommodations: [Accommodation!]!
   accommodationsByCity(city: String!): [Accommodation!]!
   accommodationById(_id: ObjectId!): Accommodation!
+  tripReports: [TripReport!]!
+  publishedTripReports(userId: String!): [TripReport!]!
   requests: [Request!]!
   canBeRequested(canBeRequestedDto: CanBeRequestedDto!): Boolean!
-  tripReports: [TripReport!]!
-  receivedRatings(userId: String!): [Rating!]!
   ratings: [Rating!]!
+  receivedRatings(userId: String!): [Rating!]!
 }
 
 type Rating {
@@ -177,8 +177,8 @@ type TripReport {
   _id: ID!
   request: Request!
   author: User!
-  recipient: User!
-  authorRole: RoleType!
+  receiver: User!
+  receiverRole: RoleType!
   pictures: [String!]!
   description: String!
   likedBy: [User!]!

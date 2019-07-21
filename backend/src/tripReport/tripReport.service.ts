@@ -24,7 +24,7 @@ export class TripReportService {
     return this.tripReportModel.findById(id);
   }
 
-  async findByReceiver(receiverId: ObjectId | string): Promise<TripReport[]> {
-    return this.tripReportModel.find({ receiver: receiverId }).exec();
+  async findByAuthor(authorId: ObjectId | string): Promise<TripReport[]> {
+    return this.tripReportModel.find({ receiver: authorId }).exec();
   }
 }
