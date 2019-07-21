@@ -31,8 +31,7 @@ export const GridContainerXS = styled(GridContainer)`
 export const GridContainerL = styled.div`
   display: grid;
   grid-column-gap: 1vw;
-  grid-template-columns: auto auto auto ;
-  padding 10px;
+  grid-template-columns: auto auto auto;
 `;
 
 export const GridContainerR = styled(GridContainer)`

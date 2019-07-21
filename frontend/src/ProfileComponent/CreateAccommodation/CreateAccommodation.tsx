@@ -1,8 +1,7 @@
-import Tooltip from '@material-ui/core/Tooltip';
-import React from 'react';
-
 import { Button } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
 import gql from 'graphql-tag';
+import React from 'react';
 import { Mutation } from 'react-apollo';
 import { GridContainerXS, Section, SubmitButton } from '../../StyledComponents/StyledBasicItems';
 import { MainTheme } from '../../StyledComponents/Theme';
@@ -20,6 +19,7 @@ import {
   Divider,
   EnableSelector,
   EnableText,
+  Error,
   GeneralSubtitle,
   NrBedsIcon,
   NrBedsSelector,
@@ -130,6 +130,8 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
   };
 
   render() {
+    // const loggedUserID = localStorage.getItem(USER_ID);
+
     return (
       <Section>
         <GridContainerXS>
@@ -302,13 +304,19 @@ class CreateAccommodation extends React.Component<CreateAccommodationProps, Crea
                     pictures: File[];
                   };
                 }) => void,
-                { data }: any,
+                { data, loading, error }: any,
               ) => (
                 <div>
+                  {error && (
+                    <div>
+                      <Error>Error occurred.</Error>
+                      <Error> Please provide all Information needed.</Error>
+                    </div>
+                  )}
+                  {loading && <p>Loading...</p>}
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-
                       createAccommodation({
                         variables: {
                           _id: this.state.accommodation._id,

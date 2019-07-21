@@ -41,13 +41,12 @@ export default class App extends React.Component<any, any> {
           exact: true,
         },
         {
-          component: Feedback,
-          path: '/feedback',
+          component: AccommodationLoad,
+          path: '/accommodation/:id',
         },
         {
-          component: AccommodationLoad,
-          path: '/loadAccommodation',
-          exact: true,
+          component: Feedback,
+          path: '/feedback',
         },
         {
           component: LoadSearch,

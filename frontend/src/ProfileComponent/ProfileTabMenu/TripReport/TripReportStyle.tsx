@@ -92,14 +92,15 @@ export const SeeMoreButton = styled(Button)`
   justify-self: start;
 `;
 
-export const LikeCount = styled(SimpleLabelText)`
+export const LikeCount = styled(Text)`
   grid-column: 1;
   grid-column: 1;
   align-self: center;
   justify-self: start;
   margin-bottom: 0px
   margin-left: 25px;
- 
+  font-size: 14pt;
+  
 `;
 
 export const IconInText = styled(SubText)`
@@ -109,4 +110,14 @@ export const IconInText = styled(SubText)`
 
 export const NoReportsLabel = styled(SimpleLabelText)`
   text-align: center;
+`;
+
+export const ImagesCarousel = styled.div`
+  margin-top: 15px;
+  .image-gallery-slide-wrapper {
+    display: none;
+  }
+  .image-gallery-thumbnails {
+    overflow: scroll;
+  }
 `;
