@@ -92,6 +92,30 @@ canBeRequested(
 }
 ```
 
+### Get unseen requests you send:
+
+- request should be answered
+- unseen
+- in the future
+- proposed by logged in user
+
+```
+query {
+  proposedUnseeAnsweredRequests {
+    _id
+    start
+    end
+    description
+    requestStatus
+    receiver {
+      _id
+      email
+    }
+  }
+}
+```
+
+
 ## Rating and Reference:
 
 ### Submit Rating:
