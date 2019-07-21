@@ -138,7 +138,7 @@ export const FeedItem: React.FC<FeedItemProps> = (feedItem: FeedItemProps) => (
     <IconInText>
       <Mutation mutation={LIKE_TRIP_REPORT}>
         {(
-          createAccommodation: (arg0: {
+          likeTripReport: (arg0: {
             variables: {
               _id: string;
             };
@@ -150,7 +150,7 @@ export const FeedItem: React.FC<FeedItemProps> = (feedItem: FeedItemProps) => (
               onSubmit={(e) => {
                 e.preventDefault();
                 if (localStorage.getItem(USER_ID)) {
-                  createAccommodation({
+                  likeTripReport({
                     variables: {
                       _id: feedItem.tripReport._id,
                     },
