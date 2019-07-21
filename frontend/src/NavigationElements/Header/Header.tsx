@@ -159,7 +159,7 @@ export function Navbar() {
       open={isNotificationMenuOpen}
       onClose={handleNotificationMenuClose}
     >
-      <NotificationList onClick={handleNotificationMenuClose}></NotificationList>
+      {loggedUserID && <NotificationList onClick={handleNotificationMenuClose}></NotificationList>}
     </Menu>
   );
 

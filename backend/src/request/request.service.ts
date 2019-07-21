@@ -41,14 +41,14 @@ export class RequestService {
       .find({
         proposer: userId,
         requestStatus: RequestStatus.ACCEPTED,
-        start: { $lte: new Date() },
+        end: { $lte: new Date() },
       })
       .exec();
     const receiver = await this.requestModel
       .find({
         receiver: userId,
         requestStatus: RequestStatus.ACCEPTED,
-        start: { $lte: new Date() },
+        end: { $lte: new Date() },
       })
       .exec();
     return [...proposer, ...receiver];

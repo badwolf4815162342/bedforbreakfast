@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import React from 'react';
 import { Mutation, Query } from 'react-apollo';
 import Request from './Request/Request';
+import { RequestPage, RequestTitle } from './RequestsStyle';
 
 const RECEIVE_REQUESTED_REQUEST = gql`
   query {
@@ -11,8 +12,12 @@ const RECEIVE_REQUESTED_REQUEST = gql`
       end
       description
       proposer {
+        _id
         firstName
         lastName
+        profilePicture
+        phoneNumber
+        email
       }
     }
   }
@@ -22,6 +27,17 @@ const UPDATE_REQUEST_STATUS = gql`
   mutation updateRequestStatus($_id: String!, $requestStatus: requestStatus!) {
     updateRequestStatus(updateRequestStatusDto: { _id: $_id, requestStatus: $requestStatus }) {
       _id
+      start
+      end
+      description
+      proposer {
+        _id
+        firstName
+        lastName
+        profilePicture
+        phoneNumber
+        email
+      }
     }
   }
 `;
@@ -33,7 +49,14 @@ interface Data {
       start: string;
       end: string;
       description: string;
-      proposer: { firstName: string; lastName: string };
+      proposer: {
+        _id: string;
+        firstName: string;
+        lastName: string;
+        profilePicture: string;
+        phoneNumber: string;
+        email: string;
+      };
     },
   ];
 }
@@ -51,7 +74,7 @@ class Requests extends React.Component<
 
   render() {
     return (
-      <Query<Data, {}> query={RECEIVE_REQUESTED_REQUEST}>
+      <Query<Data, {}> query={RECEIVE_REQUESTED_REQUEST} fetchPolicy="network-only">
         {({ loading, error, data }) => {
           if (loading) {
             return <p>Loading...</p>;
@@ -60,34 +83,43 @@ class Requests extends React.Component<
             return <p>Error.</p>;
           }
           if (data) {
+            const dataIn = data;
             return (
-              <Mutation mutation={UPDATE_REQUEST_STATUS}>
-                {(
-                  updateMutation: (arg0: {
-                    variables: {
-                      _id: string;
-                      requestStatus: string;
-                    };
-                  }) => void,
-                  { mutationLoading, mutationError }: any,
-                ) => (
-                  <>
-                    {mutationLoading && <p>Loading...</p>}
-                    {mutationError && <p>Error.</p>}
-                    {data.receivedRequestedRequests.map((request) => (
-                      <Request
-                        key={request._id}
-                        {...request}
-                        onAccept={(accepted) => {
-                          updateMutation({
-                            variables: { _id: request._id, requestStatus: accepted ? 'ACCEPTED' : 'DENIED' },
-                          });
-                        }}
-                      ></Request>
-                    ))}
-                  </>
-                )}
-              </Mutation>
+              <RequestPage>
+                <RequestTitle>Requests:</RequestTitle>
+                <Mutation
+                  mutation={UPDATE_REQUEST_STATUS}
+                  onCompleted={() => {
+                    window.location.reload();
+                  }}
+                >
+                  {(
+                    updateMutation: (arg0: {
+                      variables: {
+                        _id: string;
+                        requestStatus: string;
+                      };
+                    }) => void,
+                    { mutationLoading, mutationError }: any,
+                  ) => (
+                    <>
+                      {mutationLoading && <p>Loading...</p>}
+                      {mutationError && <p>Error.</p>}
+                      {dataIn.receivedRequestedRequests.map((request) => (
+                        <Request
+                          key={request._id}
+                          {...request}
+                          onAccept={(accepted) => {
+                            updateMutation({
+                              variables: { _id: request._id, requestStatus: accepted ? 'ACCEPTED' : 'DENIED' },
+                            });
+                          }}
+                        ></Request>
+                      ))}
+                    </>
+                  )}
+                </Mutation>
+              </RequestPage>
             );
           }
         }}
