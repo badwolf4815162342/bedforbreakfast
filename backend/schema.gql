@@ -107,6 +107,7 @@ type Mutation {
   createRating(createRatingDto: CreateRatingDto!): Request!
   createTripReport(createTripReportDto: CreateTripReportDto!): Request!
   updateRequestStatus(updateRequestStatusDto: UpdateRequestStatusDto!): Request!
+  updateRequestAsSeen(requestSeenDto: RequestSeenDto!): Request!
 }
 
 """Mongo object id scalar type"""
@@ -124,6 +125,7 @@ type Query {
   requests: [Request!]!
   request(requestId: String!): Request!
   receivedRequestedRequests: [Request!]!
+  proposedUnseeAnsweredRequests: [Request!]!
   proposedAnsweredRequests: [Request!]!
   acceptedPastRequests: [Request!]!
   canBeRequested(canBeRequestedDto: CanBeRequestedDto!): Boolean!
@@ -151,6 +153,11 @@ type Request {
   description: String!
   ratings: [Rating!]!
   tripReports: [TripReport!]!
+  notificationSeen: Boolean!
+}
+
+input RequestSeenDto {
+  _id: String
 }
 
 """The basic RequestStatus"""
