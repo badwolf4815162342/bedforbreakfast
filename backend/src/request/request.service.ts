@@ -70,6 +70,17 @@ export class RequestService {
       .exec();
   }
 
+  async findByProposerAndAnsweredAndUnseenFromNow(proposerId: ObjectId | string): Promise<Request[]> {
+    return this.requestModel
+      .find({
+        proposer: proposerId,
+        notificationSeen: false,
+        requestStatus: { $ne: RequestStatus.REQUESTED },
+        start: { $gte: new Date() },
+      })
+      .exec();
+  }
+
   async create(createRequestDto: {}): Promise<Request> {
     const createdRequest = new this.requestModel(createRequestDto);
     createdRequest.requestStatus = RequestStatus.REQUESTED; // always first status when creating
@@ -92,6 +103,13 @@ export class RequestService {
   async changeRequestStatus(oldRequest: Request, requestStatusNew: RequestStatus): Promise<Request | null> {
     const request = {
       requestStatus: requestStatusNew,
+    };
+    return this.requestModel.findByIdAndUpdate(oldRequest._id, request);
+  }
+
+  async changeRequestAsSeen(oldRequest: Request): Promise<Request | null> {
+    const request = {
+      notificationSeen: true,
     };
     return this.requestModel.findByIdAndUpdate(oldRequest._id, request);
   }
