@@ -43,7 +43,7 @@ export default class App extends React.Component<any, any> {
         },
         {
           component: Feedback,
-          path: '/feedback',
+          path: '/feedback/:id',
         },
         {
           component: Requests,

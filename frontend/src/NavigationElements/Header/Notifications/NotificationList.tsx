@@ -2,6 +2,7 @@ import { MenuItem } from '@material-ui/core';
 import gql from 'graphql-tag';
 import React from 'react';
 import { Mutation, Query } from 'react-apollo';
+import { USER_ID } from '../../../constants';
 import { HeaderLink } from '../HeaderStyle';
 
 const RECEIVED_REQUESTED_REQUEST = gql`
@@ -35,6 +36,21 @@ const UPDATE_AS_SEEN = gql`
   }
 `;
 
+const UNRATED_REQUESTS = gql`
+  query {
+    acceptedUnratedPastRequests {
+      _id
+      receiver {
+        _id
+        firstName
+      }
+      proposer {
+        firstName
+      }
+    }
+  }
+`;
+
 interface ReceivedRequestsData {
   receivedRequestedRequests: [
     {
@@ -56,8 +72,24 @@ interface ProposedUnseeAnsweredRequestsData {
   ];
 }
 
+interface UnratedRequestsData {
+  acceptedUnratedPastRequests: [
+    {
+      _id: string;
+      receiver: {
+        _id: string;
+        firstName: string;
+      };
+      proposer: {
+        firstName: string;
+      };
+    },
+  ];
+}
+
 class NotificationList extends React.Component<{ onClick: () => void }, {}> {
   render() {
+    const userId = localStorage.getItem(USER_ID) ? localStorage.getItem(USER_ID) : '';
     return (
       <>
         <Query<ReceivedRequestsData, {}> query={RECEIVED_REQUESTED_REQUEST}>
@@ -120,6 +152,28 @@ class NotificationList extends React.Component<{ onClick: () => void }, {}> {
               );
             } else {
               return <MenuItem onClick={this.props.onClick}>No new answers</MenuItem>;
+            }
+          }}
+        </Query>
+        <Query<UnratedRequestsData, {}> query={UNRATED_REQUESTS}>
+          {({ loading, error, data }) => {
+            if (loading) {
+              return <MenuItem onClick={this.props.onClick}>Loading...</MenuItem>;
+            }
+            if (error) {
+              return <MenuItem onClick={this.props.onClick}>Error.</MenuItem>;
+            }
+            if (data && data.acceptedUnratedPastRequests && data.acceptedUnratedPastRequests.length > 0) {
+              return data.acceptedUnratedPastRequests.map((request) => (
+                <HeaderLink key={request._id} to={`/feedback/${request._id}`}>
+                  <MenuItem onClick={this.props.onClick}>
+                    You can rate your visit to{' '}
+                    {userId === request.receiver._id ? request.proposer.firstName : request.receiver.firstName}
+                  </MenuItem>
+                </HeaderLink>
+              ));
+            } else {
+              return <MenuItem onClick={this.props.onClick}>No open requests</MenuItem>;
             }
           }}
         </Query>
