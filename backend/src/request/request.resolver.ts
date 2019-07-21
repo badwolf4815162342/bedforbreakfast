@@ -225,7 +225,6 @@ export class RequestResolver {
     if (reportsOfRequest.length > 0 && reportsOfRequest[0].author.equals(author._id)) {
       throw new Error('You already rated this request!');
     }
-
     let receiver: User | null = null;
     // You want to rate the host
     if (createTripReportDto.receiverRole === RoleType.ACCOMMODATION) {

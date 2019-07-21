@@ -102,3 +102,7 @@ export const IconInText = styled(SubText)`
   align-self: center;
   color: rgba(${MainThemeRGB.secondary.main.r}, ${MainThemeRGB.secondary.main.g}, ${MainThemeRGB.secondary.main.b}, 1);
 `;
+
+export const NoReportsLabel = styled(SimpleLabelText)`
+  text-align: center;
+`;
