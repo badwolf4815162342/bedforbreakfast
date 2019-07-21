@@ -11,6 +11,8 @@ import {
   ProfilePicBox,
   Role,
   UserInfo,
+  Verified,
+  VerifiedIcon,
 } from './CardHeaderStyle';
 
 interface CardHeaderProps {
@@ -23,6 +25,7 @@ interface CardHeaderProps {
   dateStart: Date;
   dateEnd: Date;
   profilePicture: string;
+  verified: boolean;
   //profile pictures + report pictures
 }
 
@@ -31,6 +34,14 @@ class CardHeader extends React.Component<CardHeaderProps, {}> {
     const receiverRole = this.props.receiverRole === 'accommodation' ? 'visited' : 'hosted';
     const authorPicture = (
       <img src={this.props.profilePicture} style={{ width: 65, height: 65, borderRadius: 180 }} alt="Card" />
+    );
+    const verified = this.props.verified ? (
+      <Verified>
+        {' '}
+        <VerifiedIcon>verified_user</VerifiedIcon>{' '}
+      </Verified>
+    ) : (
+      ''
     );
     const stringStartDate = this.props.dateStart.toString();
     return (
@@ -45,7 +56,7 @@ class CardHeader extends React.Component<CardHeaderProps, {}> {
         <UserInfo>
           <HeaderLink to={`/profile/${this.props.authorId}`}>
             <Name>
-              {this.props.authorFirstName} {this.props.authorLastName}{' '}
+              {this.props.authorFirstName} {this.props.authorLastName} {verified}{' '}
             </Name>
             <HomeInfo>
               From: {this.props.aHomeTown}, {this.props.aHomeCountry}

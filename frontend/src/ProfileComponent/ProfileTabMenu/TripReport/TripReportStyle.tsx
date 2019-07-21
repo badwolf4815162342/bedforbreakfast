@@ -15,11 +15,11 @@ export const TripReportCard = styled(Card)`
 `;
 
 export const TripReportPaper = styled(Box)`
-  padding: 15px
+  padding: 25px
   width: inherit
   grid-column-start: 1;
-  grid-column-end: column4-end;
-  grid-row: 3;
+  grid-column-end: column2-end;
+  grid-row: 1;
 `;
 
 export const ProfilePic = styled(Box)`
@@ -46,7 +46,8 @@ export const ProfilePicBox = styled(Box)`
 
 export const Divider = styled(divider)`
   grid-column-start: 1;
-  grid-column-end: column4-end;
+  grid-column-end: column2-end;
+  grid-row: 2;
   align-self: baseline;
 `;
 
@@ -85,17 +86,20 @@ export const Report = styled(Text)``;
 
 export const SeeMoreButton = styled(Button)`
   variant: "text" 
-  grid-column: 4;
-  grid-row: 5;
+  grid-column: 1;
+  grid-column: 2;
   align-self: center
-  justify-self: center;
+  justify-self: start;
 `;
 
 export const LikeCount = styled(SimpleLabelText)`
   grid-column: 1;
-  grid-row: 5;
+  grid-column: 1;
   align-self: center;
-  justify-self: center;
+  justify-self: start;
+  margin-bottom: 0px
+  margin-left: 25px;
+ 
 `;
 
 export const IconInText = styled(SubText)`
