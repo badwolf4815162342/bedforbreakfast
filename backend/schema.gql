@@ -61,11 +61,12 @@ input CreateRequestDto {
 }
 
 input CreateTripReportDto {
-  _id: String
-  request: String!
-  receiverRole: RoleType!
+  authorRole: String!
   pictures: [String!]!
-  description: String!
+  text: String!
+  likedBy: [String!]!
+  start: DateTime!
+  end: DateTime!
 }
 
 """
