@@ -1,9 +1,9 @@
 import { Button, Tab } from '@material-ui/core';
 import React from 'react';
 import { ProfileTabMenuBox, ProfileTabs } from './ProfileTabMenuStyle';
-import TripReportList from './ProfileTripReports/TripReport/TripReportList';
 import ReferenceList from './Reference/ReferenceList';
 import SendRequest from './SendRequest';
+import TripReportList from './TripReport/TripReportList';
 
 export default function ProfileTabMenu(props: { userId: string; userName: string }) {
   const [value, setValue] = React.useState(0);

@@ -102,7 +102,6 @@ type Mutation {
   createRating(createRatingDto: CreateRatingDto!): Request!
   createTripReport(createTripReportDto: CreateTripReportDto!): Request!
   updateRequestStatus(updateRequestStatusDto: UpdateRequestStatusDto!): Request!
-  createTripReport(createTripReportDto: CreateTripReportDto!): TripReport!
 }
 
 """Mongo object id scalar type"""
@@ -115,8 +114,8 @@ type Query {
   accommodations: [Accommodation!]!
   accommodationsByCity(city: String!): [Accommodation!]!
   accommodationById(_id: ObjectId!): Accommodation!
-  ratings: [Rating!]!
-  receivedRatings(userId: String!): [Rating!]!
+  tripReports: [TripReport!]!
+  publishedTripReports(userId: String!): [TripReport!]!
   requests: [Request!]!
   request(requestId: String!): Request!
   receivedRequestedRequests: [Request!]!
@@ -124,7 +123,6 @@ type Query {
   canBeRequested(canBeRequestedDto: CanBeRequestedDto!): Boolean!
   ratings: [Rating!]!
   receivedRatings(userId: String!): [Rating!]!
-  tripReports: [TripReport!]!
 }
 
 type Rating {
@@ -179,12 +177,14 @@ input SignUpDto {
 }
 
 type TripReport {
-  authorRole: String!
+  _id: ID!
+  request: Request!
+  author: User!
+  receiver: User!
+  receiverRole: RoleType!
   pictures: [String!]!
-  text: String!
-  likedBy: [String!]!
-  start: DateTime!
-  end: DateTime!
+  description: String!
+  likedBy: [User!]!
 }
 
 input UpdateRequestStatusDto {

@@ -3,7 +3,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import { Section } from '../../../StyledComponents/StyledBasicItems';
 import Reference from './Reference';
-import { NoReferencesLabe } from './ReferenceStyle';
+import { NoReferencesLabel } from './ReferenceStyle';
 
 const GET_RECEIVED_REFERENCES_BY_USER_ID = gql`
   query receivedRatings($userId: String!) {
@@ -70,7 +70,7 @@ class ReferenceList extends React.Component<{ userId: string }> {
               return <p>No data</p>;
             }
             if (data.receivedRatings.length === 0) {
-              return <NoReferencesLabe>User has no references yet</NoReferencesLabe>;
+              return <NoReferencesLabel>User has no references yet</NoReferencesLabel>;
             }
             return (
               <Section>
