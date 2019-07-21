@@ -1,18 +1,9 @@
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
+
 import React from 'react';
 import pic from '../../../images/user2.jpeg';
-import { GridContainerL as GridContainer } from '../../../StyledComponents/StyledBasicItems';
+import SimpleSlider from '../../../StyledComponents/ImageSlider/ImageSlider';
 import CardHeader from '../CardElements/CardHeader';
-import {
-  Divider,
-  IconInText,
-  LikeCount,
-  Report,
-  SeeMoreButton,
-  TripReportCard,
-  TripReportPaper,
-} from './TripReportStyle';
+import { Divider, ImagesCarousel, Report, TripReportCard, TripReportPaper } from './TripReportStyle';
 
 interface TripReportProps {
   receiverId: string;
@@ -51,24 +42,13 @@ class TripReport extends React.Component<TripReportProps, {}> {
           profilePicture={this.props.profilePicture}
           verified={this.props.receiverVerified}
         />
+        <ImagesCarousel>
+          <SimpleSlider height={240} images={this.props.reportPictures} />
+        </ImagesCarousel>
         <TripReportPaper>
           <Report> {this.props.description} </Report>
         </TripReportPaper>
         <Divider />
-        <GridContainer>
-          <LikeCount>
-            {' '}
-            <IconInText>
-              <IconButton color="secondary">
-                <Icon>{this.liked}</Icon>
-              </IconButton>
-            </IconInText>{' '}
-            {this.props.likeCount}{' '}
-          </LikeCount>
-          <SeeMoreButton variant="text" color="secondary">
-            see more
-          </SeeMoreButton>
-        </GridContainer>
       </TripReportCard>
     );
   }

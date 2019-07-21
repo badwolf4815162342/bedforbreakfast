@@ -131,3 +131,10 @@ export const SubmitArea = styled.div`
   grid-column: 1/7;
   grid-row: 12;
 `;
+
+export const Error = styled.div`
+  color: red;
+  text-align: left;
+  margin-top: 15px;
+  margin-bottom: 15px;
+`;

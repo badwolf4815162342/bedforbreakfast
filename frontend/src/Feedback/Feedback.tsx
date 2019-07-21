@@ -74,7 +74,7 @@ interface Data {
 }
 
 class Feedback extends React.Component<
-  { history: any },
+  { history: any; match: { params: any } },
   {
     rating: { rating: boolean | undefined; description: string | undefined };
     writingRating: boolean;
@@ -99,7 +99,12 @@ class Feedback extends React.Component<
   };
 
   render() {
-    const requestId = '5d3445cf718e68162ca8b62d'; // TODO: get from route parameter
+    const {
+      match: {
+        params: { id: requestId },
+      },
+    } = this.props;
+
     const {
       rating: { rating, description: ratingDescription },
       tripReport: { pictures, description: tripReportDescription },
