@@ -24,17 +24,31 @@ export const FeedbackCard = styled.div`
   border-radius: 15px;
 `;
 
+export const TripReportCard = styled.div`
+  -webkit-box-shadow: 3px 5px 14px -2px rgba(${MainThemeRGB.grey.dark.r}, ${MainThemeRGB.grey.dark.g}, ${MainThemeRGB.grey.dark.b}, 1);
+  -moz-box-shadow: 3px 5px 14px -2px rgba(${MainThemeRGB.grey.dark.r}, ${MainThemeRGB.grey.dark.g}, ${MainThemeRGB.grey.dark.b}, 1);
+  box-shadow: 3px 5px 14px -2px rgba(${MainThemeRGB.grey.dark.r}, ${MainThemeRGB.grey.dark.g}, ${MainThemeRGB.grey.dark.b}, 1);
+  display: grid;
+  grid-gap: 40px;
+  grid-template-columns: repeat(6, 1fr);
+  padding: 20px;
+  border-radius: 15px;
+`;
+
 export const ContinueButton = styled(Button)`
   grid-column: 1/7;
   grid-row: 2/2;
 `;
 
 export const SubmitButton = styled(Button)`
-  grid-column: 4/7;
-  grid-row: 2/2;
+  float: right;
 `;
 
 export const SkipButton = styled(Button)`
-  grid-column: 1/4;
+  float: right;
+`;
+
+export const ButtonContainer = styled.div`
+  grid-column: 1/7;
   grid-row: 2/2;
 `;

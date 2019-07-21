@@ -67,11 +67,8 @@ export class RequestService {
   }
 
   async addTripReport(request: Request, newReport: TripReport): Promise<Request | null> {
-    const newRequest = {
-      tripReports: request.tripReports,
-    };
     (request.tripReports as ObjectId[]).push(newReport._id);
-    return this.requestModel.findByIdAndUpdate(request._id, newRequest);
+    return this.requestModel.findByIdAndUpdate(request._id, request);
   }
 
   async changeRequestStatus(oldRequest: Request, requestStatusNew: RequestStatus): Promise<Request | null> {

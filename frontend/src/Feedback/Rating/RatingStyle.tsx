@@ -73,12 +73,12 @@ export const ThumbsDown = styled(SubText)`
 `;
 
 export const RatingTitle = styled.h3`
-  grid-column: 3/7;
+  grid-column: 4/7;
   grid-row: 1;
 `;
 
 export const Description = styled(TextField)`
-  grid-column: 3/7;
+  grid-column: 4/7;
   grid-row: 2/7;
 `;
 

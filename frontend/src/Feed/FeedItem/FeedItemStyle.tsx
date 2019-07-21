@@ -2,7 +2,7 @@ import { Box, Divider } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { MainTheme, MainThemeRGB } from '../../StyledComponents/Theme';
-import { SubText, Text } from './../../../src/StyledComponents/StyledBasicItems';
+import { SimpleLabelText, SubText, Text } from './../../../src/StyledComponents/StyledBasicItems';
 
 export const FeedCard = styled.div`
   grid-column: 1/7;
@@ -110,8 +110,6 @@ export const Date = styled(Text)`
 `;
 
 export const IconInText = styled(SubText)`
-  grid-column: 2;
-  grid-row: 1;
   align-self: center;
   color: rgba(${MainThemeRGB.secondary.main.r}, ${MainThemeRGB.secondary.main.g}, ${MainThemeRGB.secondary.main.b}, 1);
 `;
@@ -122,8 +120,10 @@ export const HeaderLink = styled(Link)`
 `;
 
 export const DescriptionArea = styled.div`
-  grid-column: 1/7;
+  grid-column: 1/13;
   grid-row: 4/4;
+  hyphens: auto;
+  text-align: justify;
 `;
 
 export const ImagesCarousel = styled.div`
@@ -135,4 +135,19 @@ export const ImagesCarousel = styled.div`
   }
   grid-column: 1/13;
   grid-row: 3/3;
+`;
+
+export const LikeCount = styled(SimpleLabelText)`
+  grid-column: 1/13;
+  grid-row: 6/6;
+  align-self: center;
+  align-text: center;
+  justify-self: start;
+  margin-bottom: 0px
+  margin-left: 25px;
+  display: inline;
+`;
+
+export const LikeCounter = styled.p`
+  amrgin 
 `;
