@@ -5,14 +5,13 @@ import { TypegooseModule } from 'nestjs-typegoose';
 import { AccommodationsModule } from './accommodations/accommodations.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TripReportModule } from './tripReport/tripReport.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { ImageUploadModule } from './image-upload/image-upload.module';
 import { MealModule } from './meal/meal.module';
 import { RatingModule } from './rating/rating.module';
 import { RequestModule } from './request/request.module';
+import { TripReportModule } from './tripReport/tripReport.module';
 import { UsersModule } from './users/users.module';
-
 
 @Module({
   imports: [
@@ -22,7 +21,7 @@ import { UsersModule } from './users/users.module';
     AuthenticationModule,
     GraphQLModule.forRoot({ autoSchemaFile: 'schema.gql', context: ({ req }) => ({ req }) }),
     AccommodationsModule,
-    UserModule,
+    UsersModule,
     TripReportModule,
     RatingModule,
     RequestModule,
