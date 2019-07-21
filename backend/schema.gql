@@ -59,6 +59,14 @@ input CreateRequestDto {
   description: String!
 }
 
+input CreateTripReportDto {
+  _id: String
+  request: String!
+  receiverRole: RoleType!
+  description: String!
+  pictures: [String!]!
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
@@ -93,6 +101,7 @@ type Mutation {
   createRequest(createRequestDto: CreateRequestDto!): Request!
   createRating(createRatingDto: CreateRatingDto!): Request!
   updateRequestStatus(updateRequestStatusDto: UpdateRequestStatusDto!): Request!
+  createTripReport(createTripReportDto: CreateTripReportDto!): TripReport!
 }
 
 """Mongo object id scalar type"""
@@ -112,6 +121,7 @@ type Query {
   canBeRequested(canBeRequestedDto: CanBeRequestedDto!): Boolean!
   ratings: [Rating!]!
   receivedRatings(userId: String!): [Rating!]!
+  tripReports: [TripReport!]!
 }
 
 type Rating {
@@ -162,6 +172,15 @@ input SignUpDto {
   homeTown: String!
   homeCountry: String!
   favoriteFood: String!
+}
+
+type TripReport {
+  authorRole: String!
+  pictures: [String!]!
+  text: String!
+  likedBy: [String!]!
+  start: DateTime!
+  end: DateTime!
 }
 
 input UpdateRequestStatusDto {

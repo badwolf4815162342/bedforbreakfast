@@ -10,6 +10,7 @@ import { ImageUploadModule } from './image-upload/image-upload.module';
 import { MealModule } from './meal/meal.module';
 import { RatingModule } from './rating/rating.module';
 import { RequestModule } from './request/request.module';
+import { TripReportModule } from './tripReport/tripReport.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -20,10 +21,11 @@ import { UsersModule } from './users/users.module';
     AuthenticationModule,
     GraphQLModule.forRoot({ autoSchemaFile: 'schema.gql', context: ({ req }) => ({ req }) }),
     AccommodationsModule,
+    UsersModule,
+    TripReportModule,
     RatingModule,
     RequestModule,
     MealModule,
-    UsersModule,
     ImageUploadModule,
   ],
   controllers: [AppController],
