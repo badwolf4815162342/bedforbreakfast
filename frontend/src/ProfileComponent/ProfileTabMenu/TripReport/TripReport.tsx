@@ -1,18 +1,9 @@
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
+
 import React from 'react';
 import pic from '../../../images/user2.jpeg';
 import SimpleSlider from '../../../StyledComponents/ImageSlider/ImageSlider';
 import CardHeader from '../CardElements/CardHeader';
-import {
-  Divider,
-  IconInText,
-  ImagesCarousel,
-  LikeCount,
-  Report,
-  TripReportCard,
-  TripReportPaper,
-} from './TripReportStyle';
+import { Divider, ImagesCarousel, Report, TripReportCard, TripReportPaper } from './TripReportStyle';
 
 interface TripReportProps {
   receiverId: string;
@@ -58,15 +49,6 @@ class TripReport extends React.Component<TripReportProps, {}> {
           <Report> {this.props.description} </Report>
         </TripReportPaper>
         <Divider />
-        <LikeCount>
-          {' '}
-          <IconInText>
-            <IconButton color="secondary">
-              <Icon>{this.liked}</Icon>
-            </IconButton>
-            {this.props.likeCount}
-          </IconInText>{' '}
-        </LikeCount>
       </TripReportCard>
     );
   }
