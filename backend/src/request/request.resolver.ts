@@ -16,6 +16,7 @@ import { TripReport } from '../tripReport/models/TripReport';
 import { TripReportService } from '../tripReport/tripReport.service';
 import { UsersService } from '../users/users.service';
 import { CanBeRequestedDto } from './dto/can-be-requested.dto';
+import { RequestSeenDto } from './dto/request-seen.dto';
 import { UpdateRequestStatusDto } from './dto/update-requestStatus.dto';
 
 @Resolver((of: any) => {
@@ -51,14 +52,64 @@ export class RequestResolver {
     return this.requestService.findByReceiverAndRequestedFromNow(user._id);
   }
 
-  // TODO: add not rated to query
+  @UseGuards(GqlAuthGuard)
+  @Query((returns) => [Request])
+  async proposedUnseeAnsweredRequests(@CurrentUser() user: User): Promise<Request[]> {
+    return this.requestService.findByProposerAndAnsweredAndUnseenFromNow(user._id);
+  }
+
+  // TODO: is this one used
   @UseGuards(GqlAuthGuard)
   @Query((returns) => [Request])
   async proposedAnsweredRequests(@CurrentUser() user: User): Promise<Request[]> {
     return this.requestService.findByProposerAndAnsweredFromNow(user._id);
   }
 
-  async ratingOrReportPossible(request: Request, receiverRole: RoleType, currentUserId: ObjectId): Promise<User> {
+  @UseGuards(GqlAuthGuard)
+  @Query((returns) => [Request])
+  async acceptedUnratedPastRequests(@CurrentUser() user: User): Promise<Request[]> {
+    const requests = await this.requestService.findByProposerOrReceiverAndAcceptedInPast(user._id);
+    const requestNotYetRated: Request[] = [];
+    if (requests) {
+      await Promise.all(
+        requests.map(async (request) => {
+          // console.log(this.shouldBeRated(request, user._id));
+          if (await this.shouldBeRated(request, user._id)) {
+            requestNotYetRated.push(request);
+          }
+        }),
+      );
+    }
+    return requestNotYetRated;
+  }
+
+  async shouldBeRated(request: Request, currentUserId: ObjectId): Promise<boolean> {
+    let shouldBeRated = true;
+    const ratings = await this.getRatings(request);
+    ratings.forEach((rating) => {
+      if (rating.author.equals(currentUserId)) {
+        shouldBeRated = false;
+      }
+    });
+    return shouldBeRated;
+  }
+
+  async getRatings(request: Request): Promise<Rating[]> {
+    const ratingsOfRequest: Rating[] = [];
+    if (request.ratings) {
+      await Promise.all(
+        request.ratings.map(async (ratingId) => {
+          const rating = await this.ratingService.findById(ratingId);
+          if (rating) {
+            ratingsOfRequest.push(rating);
+          }
+        }),
+      );
+    }
+    return ratingsOfRequest;
+  }
+
+  async ratingOrReportPossible(request: Request, currentUserId: ObjectId): Promise<boolean> {
     // ony accepted requests can be rated/trip reported
     if (!(request.requestStatus === RequestStatus.ACCEPTED)) {
       throw new HttpException(
@@ -68,41 +119,6 @@ export class RequestResolver {
         },
         409,
       );
-    }
-    let receiver: User | null = null;
-    // You want to rate/write trip report the host
-    if (receiverRole === RoleType.ACCOMMODATION) {
-      // you should have proposed the request
-      if (!request.proposer.equals(currentUserId)) {
-        throw new HttpException(
-          {
-            status: HttpStatus.FORBIDDEN,
-            error:
-              // tslint:disable-next-line: max-line-length
-              'It is not possible to rate this request or write a trip report for it in role of accommodation if one is not the proposer of the corresponding request.',
-          },
-          403,
-        );
-      }
-      // you as guest create a rating for host(receiver of request)
-      receiver = await this.usersService.findById(request.receiver);
-    }
-    // You want to rate the guest/meal
-    if (receiverRole === RoleType.MEAL) {
-      // you should have received+accepted the request
-      if (!request.receiver.equals(currentUserId)) {
-        throw new HttpException(
-          {
-            status: HttpStatus.FORBIDDEN,
-            error:
-              // tslint:disable-next-line: max-line-length
-              'It is not possible to rate this request or write a trip report for it in role of meal if one is not the receiver of the corresponding request.',
-          },
-          403,
-        );
-      }
-      // you as host create a rating/trip report for guest(proposer of request)
-      receiver = await this.usersService.findById(request.proposer);
     }
     // Date check
     const today = new Date();
@@ -116,16 +132,7 @@ export class RequestResolver {
         409,
       );
     }
-    if (!receiver) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error: 'Receiver not found.',
-        },
-        404,
-      );
-    }
-    return receiver;
+    return true;
   }
 
   async requestPossible(hostId: string, currentUserId: ObjectId): Promise<boolean> {
@@ -242,21 +249,10 @@ export class RequestResolver {
         404,
       );
     }
-    const receiver = await this.ratingOrReportPossible(request, createRatingDto.receiverRole, author._id);
-    if (!receiver) {
+    if (!(await this.ratingOrReportPossible(request, author._id))) {
       throw new Error('Rating not possible');
     }
-    const ratingsOfRequest: Rating[] = [];
-    if (request.ratings) {
-      await Promise.all(
-        request.ratings.map(async (ratingId) => {
-          const rating = await this.ratingService.findById(ratingId);
-          if (rating) {
-            ratingsOfRequest.push(rating);
-          }
-        }),
-      );
-    }
+    const ratingsOfRequest: Rating[] = await this.getRatings(request);
     // only to ratings per request, one for host, one for guest
     if (request.ratings) {
       if (ratingsOfRequest.length > 1) {
@@ -279,8 +275,34 @@ export class RequestResolver {
         409,
       );
     }
+    let receiver: User | null = null;
+    let receiverRole: RoleType | null = null;
+    // you should have proposed the request
+    if (request.proposer.equals(author._id)) {
+      // if so you are rating in role of the guest/meal so receiver is in role of accommodation
+      receiverRole = RoleType.ACCOMMODATION;
+      // then the receiver of this rating is the receiver of the request
+      receiver = await this.usersService.findById(request.receiver);
+      // or you should have received+accepted the request
+    } else if (request.receiver.equals(author._id)) {
+      // if so you are rating in role of host/accommodation so receiver is in role of MEAL
+      receiverRole = RoleType.MEAL;
+      // you as host create a rating for guest(proposer of request)
+      receiver = await this.usersService.findById(request.proposer);
+    } else {
+      // in any other cae you are not allowed to create a rating
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error:
+            // tslint:disable-next-line: max-line-length
+            'It is not possible to rate this request if you are not the receiver or proposer of the corresponding request.',
+        },
+        403,
+      );
+    }
 
-    const newRate = await this.ratingService.create({ ...createRatingDto, author, receiver });
+    const newRate = await this.ratingService.create({ ...createRatingDto, author, receiver, receiverRole });
 
     // update the request
     const updatedRequest = await this.requestService.addRating(request, newRate);
@@ -326,8 +348,7 @@ export class RequestResolver {
         404,
       );
     }
-    const receiver = await this.ratingOrReportPossible(request, createTripReportDto.receiverRole, author._id);
-    if (!receiver) {
+    if (!(await this.ratingOrReportPossible(request, author._id))) {
       throw new Error('Trip report writing not possible.');
     }
     const reportsOfRequest: TripReport[] = [];
@@ -365,10 +386,54 @@ export class RequestResolver {
       );
     }
 
-    const newReport = await this.tripReportService.create({ ...createTripReportDto, author, receiver });
+    let receiver: User | null = null;
+    let receiverRole: RoleType | null = null;
+    // you should have proposed the request
+    if (request.proposer.equals(author._id)) {
+      // if so you are trip reporting  in role of the guest/meal so receiver is in role of accommodation
+      receiverRole = RoleType.ACCOMMODATION;
+      // then the receiver of this Trip report is the receiver of the request
+      receiver = await this.usersService.findById(request.receiver);
+      // or you should have received+accepted the request
+    } else if (request.receiver.equals(author._id)) {
+      // if so you are trip reporting in role of host/accommodation so receiver is in role of MEAL
+      receiverRole = RoleType.MEAL;
+      // you as host create a trip reporting for guest(proposer of request)
+      receiver = await this.usersService.findById(request.proposer);
+    } else {
+      // in any other cae you are not allowed to create a trip report
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error:
+            // tslint:disable-next-line: max-line-length
+            'It is not possible to write a trip report for this request if you are not the receiver or proposer of the corresponding request.',
+        },
+        403,
+      );
+    }
+    let newReport: TripReport | null = await this.tripReportService.create({
+      ...createTripReportDto,
+      author,
+      receiver,
+      receiverRole,
+    });
 
+    if (createTripReportDto.pictures) {
+      newReport = await this.tripReportService.addPictures(newReport, createTripReportDto.pictures);
+    }
+    if (!newReport) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Updated trip report not found.',
+        },
+        404,
+      );
+    }
     // update the request
     const updatedRequest = await this.requestService.addTripReport(request, newReport);
+
     if (!updatedRequest) {
       throw new HttpException(
         {
@@ -392,7 +457,7 @@ export class RequestResolver {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: 'Receiver id not found.',
+          error: 'Request id not found.',
         },
         404,
       );
@@ -412,7 +477,46 @@ export class RequestResolver {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: 'Receiver id not found.',
+          error: 'Updated request not found.',
+        },
+        404,
+      );
+    }
+    return request;
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation((returns) => Request)
+  async updateRequestAsSeen(
+    @Args('requestSeenDto') requestSeenDto: RequestSeenDto,
+    @CurrentUser() user: User,
+  ): Promise<Request> {
+    const request = await this.requestService.findById(requestSeenDto._id);
+    if (!request) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Request id not found.',
+        },
+        404,
+      );
+    }
+    if (!request.proposer.equals(user._id)) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'It is not possible to set request as seen if a user is not the proposer of this request.',
+        },
+        403,
+      );
+    }
+    request.notificationSeen = true;
+    const updatedRequest = await this.requestService.changeRequestAsSeen(request);
+    if (!updatedRequest) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Updated request not found.',
         },
         404,
       );
@@ -480,5 +584,10 @@ export class RequestResolver {
   @ResolveProperty()
   async receiver(@Parent() request: Request) {
     return await this.usersService.findById(request.receiver);
+  }
+
+  @ResolveProperty()
+  async proposer(@Parent() request: Request) {
+    return await this.usersService.findById(request.proposer);
   }
 }

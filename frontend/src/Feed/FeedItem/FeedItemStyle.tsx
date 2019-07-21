@@ -2,7 +2,7 @@ import { Box, Divider } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { MainTheme, MainThemeRGB } from '../../StyledComponents/Theme';
-import { SimpleLabelText, SubText, Text } from './../../../src/StyledComponents/StyledBasicItems';
+import { SubText, Text } from './../../../src/StyledComponents/StyledBasicItems';
 
 export const FeedCard = styled.div`
   grid-column: 1/7;
@@ -110,6 +110,8 @@ export const Date = styled(Text)`
 `;
 
 export const IconInText = styled(SubText)`
+  grid-column: 1/2;
+  grid-row: 6/6;
   align-self: center;
   color: rgba(${MainThemeRGB.secondary.main.r}, ${MainThemeRGB.secondary.main.g}, ${MainThemeRGB.secondary.main.b}, 1);
 `;
@@ -137,17 +139,8 @@ export const ImagesCarousel = styled.div`
   grid-row: 3/3;
 `;
 
-export const LikeCount = styled(SimpleLabelText)`
-  grid-column: 1/13;
-  grid-row: 6/6;
-  align-self: center;
-  align-text: center;
-  justify-self: start;
-  margin-bottom: 0px
-  margin-left: 25px;
-  display: inline;
-`;
-
 export const LikeCounter = styled.p`
-  amrgin 
+  grid-column: 2/3;
+  margin-left: -40px;
+  grid-row: 6/6;
 `;

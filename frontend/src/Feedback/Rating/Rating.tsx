@@ -37,7 +37,7 @@ const Rating: React.FC<{
         {firstName} {lastName[0]}.
         {verified && (
           <Verified>
-            <Icon>check_circle</Icon>
+            <Icon>verified</Icon>
           </Verified>
         )}
       </Name>

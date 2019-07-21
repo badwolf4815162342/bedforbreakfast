@@ -85,12 +85,14 @@ Query that has user id , id of host he wants to request, REQUESTED field
 query {
 canBeRequested(
     canBeRequestedDto: {
-      requestId: "5d30dcda17d3053ac8421bb1"
       hostId: "5d2e4f790000f5471085c4d9"
     }
   ) 
 }
 ```
+
+
+
 
 ## Rating and Reference:
 
@@ -104,7 +106,6 @@ mutation {
     createRatingDto: {
       request: "5d30577180496764c0dffa6b"
       description: "myrating"
-      receiverRole: MEAL
       rating: true
     }
   ) {
@@ -115,7 +116,7 @@ mutation {
 }
 ```
 
-### Get ratings rating user x: POTENTIAL BROKEN
+### Get ratings rating user x: 
 
 receivedRatings query needs userId of user x as a field
 ```
@@ -154,7 +155,6 @@ mutation {
     createTripReportDto: {
       request: "5d31cba1963a8feb6fe28184"
       description: "It was great"
-      receiverRole: ACCOMMODATION
       pictures: []
       
     }
@@ -222,11 +222,53 @@ query {
 
 ## Notifications:
 
-All queries return only reuquests where start is in the future!!
+### Get unseen requests you send:
+
+- request should be answered
+- unseen
+- in the future
+- proposed by logged in user
+
+```
+query {
+  proposedUnseeAnsweredRequests {
+    _id
+    start
+    end
+    description
+    requestStatus
+    receiver {
+      _id
+      email
+    }
+  }
+}
+```
+
+### update it as seen:
+
+```
+mutation {
+  updateRequestAsSeen (requestSeenDto: {_id: "5d349dc40a654235b815b18a"}){
+    _id
+    start
+    end
+    description
+    requestStatus
+    receiver {
+      _id
+      email
+    }
+    notificationSeen
+  }
+}
+```
+
 
 ### Received requests
 
 Requests send to you which not have been updated as DENIED, CANCELED or ACCEPTED
+- current user is receiver
 
 ```
 query {
@@ -258,11 +300,18 @@ query {
 }
 ```
 
-### Accepted requests/upcoming trips
 
+
+### requests to rate:
+
+- in the past
+- you are receiver/proposer
+- you have not yet rated
+- the request was accepted by host
+- 
 ```
 query {
-  proposedAnsweredRequests {
+  acceptedUnratedPastRequests {
     _id
     start
     end
@@ -270,25 +319,12 @@ query {
     requestStatus
     receiver {
       _id
-    }
-    proposer {
-      _id
-    }
-    ratings {
-      description
-      request {
-        _id
-        description
-      }
-      receiverRole
-      rating
-      author {
-        firstName
-      }
+      email
     }
   }
 }
 ```
+
 ## Meals:
 
 ### TestMealCreation:

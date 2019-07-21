@@ -3,7 +3,6 @@ import IconButton from '@material-ui/core/IconButton';
 import React from 'react';
 import pic from '../../../images/user2.jpeg';
 import SimpleSlider from '../../../StyledComponents/ImageSlider/ImageSlider';
-import { GridContainerL as GridContainer } from '../../../StyledComponents/StyledBasicItems';
 import CardHeader from '../CardElements/CardHeader';
 import {
   Divider,
@@ -11,7 +10,6 @@ import {
   ImagesCarousel,
   LikeCount,
   Report,
-  SeeMoreButton,
   TripReportCard,
   TripReportPaper,
 } from './TripReportStyle';
@@ -60,20 +58,15 @@ class TripReport extends React.Component<TripReportProps, {}> {
           <Report> {this.props.description} </Report>
         </TripReportPaper>
         <Divider />
-        <GridContainer>
-          <LikeCount>
-            {' '}
-            <IconInText>
-              <IconButton color="secondary">
-                <Icon>{this.liked}</Icon>
-              </IconButton>
-              {this.props.likeCount}
-            </IconInText>{' '}
-          </LikeCount>
-          <SeeMoreButton variant="text" color="secondary">
-            see more
-          </SeeMoreButton>
-        </GridContainer>
+        <LikeCount>
+          {' '}
+          <IconInText>
+            <IconButton color="secondary">
+              <Icon>{this.liked}</Icon>
+            </IconButton>
+            {this.props.likeCount}
+          </IconInText>{' '}
+        </LikeCount>
       </TripReportCard>
     );
   }
