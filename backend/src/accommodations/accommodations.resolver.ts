@@ -62,7 +62,13 @@ export class AccommodationResolver {
         ) {
           return await this.accommodationsService.alter(accommodationDto);
         } else {
-          throw new HttpException('User can only update their own accommodation.', HttpStatus.FORBIDDEN);
+          throw new HttpException(
+            {
+              status: HttpStatus.FORBIDDEN,
+              error: 'User can only update their own accommodation.',
+            },
+            403,
+          );
         }
       } else {
         return await this.accommodationsService.create({ ...accommodationDto, user: user._id });
