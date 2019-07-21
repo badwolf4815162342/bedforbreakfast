@@ -51,26 +51,34 @@ interface Data {
 
 class Feedback extends React.Component<
   {},
-  { reference: { rating: boolean | undefined; description: string | undefined }; writingReference: boolean }
+  {
+    rating: { rating: boolean | undefined; description: string | undefined };
+    writingRating: boolean;
+    tripReport: { pictures: File[]; description: string | undefined };
+  }
 > {
   constructor(props: any) {
     super(props);
     this.state = {
-      reference: { rating: undefined, description: undefined },
-      writingReference: true,
+      rating: { rating: undefined, description: undefined },
+      writingRating: false,
+      tripReport: { pictures: [], description: undefined },
     };
   }
 
-  handleChange = (name: string) => (value: any) => {
-    console.log(value);
+  handleRatingChange = (name: string) => (value: any) => {
+    this.setState({ rating: { ...this.state.rating, [name]: value } });
+  };
 
-    this.setState({ ...this.state, reference: { ...this.state.reference, [name]: value } });
+  handleTripReportChange = (name: string) => (value: any) => {
+    this.setState({ tripReport: { ...this.state.tripReport, [name]: value } });
   };
 
   render() {
     const requestId = '5d3421f581e911e34649dd1c'; // TODO: get from route parameter
     const {
-      reference: { rating, description },
+      rating: { rating, description },
+      tripReport: { pictures },
     } = this.state;
 
     return (
@@ -88,7 +96,7 @@ class Feedback extends React.Component<
 
             return (
               <FeedbackPage>
-                {this.state.writingReference && (
+                {this.state.writingRating && (
                   <div>
                     <ReferenceTitle>
                       How was your trip to {data.request.receiver.accommodation.city} from{' '}
@@ -98,13 +106,13 @@ class Feedback extends React.Component<
                       <Rating
                         receiver={data.request.receiver}
                         rating={rating}
-                        onRatingChange={this.handleChange('rating')}
-                        onDescriptionChange={this.handleChange('description')}
+                        onRatingChange={this.handleRatingChange('rating')}
+                        onDescriptionChange={this.handleRatingChange('description')}
                       />
                       <Mutation
                         mutation={CREATE_RATING}
                         variables={{ request: requestId, receiverRole: 'ACCOMMODATION', description, rating }}
-                        onCompleted={() => this.setState({ writingReference: false })}
+                        onCompleted={() => this.setState({ writingRating: false })}
                       >
                         {(mutation: any, { mutationLoading, mutationError }: any) => (
                           <>
@@ -119,7 +127,13 @@ class Feedback extends React.Component<
                     </FeedbackCard>
                   </div>
                 )}
-                {!this.state.writingReference && <TripReport></TripReport>}
+                {!this.state.writingRating && (
+                  <TripReport
+                    pictures={pictures}
+                    onPicturesChange={this.handleTripReportChange('pictures')}
+                    onDescriptionChange={this.handleTripReportChange('description')}
+                  ></TripReport>
+                )}
               </FeedbackPage>
             );
           }
