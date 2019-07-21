@@ -2,10 +2,12 @@ import gql from 'graphql-tag';
 import React from 'react';
 import { Query } from 'react-apollo';
 import { USER_ID } from '../../../constants';
+import SimpleSlider from '../../../StyledComponents/ImageSlider/ImageSlider';
 import {
   AccommodationInProfileCard,
   Description,
   DescriptionPaper,
+  ImagesCarousel,
   InfoLabel,
   Location,
   NoAccommodationLabel,
@@ -41,7 +43,7 @@ interface AccommodationData {
     description: string;
     district: string;
     numberOfBeds: number;
-    pictures: File[];
+    pictures: string[];
   };
 }
 
@@ -69,10 +71,12 @@ class AccommodationCard extends React.Component<{ userId: string; accommodationI
           return (
             <AccommodationInProfileCard>
               <Location>
-                {' '}
-                {accommodation.district} , {accommodation.city} , {accommodation.country}{' '}
+                Location: {accommodation.district} , {accommodation.city} , {accommodation.country}
               </Location>
-              <InfoLabel> Beds: {accommodation.numberOfBeds} </InfoLabel>
+              <ImagesCarousel>
+                <SimpleSlider height={240} images={accommodation.pictures} />
+              </ImagesCarousel>
+              <InfoLabel> Number of beds: {accommodation.numberOfBeds} </InfoLabel>
               <DescriptionPaper>
                 <Description>{accommodation.description}</Description>
               </DescriptionPaper>

@@ -6,7 +6,7 @@ import { MainThemeRGB } from '../../../StyledComponents/Theme';
 export const AccommodationInProfileCard = styled(Card)`
   margin-top: 50px
   margin-bottom: 0px
-  padding: 15px
+  padding: 25px
   width: inherit
   position: relative;
   border-radius: 15px !important
@@ -20,10 +20,14 @@ export const DescriptionPaper = styled(Box)`
   margin-bottom: 15px
 `;
 
-export const Description = styled(Text)``;
+export const Description = styled(Text)`
+  hyphens: auto;
+`;
 
 export const Location = styled(SimpleLabelText)``;
-export const InfoLabel = styled(SimpleLabelText)``;
+export const InfoLabel = styled(SimpleLabelText)`
+  margin-top: 20px;
+`;
 export const IconInText = styled(SubText)`
   margin-right: 20px
   margin-left: 0px
@@ -34,4 +38,13 @@ export const IconInText = styled(SubText)`
 
 export const NoAccommodationLabel = styled(SimpleLabelText)`
   text-align: center;
+`;
+
+export const ImagesCarousel = styled.div`
+  .image-gallery-slide-wrapper {
+    display: none;
+  }
+  .image-gallery-thumbnails {
+    overflow: scroll;
+  }
 `;
