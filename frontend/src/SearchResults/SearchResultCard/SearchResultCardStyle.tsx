@@ -1,4 +1,5 @@
 import { Box } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { SimpleLabelText, SubText } from './../../StyledComponents/StyledBasicItems';
 import { MainTheme, MainThemeRGB } from './../../StyledComponents/Theme';
@@ -6,7 +7,9 @@ import { MainTheme, MainThemeRGB } from './../../StyledComponents/Theme';
 export const CardResult = styled.div`
   margin-right: 2px;
   margin-left: 2px;
-  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 3px 5px 14px -2px rgba(${MainThemeRGB.grey.dark.r}, ${MainThemeRGB.grey.dark.g}, ${MainThemeRGB.grey.dark.b}, 1);
+  -moz-box-shadow: 3px 5px 14px -2px rgba(${MainThemeRGB.grey.dark.r}, ${MainThemeRGB.grey.dark.g}, ${MainThemeRGB.grey.dark.b}, 1);
+  box-shadow: 3px 5px 14px -2px rgba(${MainThemeRGB.grey.dark.r}, ${MainThemeRGB.grey.dark.g}, ${MainThemeRGB.grey.dark.b}, 1);
   height: 244px;
   display: grid;
   grid-gap: 10px;
@@ -136,4 +139,9 @@ export const RatingContainer = styled(SimpleLabelText)`
 export const Rating = styled.div`
   margin: auto;
   width: fit-content;
+`;
+
+export const LinkCard = styled(Link)`
+  color: inherit;
+  text-decoration: none;
 `;

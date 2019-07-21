@@ -52,7 +52,7 @@ export class UserResolver {
     return this.imageUploadService.singleFileUpload(picture);
   }
 
-  @Query((returns) => User, { nullable: true })
+  @Query((returns) => User)
   async user(@Args('userId') id: string): Promise<User> {
     const user = await this.userService.findById(id);
     if (!user) {
@@ -74,6 +74,60 @@ export class UserResolver {
       throw new NotFoundException(user._id);
     }
     return newMeal;
+  }
+
+  // tslint:disable-next-line: max-line-length
+  // Conditions: logged in as request.proposer or request.receiver Trip accepted, request date is before today, only 2 ratings possible receiverOfRequest,AuthorOfRequest
+  @UseGuards(GqlAuthGuard)
+  @Mutation((returns) => User)
+  async createTestMeals(@CurrentUser() user: User): Promise<User> {
+    // TestMeal 1:
+    const createMealDto1: CreateMealDto = {
+      description: 'This is a fany fruit bread thing and additional salat and egg.',
+      profilePicture:
+        'https://res.cloudinary.com/bed-for-breakfast/image/upload/v1563550228/meal_pictures/photo5357541118859914298_w8t1lk.jpg',
+    };
+
+    const newMeal1 = await this.mealService.create({ ...createMealDto1, user });
+
+    // update the user
+    let updatedUser = await this.userService.addMeal(user, newMeal1);
+    if (!updatedUser) {
+      throw new NotFoundException(user._id);
+    }
+    // TestMeal 2:
+    const createMealDto2: CreateMealDto = {
+      description: 'Nice Noodles :)',
+      profilePicture:
+        'https://res.cloudinary.com/bed-for-breakfast/image/upload/v1563550557/meal_pictures/photo5226494923560299118_keoeoe.jpg',
+    };
+
+    const newMeal2 = await this.mealService.create({ ...createMealDto2, user });
+
+    // update the user
+    updatedUser = await this.userService.addMeal(updatedUser, newMeal2);
+    if (!updatedUser) {
+      throw new NotFoundException(user._id);
+    }
+    // TestMeal 3:
+    const createMealDto3: CreateMealDto = {
+      description: 'Great Burger with everything nice on it!',
+      profilePicture:
+        'https://res.cloudinary.com/bed-for-breakfast/image/upload/v1563550557/meal_pictures/photo5231465661010651654_a3qhwb.jpg',
+    };
+
+    const newMeal3 = await this.mealService.create({ ...createMealDto3, user });
+
+    // update the user
+    updatedUser = await this.userService.addMeal(updatedUser, newMeal3);
+    if (!updatedUser) {
+      throw new NotFoundException(user._id);
+    }
+    updatedUser = await this.userService.findById(updatedUser._id);
+    if (!updatedUser) {
+      throw new Error('Invalid receiver ID');
+    }
+    return updatedUser;
   }
 
   @ResolveProperty()

@@ -59,6 +59,14 @@ input CreateRequestDto {
   description: String!
 }
 
+input CreateTripReportDto {
+  _id: String
+  request: String!
+  receiverRole: RoleType!
+  description: String!
+  pictures: [String!]!
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
@@ -87,10 +95,12 @@ type Mutation {
   login(loginDto: LoginDto!): LoginResponseTo!
   addProfilePicture(picture: Upload!): String!
   createMeal(createMealDto: CreateMealDto!): Meal!
+  createTestMeals: User!
   alterAccommodation(accommodationDto: AccommodationDto!): Accommodation!
   createAccommodation(createAccommodationDto: AccommodationDto!): Accommodation!
   createRequest(createRequestDto: CreateRequestDto!): Request!
   createRating(createRatingDto: CreateRatingDto!): Request!
+  createTripReport(createTripReportDto: CreateTripReportDto!): Request!
   updateRequestStatus(updateRequestStatusDto: UpdateRequestStatusDto!): Request!
 }
 
@@ -100,11 +110,14 @@ scalar ObjectId
 type Query {
   meals: [Meal!]!
   users: [User!]!
-  user(userId: String!): User
+  user(userId: String!): User!
   accommodations: [Accommodation!]!
   accommodationsByCity(city: String!): [Accommodation!]!
   accommodationById(_id: ObjectId!): Accommodation!
+  tripReports: [TripReport!]!
+  publishedTripReports(userId: String!): [TripReport!]!
   requests: [Request!]!
+  request(requestId: String!): Request!
   receivedRequestedRequests: [Request!]!
   proposedAnsweredRequests: [Request!]!
   canBeRequested(canBeRequestedDto: CanBeRequestedDto!): Boolean!
@@ -131,6 +144,7 @@ type Request {
   requestStatus: String!
   description: String!
   ratings: [Rating!]!
+  tripReports: [TripReport!]!
 }
 
 """The basic RequestStatus"""
@@ -160,6 +174,17 @@ input SignUpDto {
   homeTown: String!
   homeCountry: String!
   favoriteFood: String!
+}
+
+type TripReport {
+  _id: ID!
+  request: Request!
+  author: User!
+  receiver: User!
+  receiverRole: RoleType!
+  pictures: [String!]!
+  description: String!
+  likedBy: [User!]!
 }
 
 input UpdateRequestStatusDto {
