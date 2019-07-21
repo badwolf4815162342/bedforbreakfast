@@ -71,16 +71,6 @@ export class RequestService {
   }
 
   async findByProposerAndAnsweredAndUnseenFromNow(proposerId: ObjectId | string): Promise<Request[]> {
-    const i = await this.requestModel
-      .find({
-        proposer: proposerId,
-        notificationSeen: false,
-        requestStatus: { $ne: RequestStatus.REQUESTED },
-        start: { $gte: new Date() },
-      })
-      .exec();
-    console.log(i);
-    console.log(proposerId);
     return this.requestModel
       .find({
         proposer: proposerId,

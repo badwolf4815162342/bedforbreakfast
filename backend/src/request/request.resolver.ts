@@ -67,7 +67,7 @@ export class RequestResolver {
 
   @UseGuards(GqlAuthGuard)
   @Query((returns) => [Request])
-  async acceptedPastRequests(@CurrentUser() user: User): Promise<Request[]> {
+  async acceptedUnratedPastRequests(@CurrentUser() user: User): Promise<Request[]> {
     const requests = await this.requestService.findByProposerOrReceiverAndAcceptedInPast(user._id);
     // requests.filter(request => ratingOrReportPossible);
     return requests;
