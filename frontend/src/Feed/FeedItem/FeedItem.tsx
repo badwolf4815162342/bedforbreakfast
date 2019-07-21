@@ -56,6 +56,8 @@ function userId() {
   }
 }
 
+let isLiked: boolean = false;
+
 export const FeedItem: React.FC<FeedItemProps> = (feedItem: FeedItemProps) => (
   <FeedCard>
     <AuthorPicBox>
@@ -149,6 +151,7 @@ export const FeedItem: React.FC<FeedItemProps> = (feedItem: FeedItemProps) => (
             <form
               onSubmit={(e) => {
                 e.preventDefault();
+                isLiked = true;
                 if (localStorage.getItem(USER_ID)) {
                   likeTripReport({
                     variables: {
@@ -160,7 +163,7 @@ export const FeedItem: React.FC<FeedItemProps> = (feedItem: FeedItemProps) => (
             >
               <IconButton type="submit" color="secondary">
                 <Icon>
-                  {feedItem.tripReport.likedBy.filter((user: User) => user._id === userId()).length !== 0
+                  {feedItem.tripReport.likedBy.filter((user: User) => user._id === userId()).length !== 0 || isLiked
                     ? 'favorite'
                     : 'favorite_border'}
                 </Icon>
