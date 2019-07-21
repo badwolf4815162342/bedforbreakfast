@@ -256,3 +256,42 @@ query {
   }
 }
 ```
+## Meals:
+
+### TestMealCreation:
+
+inserts default meals for logged in user
+
+```
+mutation {
+  createTestMeals {
+    _id
+    firstName
+    lastName
+    email
+    phoneNumber
+    firstName
+    lastName
+    birthday
+    gender
+    profilePicture
+    homeTown
+    homeCountry
+    favoriteFood
+    dislikedBy {
+      firstName
+      email
+    }
+    likedBy {
+      firstName
+      email
+    }
+    accommodation {
+      _id
+    }
+    meals {
+      description
+    }
+  }
+}
+```
