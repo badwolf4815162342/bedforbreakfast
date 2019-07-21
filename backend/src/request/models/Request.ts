@@ -2,6 +2,7 @@ import { ObjectId } from 'mongodb';
 import { Field, ID, ObjectType, registerEnumType } from 'type-graphql';
 import { arrayProp, prop, Ref, Typegoose } from 'typegoose';
 import { Rating } from '../../rating/models/Rating';
+import { TripReport } from '../../tripReport/models/TripReport';
 import { User } from '../../users/models/User';
 
 @ObjectType()
@@ -36,6 +37,10 @@ export class Request extends Typegoose {
   @Field((type) => [Rating])
   @arrayProp({ itemsRef: 'Rating' })
   ratings?: Array<Ref<ObjectId>>;
+
+  @Field((type) => [TripReport])
+  @arrayProp({ itemsRef: 'TripReport' })
+  tripReports?: Array<Ref<ObjectId>>;
 }
 
 export enum RequestStatus {

@@ -1,11 +1,9 @@
-import { Button } from '@material-ui/core';
 import gql from 'graphql-tag';
 import React from 'react';
 import { Mutation, Query } from 'react-apollo';
 import Moment from 'react-moment';
 
-import { Section } from '../StyledComponents/StyledBasicItems';
-import { ReferenceTitle } from './FeedbackStyle';
+import { ContinueButton, FeedbackCard, FeedbackPage, ReferenceTitle } from './FeedbackStyle';
 import Rating from './Rating/Rating';
 import TripReport from './TripReport/TripReport';
 
@@ -97,33 +95,37 @@ class Feedback extends React.Component<
             const endString = data.request.end;
 
             return (
-              <Section>
-                <ReferenceTitle>
-                  How was your trip to {data.request.receiver.accommodation.city} from{' '}
-                  <Moment format="MMMM Do">{startString}</Moment> to <Moment format="MMMM Do">{endString}</Moment>?
-                </ReferenceTitle>
+              <FeedbackPage>
                 {this.state.writingRating && (
-                  <>
-                    <Rating
-                      receiver={data.request.receiver}
-                      rating={rating}
-                      onRatingChange={this.handleRatingChange('rating')}
-                      onDescriptionChange={this.handleRatingChange('description')}
-                    />
-                    <Mutation
-                      mutation={CREATE_RATING}
-                      variables={{ request: requestId, receiverRole: 'ACCOMMODATION', description, rating }}
-                      onCompleted={() => this.setState({ writingRating: false })}
-                    >
-                      {(mutation: any, { mutationLoading, mutationError }: any) => (
-                        <>
-                          {mutationLoading && <p>Loading...</p>}
-                          {mutationError && <p>Error.</p>}
-                          <Button onClick={() => mutation()}>Continue</Button>
-                        </>
-                      )}
-                    </Mutation>
-                  </>
+                  <div>
+                    <ReferenceTitle>
+                      How was your trip to {data.request.receiver.accommodation.city} from{' '}
+                      <Moment format="MMMM Do">{startString}</Moment> to <Moment format="MMMM Do">{endString}</Moment>?
+                    </ReferenceTitle>
+                    <FeedbackCard>
+                      <Rating
+                        receiver={data.request.receiver}
+                        rating={rating}
+                        onRatingChange={this.handleRatingChange('rating')}
+                        onDescriptionChange={this.handleRatingChange('description')}
+                      />
+                      <Mutation
+                        mutation={CREATE_RATING}
+                        variables={{ request: requestId, receiverRole: 'ACCOMMODATION', description, rating }}
+                        onCompleted={() => this.setState({ writingRating: false })}
+                      >
+                        {(mutation: any, { mutationLoading, mutationError }: any) => (
+                          <>
+                            {mutationLoading && <p>Loading...</p>}
+                            {mutationError && <p>Error.</p>}
+                            <ContinueButton variant="contained" color="secondary" onClick={() => mutation()}>
+                              Continue
+                            </ContinueButton>
+                          </>
+                        )}
+                      </Mutation>
+                    </FeedbackCard>
+                  </div>
                 )}
                 {!this.state.writingRating && (
                   <TripReport
@@ -132,7 +134,7 @@ class Feedback extends React.Component<
                     onDescriptionChange={this.handleTripReportChange('description')}
                   ></TripReport>
                 )}
-              </Section>
+              </FeedbackPage>
             );
           }
         }}

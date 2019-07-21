@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { ObjectId } from 'mongodb';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
-
-import { CreateTripReportDto } from './dto/create-trip-report.dto';
 import { TripReport } from './models/TripReport';
 
 @Injectable()
@@ -16,8 +15,16 @@ export class TripReportService {
     return await this.tripReportModel.find().exec();
   }
 
-  async create(createTripReportDto: CreateTripReportDto): Promise<TripReport> {
+  async create(createTripReportDto: {}): Promise<TripReport> {
     const createdTripReport = new this.tripReportModel(createTripReportDto);
     return await createdTripReport.save();
+  }
+
+  async findById(id: ObjectId): Promise<TripReport | null> {
+    return this.tripReportModel.findById(id);
+  }
+
+  async findByAuthor(authorId: ObjectId | string): Promise<TripReport[]> {
+    return this.tripReportModel.find({ author: authorId }).exec();
   }
 }

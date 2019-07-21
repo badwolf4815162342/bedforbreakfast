@@ -1,6 +1,52 @@
 import React from 'react';
-import { Section } from '../../../../StyledComponents/StyledBasicItems';
+import { Section } from '../../../StyledComponents/StyledBasicItems';
 import TripReport from './TripReport';
+
+// const GET_RECEIVED_REFERENCES_BY_USER_ID = gql`
+//   query publishedTripReports($userId: String!) {
+//     publishedTripReports(userId: $userId) {
+//       _id
+//       description
+//       receiverRole
+//       pictures
+//       request {
+//         start
+//         end
+//       }
+//       receiver {
+//         _id
+//         firstName
+//         lastName
+//         homeTown
+//         homeCountry
+//         verified
+//         profilePicture
+//       }
+//     }
+//   }
+// `;
+
+// interface TripReportListData {
+//   publishedTripReports: Array<{
+//     _id: string;
+//     description: string;
+//     receiverRole: string;
+//     pictures: string[];
+//     request: {
+//       start: Date;
+//       end: Date;
+//     };
+//     receiver: {
+//       _id: string;
+//       firstName: string;
+//       lastName: string;
+//       homeTown: string;
+//       homeCountry: string;
+//       verified: boolean;
+//       profilePicture: string;
+//     };
+//   }>;
+// }
 
 class TripReportList extends React.Component<{}> {
   tripReport1 = (

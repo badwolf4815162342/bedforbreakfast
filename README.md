@@ -148,6 +148,24 @@ query {
 
 ### Submit TripReport:
 
+```
+mutation {
+  createTripReport(
+    createTripReportDto: {
+      request: "5d31cba1963a8feb6fe28184"
+      description: "It was great"
+      receiverRole: ACCOMMODATION
+      pictures: []
+      
+    }
+  ) {
+    _id
+    description
+    requestStatus
+  }
+}
+```
+
 
 ## User:
 
