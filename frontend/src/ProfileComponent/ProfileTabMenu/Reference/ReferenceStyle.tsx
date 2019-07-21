@@ -28,6 +28,8 @@ export const Divider = styled(divider)`
 
 export const Report = styled(Text)``;
 
+export const Rate = styled(Text)``;
+
 export const IconInText = styled(SubText)`
   margin-right: 20px
   margin-left: 0px
