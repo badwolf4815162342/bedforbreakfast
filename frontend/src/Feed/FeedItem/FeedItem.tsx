@@ -115,7 +115,7 @@ export const FeedItem: React.FC<FeedItemProps> = (feedItem: FeedItemProps) => (
           <Icon>favorite_border'</Icon>
         </IconButton>
       </IconInText>
-      {feedItem.tripReport.likedBy.length}
+      <p>{feedItem.tripReport.likedBy.length}</p>
     </LikeCount>
   </FeedCard>
 );
