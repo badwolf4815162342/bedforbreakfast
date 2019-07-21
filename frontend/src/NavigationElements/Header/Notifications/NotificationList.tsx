@@ -35,7 +35,7 @@ class NotificationList extends React.Component<{ onClick: () => void }, {}> {
           if (error) {
             return <p>Error.</p>;
           }
-          if (data && data.receivedRequestedRequests.length > 0) {
+          if (data && data.receivedRequestedRequests && data.receivedRequestedRequests.length > 0) {
             return data.receivedRequestedRequests.map((request) => (
               <HeaderLink key={request._id} to="/requests">
                 <MenuItem onClick={this.props.onClick}>
@@ -43,6 +43,8 @@ class NotificationList extends React.Component<{ onClick: () => void }, {}> {
                 </MenuItem>
               </HeaderLink>
             ));
+          } else {
+            return <p>No data.</p>;
           }
         }}
       </Query>
