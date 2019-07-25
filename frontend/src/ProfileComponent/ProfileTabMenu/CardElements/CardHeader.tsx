@@ -31,7 +31,7 @@ interface CardHeaderProps {
 
 class CardHeader extends React.Component<CardHeaderProps, {}> {
   render() {
-    const receiverRole = this.props.receiverRole === 'accommodation' ? 'visited' : 'hosted';
+    const receiverRole = this.props.receiverRole === 'ACCOMMODATION' ? 'visited' : 'hosted';
     const authorPicture = (
       <img src={this.props.profilePicture} style={{ width: 65, height: 65, borderRadius: 180 }} alt="Card" />
     );
