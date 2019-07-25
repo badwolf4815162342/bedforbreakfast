@@ -1,4 +1,3 @@
-
 import React from 'react';
 import pic from '../../../images/user2.jpeg';
 import SimpleSlider from '../../../StyledComponents/ImageSlider/ImageSlider';

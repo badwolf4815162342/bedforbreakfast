@@ -35,25 +35,16 @@ const REQUEST_BY_ID = gql`
 `;
 
 const CREATE_RATING = gql`
-  mutation createRating($request: String!, $receiverRole: RoleType!, $description: String!, $rating: Boolean!) {
-    createRating(
-      createRatingDto: { request: $request, receiverRole: $receiverRole, description: $description, rating: $rating }
-    ) {
+  mutation createRating($request: String!, $description: String!, $rating: Boolean!) {
+    createRating(createRatingDto: { request: $request, description: $description, rating: $rating }) {
       _id
     }
   }
 `;
 
 const CREATE_TRIP_REPORT = gql`
-  mutation createTripReport($request: String!, $receiverRole: RoleType!, $description: String!, $pictures: [Upload]!) {
-    createTripReport(
-      createTripReportDto: {
-        request: $request
-        receiverRole: $receiverRole
-        description: $description
-        pictures: $pictures
-      }
-    ) {
+  mutation createTripReport($request: String!, $description: String!, $pictures: [Upload]!) {
+    createTripReport(createTripReportDto: { request: $request, description: $description, pictures: $pictures }) {
       _id
     }
   }
@@ -137,7 +128,6 @@ class Feedback extends React.Component<
                         mutation={CREATE_RATING}
                         variables={{
                           request: requestId,
-                          receiverRole: 'ACCOMMODATION',
                           description: ratingDescription,
                           rating,
                         }}
@@ -167,7 +157,6 @@ class Feedback extends React.Component<
                       mutation={CREATE_TRIP_REPORT}
                       variables={{
                         request: requestId,
-                        receiverRole: 'ACCOMMODATION',
                         description: tripReportDescription,
                         pictures,
                       }}

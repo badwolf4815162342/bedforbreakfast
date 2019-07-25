@@ -64,7 +64,9 @@ class TripReportList extends React.Component<{ userId: string }> {
               return <p>Loading...</p>;
             }
             if (error) {
-              return <p>Error :( Fix me {error.message}</p>;
+              window.location.reload();
+              return <p></p>;
+              //<p>Error :( Fix me {error.message}</p>;
             }
             if (!data) {
               return <p>No data</p>;
