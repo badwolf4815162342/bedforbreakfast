@@ -8,7 +8,6 @@ import { USER_ID } from '../../constants';
 
 import {
   DateBox,
-  Error,
   InputDate,
   RequestButtonBox,
   RequestDialog,
@@ -91,7 +90,7 @@ class SendRequest extends Component<{ userId: string; userName: string }, SendRe
               return <p></p>;
             }
             if (error) {
-              return <p>Error</p>;
+              return <p></p>;
             }
             if (!data) {
               return <p></p>;
@@ -174,7 +173,7 @@ class SendRequest extends Component<{ userId: string; userName: string }, SendRe
               >
                 {(createRequest: any, { loading, error, data }: any) => (
                   <RequestMutation>
-                    {error && <Error>{error.message.replace('GraphQL error: ', '')}</Error>}
+                    {error && <p></p>}
                     {loading && <p>Loading...</p>}
                     <RequestDialogForm
                       onSubmit={(e) => {
