@@ -27,7 +27,7 @@
   "devDependencies": {
     "husky": "^2.4.1",
     "lerna": "^3.15.0",
-    "lint-staged": "^8.2.0",
+    "lint-staged": "^13.1.0",
     "tslint": "^5.17.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-etc": "^1.5.3",
